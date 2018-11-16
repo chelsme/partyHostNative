@@ -1,43 +1,39 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, NavigatorIOS, } from 'react-native';
-import PropTypes from 'prop-types';
+import { View, NavigatorIOS } from 'react-native';
 import HomeScreen from './screens/HomeScreen'
+import MainTabNavigator from './navigation/MainTabNavigator'
+import ProfileScreen from './screens/ProfileScreen';
+
 export default class App extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      loggedIn: false
+    }
+  }
+
+  logIn = () => {
+    this.setState({
+      loggedIn: true
+    })
+  }
+
   render() {
     return (
-      <NavigatorIOS
-        initialRoute={{
-          component: HomeScreen,
-          title: 'My Initial Scene',
-          passProps: { index: 1 },
-        }}
-        style={{ flex: 1 }}
-      />
-    );
+      /* <NavigatorIOS
+          initialRoute={{
+            component: HomeScreen,
+            title: 'My Initial Scene',
+            passProps: { index: 1 },
+          }}
+          style={{ flex: 1 }}
+        /> */
+      <View style={{ flex: 1 }}>
+        {this.state.loggedIn ?
+          <MainTabNavigator />
+          : <HomeScreen logIn={this.logIn} />}
+      </View>
+    )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    flex: .15,
-    fontSize: 26,
-    color: 'darkgreen'
-  },
-  subtitle: {
-    flex: .1,
-    fontSize: 20,
-  },
-  abilities: {
-    paddingLeft: 3,
-  },
-  listItem: {
-    flex: .09,
-    fontSize: 16
-  }
-});

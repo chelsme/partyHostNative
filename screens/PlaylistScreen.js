@@ -19,24 +19,6 @@ export default class PlaylistScreen extends React.Component {
         return (
             <View>
                 <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
-                <Text>Playlist Screen</Text>
                 <Button
                     onPress={this.goToGuests}
                     title="Go To Guests"

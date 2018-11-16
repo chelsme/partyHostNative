@@ -17,11 +17,7 @@ export default class ProfileScreen extends React.Component {
 
     render() {
         return (
-            <View style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center"
-            }}>
+            <View>
                 <Text>Profile Screen</Text>
                 <Text>Profile Screen</Text>
                 <Text>Profile Screen</Text>

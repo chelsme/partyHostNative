@@ -12,7 +12,8 @@ export default class HomeScreen extends React.Component {
         this.state = {
             loginH: false,
             loginG: false,
-            userInfo: false
+            userInfo: false,
+            loggedIn: this.props.loggedIn
         }
     }
 
@@ -104,14 +105,20 @@ export default class HomeScreen extends React.Component {
                     color="#841584"
                     accessibilityLabel="Connect With Facebook"
                 />
-                <Button
+                {/* <Button
                     onPress={this.goToProfile}
                     style={{ width: 50, height: 50, backgroundColor: 'darkblue' }}
                     title="Profile"
                     color="#841584"
                     accessibilityLabel="Profile"
+                /> */}
+                <Button
+                    onPress={this.props.logIn}
+                    style={{ width: 50, height: 50, backgroundColor: 'darkblue' }}
+                    title="Log In"
+                    color="#841584"
+                    accessibilityLabel="Log In"
                 />
-                <MainTabNavigator />
             </View>
         );
     }
