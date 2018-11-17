@@ -8,6 +8,7 @@ export default class GuestsScreen extends React.Component {
     render() {
         return (
             <View>
+                <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>GUESTS SCREEN</Text>
                 <Text>Guests Screen</Text>
                 <Text>Guests Screen</Text>
                 <Text>Guests Screen</Text>

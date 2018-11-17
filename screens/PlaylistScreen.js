@@ -18,6 +18,7 @@ export default class PlaylistScreen extends React.Component {
     render() {
         return (
             <View>
+                <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>PLAYLIST SCREEN</Text>
                 <Text>Playlist Screen</Text>
                 <Button
                     onPress={this.goToGuests}

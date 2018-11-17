@@ -5,6 +5,7 @@ export default class ListsScreen extends React.Component {
     render() {
         return (
             <View>
+                <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>LISTS SCREEN</Text>
                 <Text>Lists Screen</Text>
                 <Text>Lists Screen</Text>
                 <Text>Lists Screen</Text>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StyleSheet, Text, View, Button, TextInput, Alert, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, Alert, Image, TouchableOpacity } from 'react-native';
 import { underline } from 'ansi-colors';
 import ProfileScreen from './ProfileScreen';
 import MainTabNavigator from '../navigation/MainTabNavigator'
@@ -68,58 +68,96 @@ export default class HomeScreen extends React.Component {
 
     render() {
         return (
-            <View>
-                <Text style={{ textAlign: "center", margin: 20, textDecorationLine: 'underline' }}>HOME SCREEN</Text>
-                <Button
-                    onPress={this.onPressLoginH}
-                    title="Host Login"
-                    color="#841584"
-                    accessibilityLabel="Host Login"
-                />
+            <View style={{ display: "flex", alignItems: "center" }}>
+                <Image source={require('../assets/dancehostwhite.png')} style={styles.image} />
+                <TouchableOpacity style={styles.textButton}>
+                    <Text
+                        onPress={this.onPressLoginH}
+                        title="Host Login"
+                        style={styles.text}
+                        accessibilityLabel="Host Login"
+                    >Host Login
+                    </Text>
+                </TouchableOpacity>
                 <TextInput
-                    style={{ display: this.state.loginH ? 'flex' : 'none' }}
+                    style={{ display: this.state.loginH ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
                     placeholder='username'
                 />
                 <TextInput
-                    style={{ display: this.state.loginH ? 'flex' : 'none' }}
+                    style={{ display: this.state.loginH ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
                     placeholder='password'
                 />
-                <Button
-                    onPress={this.onPressLoginG}
-                    title="Guest Login"
-                    color="#841584"
-                    accessibilityLabel="Guest Login"
-                />
+                <TouchableOpacity style={styles.textButton}>
+                    <Text
+                        onPress={this.onPressLoginG}
+                        title="Host Login"
+                        style={styles.text}
+                        accessibilityLabel="Guest Login"
+                    >Guest Login
+                    </Text>
+                </TouchableOpacity>
                 <TextInput
-                    style={{ display: this.state.loginG ? 'flex' : 'none' }}
+                    style={{ display: this.state.loginG ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
                     placeholder='username'
                 />
                 <TextInput
-                    style={{ display: this.state.loginG ? 'flex' : 'none' }}
+                    style={{ display: this.state.loginG ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
                     placeholder='password'
                 />
-                <Button
-                    onPress={this.logInFB.bind(this)}
-                    style={{ width: 50, height: 50, backgroundColor: 'powderblue' }}
-                    title="Connect With Facebook"
-                    color="#841584"
-                    accessibilityLabel="Connect With Facebook"
-                />
+                <TouchableOpacity style={styles.textButton}>
+                    <Text
+                        onPress={this.logInFB.bind(this)}
+                        title="Connect With Facebook"
+                        style={styles.text}
+                        accessibilityLabel="Connect With Facebook"
+                    >Facebook Login
+                    </Text>
+                </TouchableOpacity>
                 {/* <Button
                     onPress={this.goToProfile}
                     style={{ width: 50, height: 50, backgroundColor: 'darkblue' }}
                     title="Profile"
-                    color="#841584"
+                    color="white"
                     accessibilityLabel="Profile"
                 /> */}
-                <Button
-                    onPress={this.props.logIn}
-                    style={{ width: 50, height: 50, backgroundColor: 'darkblue' }}
-                    title="Log In"
-                    color="#841584"
-                    accessibilityLabel="Log In"
-                />
-            </View>
+                <TouchableOpacity style={styles.textButton}>
+                    <Text
+                        onPress={this.props.logIn}
+                        title="Log In"
+                        style={styles.text}
+                        accessibilityLabel="Log In"
+                    >Log In
+                    </Text>
+                </TouchableOpacity>
+            </View >
         );
     }
 }
+
+const styles = StyleSheet.create({
+    image: {
+        marginTop: 60,
+        width: 170,
+        height: 220,
+        overlayColor: "white",
+        margin: 3
+    },
+    textButton: {
+        backgroundColor: '#4d5a63',
+        opacity: 200,
+        width: 200,
+        height: 40,
+        borderWidth: 1,
+        textAlignVertical: "center",
+        borderRadius: 50,
+        borderWidth: 1,
+        borderColor: 'white',
+        margin: 2
+    },
+    text: {
+        color: 'white',
+        textAlign: 'center',
+        padding: 5,
+        fontSize: 20
+    }
+})

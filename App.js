@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, NavigatorIOS } from 'react-native';
+import { View, NavigatorIOS, StyleSheet, ImageBackground } from 'react-native';
 import HomeScreen from './screens/HomeScreen'
 import MainTabNavigator from './navigation/MainTabNavigator'
 import ProfileScreen from './screens/ProfileScreen';
@@ -32,8 +32,18 @@ export default class App extends React.Component {
       <View style={{ flex: 1 }}>
         {this.state.loggedIn ?
           <MainTabNavigator />
-          : <HomeScreen logIn={this.logIn} />}
+          :
+          <ImageBackground source={require('./assets/bckgd.jpg')} style={{ width: '100%', height: '120%' }}>
+            <HomeScreen style={{ flex: 1 }} logIn={this.logIn} />
+          </ImageBackground>}
       </View>
     )
   }
 }
+
+let styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch'
+  }
+})
