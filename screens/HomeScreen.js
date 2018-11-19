@@ -2,8 +2,8 @@ import React from 'react';
 
 import { StyleSheet, Text, View, Button, TextInput, Alert, Image, TouchableOpacity } from 'react-native';
 import { underline } from 'ansi-colors';
-import ProfileScreen from './ProfileScreen';
-import MainTabNavigator from '../navigation/MainTabNavigator'
+import ProfileScreen from './HostScreens/ProfileScreen';
+import HostTabNavigator from '../navigation/HostTabNavigator'
 
 export default class HomeScreen extends React.Component {
     constructor(props) {

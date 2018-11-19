@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, NavigatorIOS, StyleSheet, ImageBackground } from 'react-native';
 import HomeScreen from './screens/HomeScreen'
-import MainTabNavigator from './navigation/MainTabNavigator'
-import ProfileScreen from './screens/ProfileScreen';
+import HostTabNavigator from './navigation/HostTabNavigator'
+import ProfileScreen from './screens/HostScreens/ProfileScreen';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ export default class App extends React.Component {
         /> */
       <View style={{ flex: 1 }}>
         {this.state.loggedIn ?
-          <MainTabNavigator />
+          <HostTabNavigator />
           :
           <ImageBackground source={require('./assets/bckgd.jpg')} style={{ width: '100%', height: '120%' }}>
             <HomeScreen style={{ flex: 1 }} logIn={this.logIn} />
