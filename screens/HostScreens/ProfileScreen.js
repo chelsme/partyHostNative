@@ -17,6 +17,7 @@ export default class ProfileScreen extends React.Component {
 
 
     render() {
+        // console.log(this.props)
         return (
             <View>
                 <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>PROFILE SCREEN</Text>

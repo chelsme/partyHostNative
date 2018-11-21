@@ -1,40 +1,37 @@
 import React from 'react';
 
 import { StyleSheet, Text, View, Button, TextInput, Alert, Image, TouchableOpacity } from 'react-native';
-import { underline } from 'ansi-colors';
 import ProfileScreen from './HostScreens/ProfileScreen';
-import HostTabNavigator from '../navigation/HostTabNavigator'
 
 export default class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
-        console.log("props", typeof props);
         this.state = {
-            loginH: false,
-            loginG: false,
+            // loginH: false,
+            // loginG: false,
             userInfo: false,
-            loggedIn: this.props.loggedIn
+            loggedIn: this.props.loggedIn,
+            userInfo: null
         }
     }
 
-    onPressLoginH = () => {
-        console.log('log in')
-        this.setState((state, props) => {
-            return { loginH: !state.loginH };
-        });
-        this.state.loginG ? this.setState({ loginG: false }) : null
-    }
+    // onPressLoginH = () => {
+    //     console.log('log in')
+    //     this.setState((state, props) => {
+    //         return { loginH: !state.loginH };
+    //     });
+    //     this.state.loginG ? this.setState({ loginG: false }) : null
+    // }
 
-    onPressLoginG = () => {
-        console.log('log in')
-        this.setState((state, props) => {
-            return { loginG: !state.loginG };
-        });
-        this.state.loginH ? this.setState({ loginH: false }) : null
-    }
+    // onPressLoginG = () => {
+    //     console.log('log in')
+    //     this.setState((state, props) => {
+    //         return { loginG: !state.loginG };
+    //     });
+    //     this.state.loginH ? this.setState({ loginH: false }) : null
+    // }
 
     goToProfile = () => {
-        console.log("i'm a new page")
         this.props.navigator.push({
             title: 'profileScreen',
             component: ProfileScreen,
@@ -56,11 +53,23 @@ export default class HomeScreen extends React.Component {
             if (type === 'success') {
                 // Get the user's name using Facebook's Graph API
                 const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-
-                Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+                let userName = (await response.json()).name
+                fetch('http://localhost:3000/guests', {
+                    method: 'POST', // or 'PUT'
+                    body: JSON.stringify({ name: userName }), // data can be `string` or {object}!
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(resp => resp.json()).then(data => {
+                    this.setState({
+                        userInfo: data
+                    })
+                    Alert.alert('Logged in!', `Hi ${userName}!`)
+                })
             } else {
                 // type === 'cancel'
             }
+            this.logIn()
         } catch ({ message }) {
             alert(`Facebook Login Error: ${message}`);
         }
@@ -72,40 +81,6 @@ export default class HomeScreen extends React.Component {
                 <Image source={require('../assets/dancehostwhite.png')} style={styles.image} />
                 <TouchableOpacity style={styles.textButton}>
                     <Text
-                        onPress={this.onPressLoginH}
-                        title="Host Login"
-                        style={styles.text}
-                        accessibilityLabel="Host Login"
-                    >Host Login
-                    </Text>
-                </TouchableOpacity>
-                <TextInput
-                    style={{ display: this.state.loginH ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='username'
-                />
-                <TextInput
-                    style={{ display: this.state.loginH ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='password'
-                />
-                <TouchableOpacity style={styles.textButton}>
-                    <Text
-                        onPress={this.onPressLoginG}
-                        title="Host Login"
-                        style={styles.text}
-                        accessibilityLabel="Guest Login"
-                    >Guest Login
-                    </Text>
-                </TouchableOpacity>
-                <TextInput
-                    style={{ display: this.state.loginG ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='username'
-                />
-                <TextInput
-                    style={{ display: this.state.loginG ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='password'
-                />
-                <TouchableOpacity style={styles.textButton}>
-                    <Text
                         onPress={this.logInFB.bind(this)}
                         title="Connect With Facebook"
                         style={styles.text}
@@ -113,23 +88,50 @@ export default class HomeScreen extends React.Component {
                     >Facebook Login
                     </Text>
                 </TouchableOpacity>
-                {/* <Button
-                    onPress={this.goToProfile}
-                    style={{ width: 50, height: 50, backgroundColor: 'darkblue' }}
-                    title="Profile"
-                    color="white"
-                    accessibilityLabel="Profile"
-                /> */}
-                <TouchableOpacity style={styles.textButton}>
-                    <Text
-                        onPress={this.props.logIn}
-                        title="Log In"
-                        style={styles.text}
-                        accessibilityLabel="Log In"
-                    >Log In
-                    </Text>
-                </TouchableOpacity>
             </View >
+
+            /* <TouchableOpacity style={styles.textButton}>
+                <Text
+                    onPress={this.onPressLoginH}
+                    title="Host Login"
+                    style={styles.text}
+                    accessibilityLabel="Host Login"
+                >Host Login
+                </Text>
+            </TouchableOpacity>
+            <TextInput
+                style={{ display: this.state.loginH ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                placeholder='username'
+            />
+            <TextInput
+                style={{ display: this.state.loginH ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                placeholder='password'
+            />
+            <TouchableOpacity style={styles.textButton}>
+                <Text
+                    onPress={this.onPressLoginG}
+                    title="Host Login"
+                    style={styles.text}
+                    accessibilityLabel="Guest Login"
+                >Guest Login
+                </Text>
+            </TouchableOpacity>
+            <TextInput
+                style={{ display: this.state.loginG ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                placeholder='username'
+            />
+            <TextInput
+                style={{ display: this.state.loginG ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                placeholder='password'
+            /> */
+            /* <Button
+                onPress={this.goToProfile}
+                style={{ width: 50, height: 50, backgroundColor: 'darkblue' }}
+                title="Profile"
+                color="white"
+                accessibilityLabel="Profile"
+            /> */
+            /* </View > */
         );
     }
 }
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        margin: 2
+        margin: 50
     },
     text: {
         color: 'white',

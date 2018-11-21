@@ -6,58 +6,68 @@ import GuestsScreen from './HostScreens/GuestsScreen';
 export default class PartyListScreen extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            host_id: this.props.userID,
+            allParties: null,
+            hostingParties: null,
+            attendingParties: null,
+            selectedParty: null
+        }
     }
 
-    logout = () => {
-        this.props.navigator.popToTop();
+    componentDidMount() {
+        fetch('http://localhost:3000/parties')
+            .then(resp => resp.json())
+            .then(data => {
+                let hostingParties = data.filter((party) => {
+                    return party.host_id === this.props.userID
+                })
+                let attendingParties = data.filter((party) => {
+                    party.guests.filter((guest) => {
+                        return guest.id === this.props.userID
+                    })
+                    return party.host_id !== this.props.userID
+                })
+                this.setState({
+                    allParties: data,
+                    hostingParties: hostingParties,
+                    attendingParties: attendingParties
+                })
+            })
     }
 
-    goToGuests = () => {
-        this.props.navigator.push({
-            title: 'Guests',
-            component: GuestsScreen,
-        });
-    }
-
-    changeTabs = () => {
-        this.props.changeTabs('profile')
+    changeTabs = (party) => {
+        let partyID = party.id
+        this.props.changeTabs('profile', partyID)
     }
 
     render() {
         return (
             <View style={{ display: "flex", alignItems: "center" }}>
                 <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>PARTY LIST SCREEN</Text>
+                <Text>{this.props.user}</Text>
                 <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Hosting</Text>
-                <TouchableOpacity onPress={this.changeTabs} style={styles.textButton}>
-                    <Text
-                        title="party placeholder"
-                        style={styles.text}
-                        accessibilityLabel="party placeholder"
-                    >This is a placeholder for a party
-                    </Text>
-                </TouchableOpacity>
+                {this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
+                    return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.textButton}>
+                        <Text
+                            title={party.name}
+                            style={styles.text}
+                            accessibilityLabel={party.name}
+                        >{party.name}
+                        </Text>
+                    </TouchableOpacity>
+                }) : null}
                 <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Invited To</Text>
-                <TouchableOpacity onPress={this.changeTabs} style={styles.textButton}>
-                    <Text
-                        title="party placeholder"
-                        style={styles.text}
-                        accessibilityLabel="party placeholder"
-                    >This also is a placeholder
-                    </Text>
-                </TouchableOpacity>
-
-                <Button
-                    onPress={this.goToGuests}
-                    title="Go To Guests"
-                    color="#841584"
-                    accessibilityLabel="Go To Guests"
-                />
-                <Button
-                    onPress={this.logout}
-                    title="Logout"
-                    color="#841584"
-                    accessibilityLabel="Logout"
-                />
+                {this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
+                    return <TouchableOpacity key={index} onPress={this.changeTabs} style={styles.textButton}>
+                        <Text
+                            title={party.name}
+                            style={styles.text}
+                            accessibilityLabel={party.name}
+                        >{party.name}
+                        </Text>
+                    </TouchableOpacity>
+                }) : null}
             </View>
         );
     }
@@ -75,5 +85,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'white',
         margin: 2
+    },
+    text: {
+        color: 'white',
+        textAlign: 'center',
+        padding: 5,
+        fontSize: 20
     }
 })

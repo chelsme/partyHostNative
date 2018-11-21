@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     StyleSheet, Text, View, Button, TextInput, Alert,
-    Image, TabBarIOS, TabBarItem, NavigatorIOS
+    Image, TabBarIOS, TabBarItem, NavigatorIOS, TouchableOpacity
 } from 'react-native';
 
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
@@ -29,18 +29,24 @@ export default class HostTabNavigator extends React.Component {
         super(props)
 
         this.state = {
-            selectedTab: 'partyList'
+            selectedTab: 'partyList',
+            selectedParty: null
         }
     }
 
-    changeTabs = (tabId) => {
+    changeTabs = (tabId, partyID) => {
         this.setState({
-            selectedTab: tabId
+            selectedTab: tabId,
+            selectedParty: partyID
         })
     }
 
+    logOut = () => {
+        this.props.logOut()
+    }
+
     render() {
-        const partyList = <PartyListScreen changeTabs={this.changeTabs} />
+        const partyList = <PartyListScreen changeTabs={this.changeTabs} userID={this.props.userID} />
         return (
             this.state.selectedTab === 'partyList' ?
                 partyList
@@ -49,19 +55,18 @@ export default class HostTabNavigator extends React.Component {
                         title="Guests"
                         selected={this.state.selectedTab === 'guests'}
                         icon={require('../assets/crowd.png')}
-                        onPress={() => this.changeTabs('guests')}>
+                        onPress={() => this.changeTabs('guests', this.state.selectedParty)}>
                         <View>
-                            <GuestsScreen />
-                            <Ionicons name="md-checkmark-circle" size={32} color="green" />
+                            <GuestsScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} />
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
                         title="Lists"
                         selected={this.state.selectedTab === 'lists'}
                         icon={require('../assets/lists.png')}
-                        onPress={() => this.changeTabs('lists')}>
+                        onPress={() => this.changeTabs('lists', this.state.selectedParty)}>
                         <View>
-                            <ListsScreen />
+                            <ListsScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} />
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
@@ -70,38 +75,62 @@ export default class HostTabNavigator extends React.Component {
                         icon={require('../assets/partyhost.png')}
                         onPress={() => {
                             if (this.state.selectedTab === 'profile') {
-                                this.changeTabs('partyList')
+                                this.changeTabs('partyList', this.state.selectedParty)
                                 return partyList
-                            } else { this.changeTabs('profile') }
+                            } else { this.changeTabs('profile', this.state.selectedParty) }
                         }}>
                         <View>
-                            <ProfileScreen />
+                            <ProfileScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} />
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
                         title="Playlist"
                         selected={this.state.selectedTab === 'playlist'}
                         icon={require('../assets/music.png')}
-                        onPress={() => this.changeTabs('playlist')}>
+                        onPress={() => this.changeTabs('playlist', this.state.selectedParty)}>
                         <View>
-                            <PlaylistScreen />
+                            <PlaylistScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} />
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
                         title="more"
                         selected={this.state.selectedTab === 'more'}
                         systemIcon='more'
-                        onPress={() => this.changeTabs('more')}>
-                        <View>
-                            <Text>More</Text>
-                            <Text>More</Text>
-                            <Text>More</Text>
-                            <Text>More</Text>
-                            <Text>More</Text>
-                            <Text>More</Text>
+                        onPress={() => this.changeTabs('more', this.state.selectedParty)}>
+                        <View style={{ display: "flex", alignItems: "center", margin: 30 }}>
+                            <TouchableOpacity style={styles.textButton}>
+                                <Text
+                                    onPress={this.logOut}
+                                    title="Logout"
+                                    style={styles.text}
+                                    accessibilityLabel="Logout"
+                                >Logout
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </TabBarIOS.Item>
                 </TabBarIOS>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    textButton: {
+        backgroundColor: '#4d5a63',
+        opacity: 200,
+        width: 200,
+        height: 40,
+        borderWidth: 1,
+        textAlignVertical: "center",
+        borderRadius: 50,
+        borderWidth: 1,
+        borderColor: 'white',
+        margin: 2
+    },
+    text: {
+        color: 'white',
+        textAlign: 'center',
+        padding: 5,
+        fontSize: 20
+    }
+})
