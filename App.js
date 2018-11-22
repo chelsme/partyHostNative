@@ -64,6 +64,14 @@ export default class App extends React.Component {
 		})
 	}
 
+	logInAmanda = () => {
+		this.setState({
+			loggedIn: true,
+			name: "Amanda Spence",
+			userID: 2
+		})
+	}
+
 	// setUser = (name) => {
 	//   this.setState({
 	//     user: name
@@ -86,6 +94,15 @@ export default class App extends React.Component {
 									style={styles.text}
 									accessibilityLabel="Connect With Facebook"
 								>Facebook Login
+                    			</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={styles.textButton}>
+								<Text
+									onPress={this.logInAmanda}
+									title="Log In Test"
+									style={styles.text}
+									accessibilityLabel="Log In Test"
+								>Log In Test
                     			</Text>
 							</TouchableOpacity>
 						</View >

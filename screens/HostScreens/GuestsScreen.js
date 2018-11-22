@@ -31,16 +31,19 @@ export default class GuestsScreen extends React.Component {
         return (
             <View style={{ display: "flex", alignItems: "center" }} >
                 <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>GUESTS SCREEN</Text>
-                <Text style={{ textDecorationLine: 'underline' }}>Party Guests</Text>
+                <Text style={{ textDecorationLine: 'underline' }}>Invited Guests</Text>
                 {this.state.party ? this.state.party.guests.map((guest, index) => {
-                    return <TouchableOpacity key={index} style={styles.textButton}>
-                        <Text
-                            title={guest.name}
-                            style={styles.text}
-                            accessibilityLabel={guest.name}
-                        >{guest.name}
-                        </Text>
-                    </TouchableOpacity>
+                    if (guest.id !== this.props.userID) {
+                        return <TouchableOpacity key={index} style={styles.textButton}>
+                            <Text
+                                title={guest.name}
+                                style={styles.text}
+                                accessibilityLabel={guest.name}
+                            >{guest.name}
+                            </Text>
+                        </TouchableOpacity>
+                    }
+                    else { return null }
                 }) : null}
 
                 {/* {this.props.selectedParty.guests.map((guest) => {

@@ -59,7 +59,7 @@ export default class PartyListScreen extends React.Component {
                 }) : null}
                 <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Invited To</Text>
                 {this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
-                    return <TouchableOpacity key={index} onPress={this.changeTabs} style={styles.textButton}>
+                    return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.textButton}>
                         <Text
                             title={party.name}
                             style={styles.text}

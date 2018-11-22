@@ -14,7 +14,6 @@ export default class ListsScreen extends React.Component {
         fetch('http://localhost:3000/tasks')
             .then(resp => resp.json())
             .then(data => {
-                console.log(data[0].name)
                 let partyTasks = data.filter((task) => {
                     return task.party_id === this.props.selectedParty
                 })
