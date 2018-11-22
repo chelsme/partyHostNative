@@ -43,10 +43,10 @@ export default class App extends React.Component {
 					})
 					Alert.alert('Logged in!', `Hi ${userName}!`)
 				})
+				this.logIn()
 			} else {
 				// type === 'cancel'
 			}
-			this.logIn()
 		} catch ({ message }) {
 			alert(`Facebook Login Error: ${message}`);
 		}

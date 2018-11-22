@@ -70,7 +70,7 @@ export default class HostTabNavigator extends React.Component {
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
-                        title="Profile"
+                        title="Party"
                         selected={this.state.selectedTab === 'profile'}
                         icon={require('../assets/partyhost.png')}
                         onPress={() => {
