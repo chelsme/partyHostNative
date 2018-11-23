@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
 import GuestsScreen from './GuestsScreen';
+import { FlatList, ListItem } from 'react-native-gesture-handler';
 
 export default class PlaylistScreen extends React.Component {
     constructor(props) {
@@ -11,10 +12,16 @@ export default class PlaylistScreen extends React.Component {
             addSongShow: false,
             addSongTitle: null,
             addSongArtist: null,
+            refreshing: false,
+            seed: 1
         }
     }
 
     componentDidMount() {
+        this.makeRemoteRequest()
+    }
+
+    makeRemoteRequest = () => {
         fetch('http://localhost:3000/songs')
             .then(resp => resp.json())
             .then(data => {
@@ -25,7 +32,7 @@ export default class PlaylistScreen extends React.Component {
                     allSongs: data,
                     partyPlaylist: partyPlaylist,
                     song: '',
-                    artist: ''
+                    artist: '',
                 })
             })
     }
@@ -74,9 +81,7 @@ export default class PlaylistScreen extends React.Component {
                     }
                 })
                     .then(resp => resp.json())
-                    .then(data => {
-                        Alert.alert(`${this.state.song} by ${this.state.artist} added to party ${this.props.selectedParty}.`)
-                    })
+                    .then(this.makeRemoteRequest())
                 :
                 null
         }
@@ -109,16 +114,13 @@ export default class PlaylistScreen extends React.Component {
                     placeholder='Song Title'
                     onChangeText={this.handleChangeTextSong}
                     value={this.state.song}
-                // onEndEditing={this.setState({ addSongTitle: value })}
                 />
                 <TextInput
                     style={{ display: this.state.addSongShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
                     placeholder='Artist'
                     onChangeText={this.handleChangeTextArtist}
                     value={this.state.artist}
-                // onEndEditing={this.setState({ addSongArtist: value })}
                 />
-                <Text>You added: {this.state.song} - {this.state.artist}</Text>
                 <TouchableOpacity style={{ display: this.state.addSongShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
                     onPress={this.handleSubmitSong}>
                     <Text
@@ -128,28 +130,43 @@ export default class PlaylistScreen extends React.Component {
                     >Submit Song
                     </Text>
                 </TouchableOpacity>
-                <Text style={{ textDecorationLine: 'underline' }}>Party Playlist</Text>
-                {this.state.partyPlaylist ? this.state.partyPlaylist.map((song, index) => {
-                    return <Text key={index}
-                        title={song.name}
-                        style={styles.song}
-                        accessibilityLabel={song.name}
-                    >{song.name} - {song.artist}
-                    </Text>
-                }) : null}
+                <Text style={{ textDecorationLine: 'underline', padding: 5 }}>Party Playlist</Text>
 
-                {/* <Button
-                    onPress={this.goToGuests}
-                    title="Go To Guests"
-                    color="#841584"
-                    accessibilityLabel="Go To Guests"
-                />
-                <Button
-                    onPress={this.logout}
-                    title="Logout"
-                    color="#841584"
-                    accessibilityLabel="Logout"
-                /> */}
+                <ScrollView
+                    style={{ padding: 0, height: 400 }}
+                >
+                    {
+                        this.state.partyPlaylist ? this.state.partyPlaylist.map((song, index) => {
+                            return <Text key={index}
+                                title={song.name}
+                                style={{
+                                    color: 'white',
+                                    padding: 10,
+                                    fontSize: 16,
+                                    width: 300,
+                                    backgroundColor: index % 2 == 0 ? 'lightgrey' : 'grey',
+                                }}
+                                accessibilityLabel={song.name}
+                            >{song.name} - {song.artist}
+                            </Text>
+                        }) : null
+                    }
+                </ScrollView>
+
+                {/* {this.state.partyPlaylist ?
+                    <FlatList
+                        keyExtractor={(item, index) => index.toString()}
+                        data={this.state.partyPlaylist}
+                        scrollsToTop={false}
+                        renderItem={({ item, index }) => (
+                            <View key={index} style={{
+                                backgroundColor: index % 2 == 0 ? 'lightgrey' : 'grey'
+                            }}>
+                                <Text key={index} style={styles.flatListItem}>{item.name} by {item.artist}</Text>
+                            </View>
+                        )}
+                    />
+                    : null} */}
             </View>
         );
     }
@@ -179,5 +196,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 5,
         fontSize: 20
+    },
+    flatListItem: {
+        color: 'white',
+        padding: 10,
+        fontSize: 16,
+        width: 300
     }
 })

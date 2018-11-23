@@ -30,7 +30,7 @@ export default class ListsScreen extends React.Component {
                 <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>LISTS SCREEN</Text>
                 <Text style={{ textDecorationLine: 'underline' }}>Party Playlist</Text>
                 {this.state.partyTasks ? this.state.partyTasks.map((task, index) => {
-                    console.log(task.guest.name)
+                    // console.log(task.guest.name)
                     return <TouchableOpacity key={index} style={styles.textButton}>
                         <Text
                             title={task.task}
