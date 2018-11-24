@@ -93,6 +93,7 @@ export default class PlaylistScreen extends React.Component {
     }
 
     render() {
+        { console.log(this.props.selectedParty) }
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }} key={this.state.key}>
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>PLAYLIST</Text>
