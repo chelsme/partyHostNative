@@ -4,36 +4,50 @@ import GuestsScreen from './GuestsScreen';
 
 
 export default class ProfileScreen extends React.Component {
-    logout = () => {
-        this.props.navigator.popToTop();
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            party: null
+        }
     }
 
-    goToGuests = () => {
-        this.props.navigator.push({
-            title: 'Guests',
-            component: GuestsScreen,
-        });
+    componentDidMount() {
+        fetch('http://localhost:3000/parties')
+            .then(resp => resp.json())
+            .then(data => {
+                let setParty = data.find((party) => {
+                    return party.id === this.props.selectedParty
+                })
+                this.setState({
+                    party: setParty
+                })
+            })
     }
+
+    // logout = () => {
+    //     this.props.navigator.popToTop();
+    // }
+
+    // goToGuests = () => {
+    //     this.props.navigator.push({
+    //         title: 'Guests',
+    //         component: GuestsScreen,
+    //     });
+    // }
 
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center" }}>
-                <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>PROFILE SCREEN</Text>
-                <Text>Profile Screen</Text>
-
-                <Button
-                    onPress={this.goToGuests}
-                    title="Go To Guests"
-                    color="#841584"
-                    accessibilityLabel="Go To Guests"
-                />
-                <Button
-                    onPress={this.logout}
-                    title="Logout"
-                    color="#841584"
-                    accessibilityLabel="Logout"
-                />
+            <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
+                {this.state.party ?
+                    <View>
+                        <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>{this.state.party.name}</Text>
+                        <Text style={{ textAlign: "center", margin: 20, fontSize: 20 }}>Guests Invited: {this.state.party.guests.length - 1}</Text>
+                        <Text style={{ textAlign: "center", margin: 20, fontSize: 20 }}>Songs on Playlist: {this.state.party.songs.length}</Text>
+                        <Text style={{ textAlign: "center", margin: 20, fontSize: 20 }}>Tasks Assigned: {this.state.party.tasks.length}</Text>
+                    </View>
+                    : null}
             </View>
         );
     }

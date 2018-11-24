@@ -38,14 +38,14 @@ export default class PartyListScreen extends React.Component {
 
     changeTabs = (party) => {
         let partyID = party.id
-        this.props.changeTabs('profile', partyID)
+        let partyName = party.name
+        this.props.changeTabs('profile', partyID, partyName)
     }
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center" }}>
-                <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>PARTY LIST SCREEN</Text>
-                <Text>{this.props.user}</Text>
+            <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
+                <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>PARTIES</Text>
                 <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Hosting</Text>
                 {this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
                     return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.textButton}>

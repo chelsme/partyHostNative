@@ -29,8 +29,8 @@ export default class GuestsScreen extends React.Component {
     render() {
         // console.log(this.props)
         return (
-            <View style={{ display: "flex", alignItems: "center" }} >
-                <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>GUESTS SCREEN</Text>
+            <View style={{ display: "flex", alignItems: "center", margin: 20 }} >
+                <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>
                 <Text style={{ textDecorationLine: 'underline' }}>Invited Guests</Text>
                 {this.state.party ? this.state.party.guests.map((guest, index) => {
                     if (guest.id !== this.props.userID) {

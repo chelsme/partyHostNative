@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
+import { Icon } from 'react-native-elements'
 import GuestsScreen from './GuestsScreen';
-import { FlatList, ListItem } from 'react-native-gesture-handler';
 
 export default class PlaylistScreen extends React.Component {
     constructor(props) {
@@ -13,7 +13,6 @@ export default class PlaylistScreen extends React.Component {
             addSongTitle: null,
             addSongArtist: null,
             refreshing: false,
-            seed: 1
         }
     }
 
@@ -81,7 +80,7 @@ export default class PlaylistScreen extends React.Component {
                     }
                 })
                     .then(resp => resp.json())
-                    .then(this.makeRemoteRequest())
+                    .then(alert(`${this.state.song} by ${this.state.artist} added to playlist.`))
                 :
                 null
         }
@@ -90,12 +89,13 @@ export default class PlaylistScreen extends React.Component {
             song: '',
             artist: '',
         })
+        setTimeout(() => this.makeRemoteRequest(), 200)
     }
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center" }} key={this.state.key}>
-                <Text style={{ textAlign: "center", margin: 30, textDecorationLine: 'underline' }}>PLAYLIST SCREEN</Text>
+            <View style={{ display: "flex", alignItems: "center", margin: 20 }} key={this.state.key}>
+                <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>PLAYLIST</Text>
 
                 {/* add song to playlist */}
                 <TouchableOpacity style={styles.textButton}>
@@ -144,10 +144,10 @@ export default class PlaylistScreen extends React.Component {
                                     padding: 10,
                                     fontSize: 16,
                                     width: 300,
-                                    backgroundColor: index % 2 == 0 ? 'lightgrey' : 'grey',
+                                    backgroundColor: index % 2 == 0 ? '#666666' : 'grey',
                                 }}
-                                accessibilityLabel={song.name}
-                            >{song.name} - {song.artist}
+                                accessibilityLabel={`${song.name} by ${song.artist}`}
+                            >&#127925;    {song.name} - {song.artist}
                             </Text>
                         }) : null
                     }
