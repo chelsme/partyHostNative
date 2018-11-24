@@ -82,7 +82,7 @@ export default class PlaylistScreen extends React.Component {
                     .then(resp => resp.json())
                     .then(alert(`${this.state.song} by ${this.state.artist} added to playlist.`))
                 :
-                null
+                alert('must fill out song details')
         }
         this.setState({
             addSongShow: false,
@@ -93,7 +93,6 @@ export default class PlaylistScreen extends React.Component {
     }
 
     render() {
-        { console.log(this.props.selectedParty) }
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }} key={this.state.key}>
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>PLAYLIST</Text>

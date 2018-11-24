@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
 import GuestsScreen from './HostScreens/GuestsScreen';
 
 
@@ -11,11 +11,20 @@ export default class PartyListScreen extends React.Component {
             allParties: null,
             hostingParties: null,
             attendingParties: null,
-            selectedParty: null
+            selectedParty: null,
+            addPartyShow: false,
+            newPartyName: '',
+            newPartyDate: '',
+            newPartyTime: '',
+            newPartyLocation: ''
         }
     }
 
     componentDidMount() {
+        this.makeRemoteRequest()
+    }
+
+    makeRemoteRequest() {
         fetch('http://localhost:3000/parties')
             .then(resp => resp.json())
             .then(data => {
@@ -36,6 +45,69 @@ export default class PartyListScreen extends React.Component {
             })
     }
 
+    // create new party
+    addParty = () => {
+        this.setState((state) => {
+            return { addPartyShow: !state.addPartyShow };
+        });
+    }
+
+    handleChangePartyName = (typedText) => {
+        this.setState({
+            newPartyName: typedText
+        })
+    }
+
+    handleChangePartyDate = (typedText) => {
+        this.setState({
+            newPartyDate: typedText
+        })
+    }
+
+    handleChangePartyTime = (typedText) => {
+        this.setState({
+            newPartyTime: typedText
+        })
+    }
+
+    handleChangePartyLocation = (typedText) => {
+        this.setState({
+            newPartyLocation: typedText
+        })
+    }
+
+    handleSubmitParty = () => {
+        {
+            this.state.newPartyName !== '' && this.state.newPartyDate !== '' && this.state.newPartyTime !== '' && this.state.newPartyLocation !== '' ?
+                fetch('http://localhost:3000/parties', {
+                    method: 'POST', // or 'PUT'
+                    body: JSON.stringify({
+                        name: this.state.newPartyName,
+                        date: this.state.newPartyDate,
+                        time: this.state.newPartyTime,
+                        location: this.state.newPartyLocation,
+                        host_id: this.props.userID
+                    }), // data can be `string` or {object}!
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(resp => resp.json())
+                    .then(alert(`New Party Created`))
+                :
+                alert('must fill out party details')
+        }
+        this.setState({
+            addPartyShow: false,
+            newPartyName: '',
+            newPartyDate: '',
+            newPartyTime: '',
+            newPartyLocation: ''
+        })
+        setTimeout(() => this.makeRemoteRequest(), 200)
+    }
+    // end create new party
+
     changeTabs = (party) => {
         let partyID = party.id
         let partyName = party.name
@@ -46,6 +118,55 @@ export default class PartyListScreen extends React.Component {
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>PARTIES</Text>
+
+                {/* create new party */}
+                <TouchableOpacity style={styles.textButton}>
+                    <Text
+                        onPress={this.addParty}
+                        title="Add Party"
+                        style={styles.text}
+                        accessibilityLabel="Add Party"
+                    >+
+                    </Text>
+                </TouchableOpacity>
+
+                {/* hidden input fields */}
+                <TextInput
+                    style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                    placeholder='Party Name'
+                    onChangeText={this.handleChangePartyName}
+                    value={this.state.Party}
+                />
+                <TextInput
+                    style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                    placeholder='Party Date'
+                    onChangeText={this.handleChangePartyDate}
+                    value={this.state.Party}
+                />
+                <TextInput
+                    style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                    placeholder='Party Time'
+                    onChangeText={this.handleChangePartyTime}
+                    value={this.state.Party}
+                />
+                <TextInput
+                    style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                    placeholder='Party Location'
+                    onChangeText={this.handleChangePartyLocation}
+                    value={this.state.Party}
+                />
+
+                <TouchableOpacity style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                    onPress={this.handleSubmitParty}>
+                    <Text
+                        title="Create New Party"
+                        style={styles.text}
+                        accessibilityLabel="Create New Party"
+                    >Create New Party
+                    </Text>
+                </TouchableOpacity>
+
+                {/* view parties */}
                 <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Hosting</Text>
                 {this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
                     return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.textButton}>
