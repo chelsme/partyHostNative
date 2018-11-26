@@ -12,7 +12,6 @@ export default class PlaylistScreen extends React.Component {
             addSongShow: false,
             addSongTitle: null,
             addSongArtist: null,
-            refreshing: false,
         }
     }
 
@@ -31,7 +30,7 @@ export default class PlaylistScreen extends React.Component {
                     allSongs: data,
                     partyPlaylist: partyPlaylist,
                     song: '',
-                    artist: '',
+                    artist: ''
                 })
             })
     }
@@ -87,7 +86,7 @@ export default class PlaylistScreen extends React.Component {
         this.setState({
             addSongShow: false,
             song: '',
-            artist: '',
+            artist: ''
         })
         setTimeout(() => this.makeRemoteRequest(), 200)
     }

@@ -16,7 +16,8 @@ export default class PartyListScreen extends React.Component {
             newPartyName: '',
             newPartyDate: '',
             newPartyTime: '',
-            newPartyLocation: ''
+            newPartyLocation: '',
+            guests: ''
         }
     }
 
@@ -43,6 +44,11 @@ export default class PartyListScreen extends React.Component {
                     attendingParties: attendingParties
                 })
             })
+    }
+
+
+    sendGuestList = (guests) => {
+        this.props.getGuestList(guests)
     }
 
     // create new party
@@ -112,6 +118,7 @@ export default class PartyListScreen extends React.Component {
         let partyID = party.id
         let partyName = party.name
         this.props.changeTabs('profile', partyID, partyName)
+        this.sendGuestList(party.guests)
     }
 
     render() {

@@ -1,16 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
 
 export default class GuestsScreen extends React.Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            party: null
+            party: null,
+            addGuestShow: false,
+            firstName: '',
+            lastName: '',
         }
     }
 
     componentDidMount() {
+        this.makeRemoteRequest()
+    }
+
+    makeRemoteRequest = () => {
         fetch('http://localhost:3000/parties')
             .then(resp => resp.json())
             .then(data => {
@@ -18,19 +25,102 @@ export default class GuestsScreen extends React.Component {
                     return party.id === this.props.selectedParty
                 })
                 this.setState({
-                    party: setParty
+                    party: setParty,
+                    guests: setParty.guests,
+                    firstName: '',
+                    lastName: ''
                 })
             })
     }
 
-    // logout = () => {
-    //     this.props.navigator.popToTop();
-    // }
+    addGuest = () => {
+        this.setState((state) => {
+            return { addGuestShow: !state.addGuestShow };
+        });
+    }
+
+    handleChangeFirstName = (typedText) => {
+        this.setState({
+            firstName: typedText
+        })
+    }
+
+    handleChangeLastName = (typedText) => {
+        this.setState({
+            lastName: typedText
+        })
+    }
+
+    handleSubmitGuest = () => {
+        {
+            this.state.firstName !== '' && this.state.lastName !== '' ?
+                fetch('http://localhost:3000/guests', {
+                    method: 'POST', // or 'PUT'
+                    body: JSON.stringify({
+                        name: `${this.state.firstName} ${this.state.lastName}`,
+                        party_id: this.props.selectedParty
+                    }), // data can be `string` or {object}!
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(resp => resp.json())
+                    .then(alert(`${this.state.firstName} ${this.state.lastName} has been invited to your party.`))
+                :
+                alert('must provide full name')
+        }
+        this.setState({
+            addGuestShow: false,
+            firstName: '',
+            lastName: '',
+        })
+        setTimeout(() => this.makeRemoteRequest(), 200)
+    }
+
     render() {
         // console.log(this.props)
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>
+
+
+
+                {/* add guest to guest list */}
+                <TouchableOpacity style={styles.textButton}>
+                    <Text
+                        onPress={this.addGuest}
+                        title="Add Guest"
+                        style={styles.text}
+                        accessibilityLabel="Add Guest"
+                    >Add Guest
+        </Text>
+                </TouchableOpacity>
+
+                {/* hidden input fields */}
+                <TextInput
+                    style={{ display: this.state.addGuestShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                    placeholder='First Name'
+                    onChangeText={this.handleChangeFirstName}
+                    value={this.state.firstName}
+                />
+                <TextInput
+                    style={{ display: this.state.addGuestShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                    placeholder='Last Name'
+                    onChangeText={this.handleChangeLastName}
+                    value={this.state.lastName}
+                />
+                <TouchableOpacity style={{ display: this.state.addGuestShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                    onPress={this.handleSubmitGuest}>
+                    <Text
+                        title="Invite Guest"
+                        style={styles.text}
+                        accessibilityLabel="Invite Guest"
+                    >Invite Guest
+        </Text>
+                </TouchableOpacity>
+
+
+
                 <Text style={{ textDecorationLine: 'underline' }}>Invited Guests</Text>
                 {this.state.party ? this.state.party.guests.map((guest, index) => {
                     if (guest.id !== this.props.userID) {

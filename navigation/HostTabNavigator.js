@@ -31,7 +31,8 @@ export default class HostTabNavigator extends React.Component {
         this.state = {
             selectedTab: 'partyList',
             selectedParty: null,
-            partyName: null
+            partyName: null,
+            guests: ''
         }
     }
 
@@ -43,12 +44,18 @@ export default class HostTabNavigator extends React.Component {
         })
     }
 
+    getGuestList = (guestList) => {
+        this.setState({
+            guests: guestList
+        })
+    }
+
     logOut = () => {
         this.props.logOut()
     }
 
     render() {
-        const partyList = <PartyListScreen changeTabs={this.changeTabs} userID={this.props.userID} />
+        const partyList = <PartyListScreen changeTabs={this.changeTabs} userID={this.props.userID} getGuestList={this.getGuestList} />
         return (
             this.state.selectedTab === 'partyList' ?
                 partyList
@@ -68,7 +75,7 @@ export default class HostTabNavigator extends React.Component {
                         icon={require('../assets/lists.png')}
                         onPress={() => this.changeTabs('lists', this.state.selectedParty, this.state.partyName)}>
                         <View>
-                            <ListsScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} />
+                            <ListsScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} guests={this.state.guests} />
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
