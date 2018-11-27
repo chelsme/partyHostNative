@@ -11,7 +11,7 @@ export default class PlaylistScreen extends React.Component {
             partyPlaylist: null,
             addSongShow: false,
             addSongTitle: null,
-            addSongArtist: null,
+            addSongArtist: null
         }
     }
 
@@ -92,6 +92,26 @@ export default class PlaylistScreen extends React.Component {
         setTimeout(() => this.makeRemoteRequest(), 200)
     }
 
+    pressSong = (song) => {
+        Alert.alert(
+            'Remove Song from Playlist',
+            `Would you like to remove or edit ${song.name} by ${song.artist}?`,
+            [
+                { text: 'Edit', onPress: () => alert('just delete it and write in a new one!') },
+                {
+                    text: 'Remove', onPress: () => {
+                        fetch(`http://localhost:3000/songs/${song.id}`, {
+                            method: 'DELETE', // or 'PUT'
+                        })
+                            .then(this.makeRemoteRequest())
+                            .then(alert(`${song.name} by ${song.artist} has been removed from the playlist`))
+                    }
+                },
+                { text: 'Cancel', onPress: () => alert('nothing changed'), style: 'cancel' }
+            ]
+        )
+    }
+
     render() {
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }} key={this.state.key}>
@@ -135,8 +155,10 @@ export default class PlaylistScreen extends React.Component {
                 <ScrollView style={{ padding: 0, height: 400 }} >
                     {
                         this.state.partyPlaylist ? this.state.partyPlaylist.map((song, index) => {
-                            return <Text key={index}
+                            return <Text
+                                key={index}
                                 title={song.name}
+                                onPress={() => this.pressSong(song)}
                                 style={{
                                     color: 'white',
                                     padding: 10,
@@ -150,21 +172,6 @@ export default class PlaylistScreen extends React.Component {
                         }) : null
                     }
                 </ScrollView>
-
-                {/* {this.state.partyPlaylist ?
-                    <FlatList
-                        keyExtractor={(item, index) => index.toString()}
-                        data={this.state.partyPlaylist}
-                        scrollsToTop={false}
-                        renderItem={({ item, index }) => (
-                            <View key={index} style={{
-                                backgroundColor: index % 2 == 0 ? 'lightgrey' : 'grey'
-                            }}>
-                                <Text key={index} style={styles.flatListItem}>{item.name} by {item.artist}</Text>
-                            </View>
-                        )}
-                    />
-                    : null} */}
             </View>
         );
     }
