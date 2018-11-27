@@ -132,9 +132,7 @@ export default class PlaylistScreen extends React.Component {
                 </TouchableOpacity>
                 <Text style={{ textDecorationLine: 'underline', padding: 5 }}>Party Playlist</Text>
 
-                <ScrollView
-                    style={{ padding: 0, height: 400 }}
-                >
+                <ScrollView style={{ padding: 0, height: 400 }} >
                     {
                         this.state.partyPlaylist ? this.state.partyPlaylist.map((song, index) => {
                             return <Text key={index}

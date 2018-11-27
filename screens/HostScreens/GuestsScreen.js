@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
 
 export default class GuestsScreen extends React.Component {
     constructor(props) {
@@ -78,8 +78,30 @@ export default class GuestsScreen extends React.Component {
         setTimeout(() => this.makeRemoteRequest(), 200)
     }
 
+    uninviteGuest = (guest) => {
+        let partyGuest = guest.party_guests.filter((x) => {
+            return x.party_id === this.props.selectedParty
+        })
+        Alert.alert(
+            'Uninvite',
+            `Would you like to remove ${guest.name} from your party guest list?`,
+            [
+                { text: 'NO', onPress: () => alert('phew!'), style: 'cancel' },
+                {
+                    text: 'YES', onPress: () => { this.uninviteFetch(partyGuest[0].id) }
+                },
+            ]
+        )
+    }
+
+    uninviteFetch = (id) => {
+        fetch(`http://localhost:3000/party_guests/${id}`, {
+            method: 'DELETE', // or 'PUT'
+        })
+            .then(this.makeRemoteRequest())
+    }
+
     render() {
-        console.log(this.props)
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>
@@ -117,7 +139,7 @@ export default class GuestsScreen extends React.Component {
                         style={styles.text}
                         accessibilityLabel="Invite Guest"
                     >Invite Guest
-        </Text>
+                </Text>
                 </TouchableOpacity>
 
 
@@ -125,7 +147,7 @@ export default class GuestsScreen extends React.Component {
                 <Text style={{ textDecorationLine: 'underline' }}>Invited Guests</Text>
                 {this.state.party ? this.state.party.guests.map((guest, index) => {
                     if (guest.id !== this.props.userID) {
-                        return <TouchableOpacity key={index} style={styles.textButton}>
+                        return <TouchableOpacity key={index} style={styles.textButton} onPress={() => { this.uninviteGuest(guest) }}>
                             <Text
                                 title={guest.name}
                                 style={styles.text}
