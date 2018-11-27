@@ -26,6 +26,7 @@ export default class PlaylistScreen extends React.Component {
                 let partyPlaylist = data.filter((song) => {
                     return song.party_id === this.props.selectedParty
                 })
+                this.props.setSongCount(partyPlaylist.length)
                 this.setState({
                     allSongs: data,
                     partyPlaylist: partyPlaylist,

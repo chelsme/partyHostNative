@@ -46,7 +46,6 @@ export default class PartyListScreen extends React.Component {
             })
     }
 
-
     sendGuestList = (guests) => {
         this.props.getGuestList(guests)
     }

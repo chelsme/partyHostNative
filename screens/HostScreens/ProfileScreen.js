@@ -45,9 +45,11 @@ export default class ProfileScreen extends React.Component {
                         <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>{this.state.party.name}</Text>
                         <Text style={{ textAlign: "center", margin: 20, fontSize: 25, textDecorationLine: 'underline' }}>{this.state.party.date} at {this.state.party.time}</Text>
                         <Text style={{ textAlign: "center", margin: 20, fontSize: 20 }}>Location: {this.state.party.location}</Text>
-                        <Text style={{ textAlign: "center", margin: 12, fontSize: 18 }}>Guests Invited: {this.state.party.guests.length <= 0 ? 0 : this.state.party.guests.length - 1}</Text>
-                        <Text style={{ textAlign: "center", margin: 12, fontSize: 18 }}>Songs on Playlist: {this.state.party.songs.length}</Text>
-                        <Text style={{ textAlign: "center", margin: 12, fontSize: 18 }}>Tasks Assigned: {this.state.party.tasks.length}</Text>
+                        <Text style={{ textAlign: "center", margin: 12, fontSize: 18 }}>Guests Invited:
+                        {this.props.guestCount ? this.props.guestCount : this.state.party.guests.length}</Text>
+                        <Text style={{ textAlign: "center", margin: 12, fontSize: 18 }}>Songs on Playlist:
+                        {this.props.songCount ? this.props.songCount : this.state.party.songs.length}</Text>
+                        <Text style={{ textAlign: "center", margin: 12, fontSize: 18 }}>Tasks Assigned: {this.props.taskCount ? this.props.taskCount : this.state.party.tasks.length}</Text>
                     </View>
                     : null}
             </View>

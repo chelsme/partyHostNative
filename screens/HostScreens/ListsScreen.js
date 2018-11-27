@@ -25,6 +25,7 @@ export default class ListsScreen extends React.Component {
                 let partyTasks = data.filter((task) => {
                     return task.party_id === this.props.selectedParty
                 })
+                this.props.setTaskCount(partyTasks.length)
                 this.setState({
                     alltasks: data,
                     partyTasks: partyTasks,
@@ -55,7 +56,7 @@ export default class ListsScreen extends React.Component {
 
     handleSubmitTask = () => {
         {
-            this.state.task !== '' && this.props.guests.find((guest) => { return guest.name === this.state.taskGuest }) ?
+            this.state.task !== '' && (this.props.guests.find((guest) => { return guest.name === this.state.taskGuest }) || this.state.taskGuest === '') ?
                 fetch('http://localhost:3000/tasks', {
                     method: 'POST', // or 'PUT'
                     body: JSON.stringify({

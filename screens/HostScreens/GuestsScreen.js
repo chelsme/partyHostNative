@@ -24,6 +24,7 @@ export default class GuestsScreen extends React.Component {
                 let setParty = data.find((party) => {
                     return party.id === this.props.selectedParty
                 })
+                this.props.getGuestList(setParty.guests)
                 this.setState({
                     party: setParty,
                     guests: setParty.guests,
@@ -78,7 +79,7 @@ export default class GuestsScreen extends React.Component {
     }
 
     render() {
-        // console.log(this.props)
+        console.log(this.props)
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>
