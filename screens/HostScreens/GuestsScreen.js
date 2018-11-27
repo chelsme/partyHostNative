@@ -102,6 +102,7 @@ export default class GuestsScreen extends React.Component {
     }
 
     render() {
+        console.log(this.state.guests)
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>

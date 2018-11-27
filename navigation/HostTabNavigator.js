@@ -32,8 +32,8 @@ export default class HostTabNavigator extends React.Component {
             selectedTab: 'partyList',
             selectedParty: null,
             partyName: null,
-            guests: '',
-            guestCount: null,
+            guests: [],
+            guestCount: 0,
             taskCount: null,
             songCount: null
         }
@@ -50,7 +50,7 @@ export default class HostTabNavigator extends React.Component {
     getGuestList = (guestList) => {
         this.setState({
             guests: guestList,
-            guestCount: guestList.length
+            // guestCount: guestList.length
         })
     }
 
@@ -64,6 +64,26 @@ export default class HostTabNavigator extends React.Component {
         this.setState({
             songCount: count
         })
+    }
+
+    cancelParty = (party) => {
+        Alert.alert(
+            'Cancel Party',
+            `Would you like to cancel ${this.state.partyName}?`,
+            [
+                { text: 'NO', onPress: () => alert('phew!'), style: 'cancel' },
+                {
+                    text: 'YES', onPress: () => {
+                        fetch(`http://localhost:3000/parties/${party}`, {
+                            method: 'DELETE', // or 'PUT'
+                        })
+                            .then(this.setState({
+                                selectedTab: 'partyList'
+                            }))
+                    }
+                },
+            ]
+        )
     }
 
     logOut = () => {
@@ -105,7 +125,7 @@ export default class HostTabNavigator extends React.Component {
                             } else { this.changeTabs('profile', this.state.selectedParty, this.state.partyName) }
                         }}>
                         <View>
-                            <ProfileScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} guestCount={this.state.guestCount} taskCount={this.state.taskCount} songCount={this.state.songCount} />
+                            <ProfileScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} guestCount={this.state.guestCount} taskCount={this.state.taskCount} songCount={this.state.songCount} guests={this.state.guests} />
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
@@ -124,6 +144,15 @@ export default class HostTabNavigator extends React.Component {
                         onPress={() => this.changeTabs('more', this.state.selectedParty, this.state.partyName)}>
                         <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
                             <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>MORE</Text>
+                            <TouchableOpacity style={styles.textButton}>
+                                <Text
+                                    onPress={() => this.cancelParty(this.state.selectedParty)}
+                                    title="Cancel Party"
+                                    style={styles.text}
+                                    accessibilityLabel="Cancel Party"
+                                >Cancel Party
+                                </Text>
+                            </TouchableOpacity>
                             <TouchableOpacity style={styles.textButton}>
                                 <Text
                                     onPress={this.logOut}

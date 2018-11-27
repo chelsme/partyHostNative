@@ -10,7 +10,7 @@ export default class ListsScreen extends React.Component {
             partyTasks: null,
             addTaskShow: false,
             task: '',
-            taskGuest: ''
+            taskGuest: '',
         }
     }
 
@@ -84,6 +84,7 @@ export default class ListsScreen extends React.Component {
     }
 
     render() {
+        let guestNames = this.props.guests.map((guest) => { return guest.name })
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>LISTS</Text>
@@ -141,11 +142,16 @@ export default class ListsScreen extends React.Component {
                                 accessibilityLabel={task.guest.name !== '' ? `${task.action} assigned to ${task.guest.name}` : `${task.action} is unassigned`}
                             >
                                 <Text>
-                                    {task.guest.name !== '' ? <Text>&#10003;  </Text> : <Text>&#9675;  </Text>}
+                                    {task.guest.name !== '' && guestNames.includes(task.guest.name)
+                                        ? <Text>&#10003;  </Text>
+                                        : <Text>&#9675;  </Text>
+                                    }
                                     <Text>{task.action}</Text>
-                                    {/* <Text>Assign/Reassign</Text> */}
                                 </Text>
-                                {task.guest.name !== '' ? <Text style={styles.subtext}>        {task.guest.name}</Text> : <Text style={styles.subtext}>        unassigned</Text>}
+                                {task.guest.name !== '' && guestNames.includes(task.guest.name)
+                                    ? <Text style={styles.subtext}>        {task.guest.name}</Text>
+                                    : <Text style={styles.subtext}>        unassigned</Text>
+                                }
 
                             </View>
                         }) : null

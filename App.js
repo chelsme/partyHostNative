@@ -67,8 +67,8 @@ export default class App extends React.Component {
 	logInAmanda = () => {
 		this.setState({
 			loggedIn: true,
-			name: "Amanda Spence",
-			userID: 2
+			name: "Lili Sprague",
+			userID: 15
 		})
 	}
 
