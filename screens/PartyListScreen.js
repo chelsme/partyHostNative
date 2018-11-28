@@ -139,7 +139,7 @@ export default class PartyListScreen extends React.Component {
             .then(resp => resp.json())
             .then(data => {
                 let partyGuests = data.guests.map((guest) => {
-                    return guest.name
+                    return guest
                 })
                 console.log(partyGuests)
                 this.sendGuestList(partyGuests)

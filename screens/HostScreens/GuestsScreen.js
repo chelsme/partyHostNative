@@ -98,7 +98,7 @@ export default class GuestsScreen extends React.Component {
         fetch(`http://localhost:3000/party_guests/${id}`, {
             method: 'DELETE', // or 'PUT'
         })
-            .then(this.makeRemoteRequest())
+            .then(setTimeout(() => this.makeRemoteRequest(), 200))
     }
 
     render() {
