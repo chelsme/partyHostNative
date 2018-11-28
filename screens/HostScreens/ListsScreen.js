@@ -171,7 +171,6 @@ export default class ListsScreen extends React.Component {
 
 
     render() {
-        let guestNames = this.props.guests.map((guest) => { return guest.name })
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>LISTS</Text>
@@ -230,13 +229,13 @@ export default class ListsScreen extends React.Component {
                             >
                                 <Text
                                     onPress={() => this.pressTask(task)}>
-                                    {task.guest.name !== '' && guestNames.includes(task.guest.name)
+                                    {task.guest.name !== '' && this.props.guests.includes(task.guest.name)
                                         ? <Text>&#10003;  </Text>
                                         : <Text>&#9675;  </Text>
                                     }
                                     <Text>{task.action}</Text>
                                 </Text>
-                                {task.guest.name !== '' && guestNames.includes(task.guest.name)
+                                {task.guest.name !== '' && this.props.guests.includes(task.guest.name)
                                     ? <Text style={styles.subtext}>        {task.guest.name}</Text>
                                     : <Text style={styles.subtext}>        unassigned</Text>
                                 }

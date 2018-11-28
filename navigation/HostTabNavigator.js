@@ -35,7 +35,8 @@ export default class HostTabNavigator extends React.Component {
             guests: [],
             guestCount: 0,
             taskCount: null,
-            songCount: null
+            songCount: null,
+            hostID: null
         }
     }
 
@@ -44,6 +45,12 @@ export default class HostTabNavigator extends React.Component {
             selectedTab: tabId,
             selectedParty: partyID,
             partyName: partyName
+        })
+    }
+
+    hostID = (hostID) => {
+        this.setState({
+            hostID: hostID
         })
     }
 
@@ -91,7 +98,7 @@ export default class HostTabNavigator extends React.Component {
     }
 
     render() {
-        const partyList = <PartyListScreen changeTabs={this.changeTabs} userID={this.props.userID} getGuestList={this.getGuestList} />
+        const partyList = <PartyListScreen changeTabs={this.changeTabs} userID={this.props.userID} getGuestList={this.getGuestList} hostID={this.hostID} />
         return (
             this.state.selectedTab === 'partyList' ?
                 partyList
@@ -134,7 +141,7 @@ export default class HostTabNavigator extends React.Component {
                         icon={require('../assets/music.png')}
                         onPress={() => this.changeTabs('playlist', this.state.selectedParty, this.state.partyName)}>
                         <View>
-                            <PlaylistScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} setSongCount={this.setSongCount} />
+                            <PlaylistScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} setSongCount={this.setSongCount} hostID={this.state.hostID} />
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item

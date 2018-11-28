@@ -26,38 +26,37 @@ export default class PartyListScreen extends React.Component {
     }
 
     makeRemoteRequest() {
-        fetch('http://localhost:3000/parties')
-            .then(resp => resp.json())
-            .then(data => {
-                let hostingParties = data.filter((party) => {
-                    return party.host_id === this.props.userID
-                })
-                let notHostingParties = data.filter((party) => {
-                    return party.host_id !== this.props.userID
-                })
-                let attendingParties = notHostingParties.filter((party) => {
-                    return party.guests[0].id === this.props.userID
-                })
-                this.setState({
-                    allParties: data,
-                    hostingParties: hostingParties,
-                    attendingParties: attendingParties
-                })
-            })
-        // fetch(`http://localhost:3000/guests/${this.props.userID}`)
+        // fetch('http://localhost:3000/parties')
         //     .then(resp => resp.json())
         //     .then(data => {
-        //         let hostingParties = data.parties.filter((party) => {
+        //         let hostingParties = data.filter((party) => {
         //             return party.host_id === this.props.userID
         //         })
-        //         let attendingParties = data.parties.filter((party) => {
-        //             return party.host_id !== this.props.userID
+        //         let attendingParties = data.filter((party) => {
+        //             if (party.host_id !== this.props.userID && party.guests.filter((guest) => {
+        //                 return guest.id === this.props.userID
+        //             }) !== []) { return party }
         //         })
+        //         console.log(attendingParties)
         //         this.setState({
         //             hostingParties: hostingParties,
         //             attendingParties: attendingParties
         //         })
         //     })
+        fetch(`http://localhost:3000/guests/${this.props.userID}`)
+            .then(resp => resp.json())
+            .then(data => {
+                let hostingParties = data.parties.filter((party) => {
+                    return party.host_id === this.props.userID
+                })
+                let attendingParties = data.parties.filter((party) => {
+                    return party.host_id !== this.props.userID
+                })
+                this.setState({
+                    hostingParties: hostingParties,
+                    attendingParties: attendingParties
+                })
+            })
     }
 
     sendGuestList = (guests) => {
@@ -130,8 +129,21 @@ export default class PartyListScreen extends React.Component {
     changeTabs = (party) => {
         let partyID = party.id
         let partyName = party.name
+        this.props.hostID(party.host_id)
         this.props.changeTabs('profile', partyID, partyName)
-        this.sendGuestList(party.guests)
+        this.getGuestList(party.id)
+    }
+
+    getGuestList = (id) => {
+        fetch(`http://localhost:3000/parties/${id}`)
+            .then(resp => resp.json())
+            .then(data => {
+                let partyGuests = data.guests.map((guest) => {
+                    return guest.name
+                })
+                console.log(partyGuests)
+                this.sendGuestList(partyGuests)
+            })
     }
 
     cancelParty = (party) => {
@@ -154,11 +166,11 @@ export default class PartyListScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
+            <View style={{ display: "flex", alignItems: "center", margin: 20 }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>PARTIES</Text>
 
                 {/* create new party */}
-                <TouchableOpacity style={styles.addButton}>
+                < TouchableOpacity style={styles.addButton} >
                     <Text
                         onPress={this.addParty}
                         title="Add Party"
@@ -166,10 +178,10 @@ export default class PartyListScreen extends React.Component {
                         accessibilityLabel="Add Party"
                     >+
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity >
 
                 {/* hidden input fields CREATE PARTY */}
-                <TextInput
+                < TextInput
                     style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
                     placeholder='Party Name'
                     onChangeText={this.handleChangePartyName}
@@ -206,29 +218,33 @@ export default class PartyListScreen extends React.Component {
 
                 {/* view parties */}
                 <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Hosting</Text>
-                {this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
-                    return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
-                        <Text
-                            title={party.name}
-                            style={styles.text}
-                            accessibilityLabel={party.name}
-                        >{party.name}
-                        </Text>
-                        <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text>
-                    </TouchableOpacity>
-                }) : null}
+                {
+                    this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
+                        return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
+                            <Text
+                                title={party.name}
+                                style={styles.text}
+                                accessibilityLabel={party.name}
+                            >{party.name}
+                            </Text>
+                            <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text>
+                        </TouchableOpacity>
+                    }) : null
+                }
                 <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Invited To</Text>
-                {this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
-                    return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
-                        <Text
-                            title={party.name}
-                            style={styles.text}
-                            accessibilityLabel={party.name}
-                        >{party.name}
-                        </Text>
-                    </TouchableOpacity>
-                }) : null}
-            </View>
+                {
+                    this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
+                        return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
+                            <Text
+                                title={party.name}
+                                style={styles.text}
+                                accessibilityLabel={party.name}
+                            >{party.name}
+                            </Text>
+                        </TouchableOpacity>
+                    }) : null
+                }
+            </View >
         );
     }
 }
