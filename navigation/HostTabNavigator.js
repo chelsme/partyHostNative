@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    StyleSheet, Text, View, Button, TextInput, Alert,
+    StyleSheet, Text, View, Button, TextInput, AlertIOS,
     Image, TabBarIOS, TabBarItem, NavigatorIOS, TouchableOpacity
 } from 'react-native';
 
@@ -67,11 +67,11 @@ export default class HostTabNavigator extends React.Component {
     }
 
     cancelParty = (party) => {
-        Alert.alert(
+        AlertIOS.alert(
             'Cancel Party',
             `Would you like to cancel ${this.state.partyName}?`,
             [
-                { text: 'NO', onPress: () => alert('phew!'), style: 'cancel' },
+                { text: 'NO', onPress: () => AlertIOS.alert('phew!'), style: 'cancel' },
                 {
                     text: 'YES', onPress: () => {
                         fetch(`http://localhost:3000/parties/${party}`, {

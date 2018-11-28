@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView, TextInput, AlertIOS } from 'react-native';
 
 export default class ListsScreen extends React.Component {
     constructor(props) {
@@ -19,15 +19,14 @@ export default class ListsScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch('http://localhost:3000/tasks')
+        fetch('http://localhost:3000/parties')
             .then(resp => resp.json())
             .then(data => {
-                let partyTasks = data.filter((task) => {
+                let partyTasks = data[0].tasks.filter((task) => {
                     return task.party_id === this.props.selectedParty
                 })
                 this.props.setTaskCount(partyTasks.length)
                 this.setState({
-                    alltasks: data,
                     partyTasks: partyTasks,
                     task: '',
                     taskGuest: '',
@@ -70,10 +69,10 @@ export default class ListsScreen extends React.Component {
                 })
                     .then(resp => resp.json())
                     .then(
-                        this.state.taskGuest === '' ? alert(`${this.state.task} added but not assigned`) :
-                            alert(`${this.state.task} assigned to ${this.state.taskGuest}.`))
+                        this.state.taskGuest === '' ? AlertIOS.alert(`${this.state.task} added but not assigned`) :
+                            AlertIOS.alert(`${this.state.task} assigned to ${this.state.taskGuest}.`))
                 :
-                alert('must provide a task and guest must be invited')
+                AlertIOS.alert('must provide a task and guest must be invited')
         }
         this.setState({
             addTaskShow: false,
@@ -82,6 +81,94 @@ export default class ListsScreen extends React.Component {
         })
         setTimeout(() => this.makeRemoteRequest(), 200)
     }
+
+    pressTask = (task) => {
+        AlertIOS.alert(
+            'some words',
+            `other words ${task.action}?`,
+            [
+                {
+                    text: 'Edit', onPress: () => {
+                        AlertIOS.prompt(
+                            'Enter password',
+                            'Enter your password to claim your $1.5B in lottery winnings',
+                            [
+                                { text: 'Cancel', style: 'cancel' },
+                                {
+                                    text: 'OK',
+                                    onPress: (newAction) => { this.editTask(newAction, task) },
+                                },
+                            ],
+                        );
+                    }
+                },
+                {
+                    text: 'Reassign', onPress: () => {
+                        AlertIOS.prompt(
+                            'Enter password',
+                            'Enter your password to claim your $1.5B in lottery winnings',
+                            [
+                                { text: 'Cancel', style: 'cancel' },
+                                {
+                                    text: 'OK',
+                                    onPress: (taskGuest) => { this.reassignTask(taskGuest, task) },
+                                },
+                            ],
+                        );
+                    }
+                },
+                {
+                    text: 'Remove', onPress: () => {
+                        fetch(`http://localhost:3000/tasks/${task.id}`, {
+                            method: 'DELETE', // or 'PUT'
+                        })
+                            .then(this.makeRemoteRequest())
+                            .then(AlertIOS.alert(`${task.name} has been removed from the task list`))
+                    }
+                },
+                { text: 'Cancel', style: 'cancel' }
+            ]
+        )
+    }
+
+
+    editTask = (newAction, task) => {
+        fetch(`http://localhost:3000/tasks/${task.id}`, {
+            method: 'PATCH', // or 'PUT'
+            body: JSON.stringify({
+                action: newAction,
+            }), // data can be `string` or {object}!
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(resp => resp.json())
+            .then(console.log('it is done'))
+            // .then(alert(`${this.state.firstName} ${this.state.lastName} has been invited to your party.`))
+            .then(() => this.makeRemoteRequest(), 200)
+    }
+
+    reassignTask = (taskGuest, task) => {
+        let newTaskGuest = this.props.guests.find((guest) => {
+            return guest.name === taskGuest
+        })
+        console.log(newTaskGuest)
+        newTaskGuest ? fetch(`http://localhost:3000/tasks/${task.id}`, {
+            method: 'PATCH', // or 'PUT'
+            body: JSON.stringify({
+                guest_id: newTaskGuest.id,
+            }), // data can be `string` or {object}!
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(resp => resp.json())
+            .then(console.log('it is done'))
+            .then(() => this.makeRemoteRequest(), 200)
+            : AlertIOS.alert('Tasks can only be assigned to invited guests.')
+    }
+
+
 
     render() {
         let guestNames = this.props.guests.map((guest) => { return guest.name })
@@ -141,7 +228,8 @@ export default class ListsScreen extends React.Component {
                                 }}
                                 accessibilityLabel={task.guest.name !== '' ? `${task.action} assigned to ${task.guest.name}` : `${task.action} is unassigned`}
                             >
-                                <Text>
+                                <Text
+                                    onPress={() => this.pressTask(task)}>
                                     {task.guest.name !== '' && guestNames.includes(task.guest.name)
                                         ? <Text>&#10003;  </Text>
                                         : <Text>&#9675;  </Text>
@@ -157,19 +245,6 @@ export default class ListsScreen extends React.Component {
                         }) : null
                     }
                 </ScrollView>
-
-
-                {/* {this.state.partyTasks ? this.state.partyTasks.map((task, index) => {
-                    // console.log(task.guest.name)
-                    return <TouchableOpacity key={index} style={styles.textButton}>
-                        <Text
-                            title={task.action}
-                            style={styles.text}
-                            accessibilityLabel={task.action}
-                        >{task.action} - {task.guest.name}
-                        </Text>
-                    </TouchableOpacity>
-                }) : null} */}
             </View>
         );
     }

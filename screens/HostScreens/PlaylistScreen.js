@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements'
 import GuestsScreen from './GuestsScreen';
 
@@ -82,7 +82,7 @@ export default class PlaylistScreen extends React.Component {
                     .then(resp => resp.json())
                     .then(alert(`${this.state.song} by ${this.state.artist} added to playlist.`))
                 :
-                alert('must fill out song details')
+                AlertIOS.alert('must fill out song details')
         }
         this.setState({
             addSongShow: false,
@@ -93,11 +93,10 @@ export default class PlaylistScreen extends React.Component {
     }
 
     pressSong = (song) => {
-        Alert.alert(
+        AlertIOS.alert(
             'Remove Song from Playlist',
-            `Would you like to remove or edit ${song.name} by ${song.artist}?`,
+            `Would you like to remove ${song.name} by ${song.artist} from the playlist?`,
             [
-                { text: 'Edit', onPress: () => alert('just delete it and write in a new one!') },
                 {
                     text: 'Remove', onPress: () => {
                         fetch(`http://localhost:3000/songs/${song.id}`, {
@@ -107,7 +106,7 @@ export default class PlaylistScreen extends React.Component {
                             .then(alert(`${song.name} by ${song.artist} has been removed from the playlist`))
                     }
                 },
-                { text: 'Cancel', onPress: () => alert('nothing changed'), style: 'cancel' }
+                { text: 'Cancel', style: 'cancel' }
             ]
         )
     }

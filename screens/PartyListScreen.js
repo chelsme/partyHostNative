@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS } from 'react-native';
 import GuestsScreen from './HostScreens/GuestsScreen';
 
 
@@ -32,11 +32,11 @@ export default class PartyListScreen extends React.Component {
                 let hostingParties = data.filter((party) => {
                     return party.host_id === this.props.userID
                 })
-                let attendingParties = data.filter((party) => {
-                    party.guests.filter((guest) => {
-                        return guest.id === this.props.userID
-                    })
+                let notHostingParties = data.filter((party) => {
                     return party.host_id !== this.props.userID
+                })
+                let attendingParties = notHostingParties.filter((party) => {
+                    return party.guests[0].id === this.props.userID
                 })
                 this.setState({
                     allParties: data,
@@ -114,7 +114,7 @@ export default class PartyListScreen extends React.Component {
                     .then(resp => resp.json())
                     .then(alert(`New Party Created`))
                 :
-                alert('must fill out party details')
+                AlertIOS.alert('must fill out party details')
         }
         this.setState({
             addPartyShow: false,
@@ -135,7 +135,7 @@ export default class PartyListScreen extends React.Component {
     }
 
     cancelParty = (party) => {
-        Alert.alert(
+        AlertIOS.alert(
             'Cancel Party',
             `Would you like to cancel ${party.name}?`,
             [

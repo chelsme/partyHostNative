@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS } from 'react-native';
 
 export default class GuestsScreen extends React.Component {
     constructor(props) {
@@ -68,7 +68,7 @@ export default class GuestsScreen extends React.Component {
                     .then(resp => resp.json())
                     .then(alert(`${this.state.firstName} ${this.state.lastName} has been invited to your party.`))
                 :
-                alert('must provide full name')
+                AlertIOS.alert('must provide full name')
         }
         this.setState({
             addGuestShow: false,
@@ -82,11 +82,11 @@ export default class GuestsScreen extends React.Component {
         let partyGuest = guest.party_guests.filter((x) => {
             return x.party_id === this.props.selectedParty
         })
-        Alert.alert(
+        AlertIOS.alert(
             'Uninvite',
             `Would you like to remove ${guest.name} from your party guest list?`,
             [
-                { text: 'NO', onPress: () => alert('phew!'), style: 'cancel' },
+                { text: 'NO', onPress: () => AlertIOS.alert('phew!'), style: 'cancel' },
                 {
                     text: 'YES', onPress: () => { this.uninviteFetch(partyGuest[0].id) }
                 },
@@ -102,7 +102,6 @@ export default class GuestsScreen extends React.Component {
     }
 
     render() {
-        console.log(this.state.guests)
         return (
             <View style={{ display: "flex", alignItems: "center", margin: 20 }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>

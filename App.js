@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, NavigatorIOS, StyleSheet, ImageBackground, Image, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, NavigatorIOS, StyleSheet, ImageBackground, Image, TouchableOpacity, Text, AlertIOS } from 'react-native';
 import HomeScreen from './screens/HomeScreen'
 import HostTabNavigator from './navigation/HostTabNavigator'
 import ProfileScreen from './screens/HostScreens/ProfileScreen';
@@ -41,7 +41,7 @@ export default class App extends React.Component {
 						name: data.name,
 						userID: data.id
 					})
-					Alert.alert('Logged in!', `Hi ${userName}!`)
+					AlertIOS.alert('Logged in!', `Hi ${userName}!`)
 				})
 				this.logIn()
 			} else {
@@ -67,8 +67,8 @@ export default class App extends React.Component {
 	logInAmanda = () => {
 		this.setState({
 			loggedIn: true,
-			name: "Lili Sprague",
-			userID: 15
+			name: "Amanda Spence",
+			userID: 2
 		})
 	}
 

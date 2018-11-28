@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { StyleSheet, Text, View, Button, TextInput, Alert, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, AlertIOS, Image, TouchableOpacity } from 'react-native';
 import ProfileScreen from './HostScreens/ProfileScreen';
 
 export default class HomeScreen extends React.Component {
@@ -64,14 +64,14 @@ export default class HomeScreen extends React.Component {
                     this.setState({
                         userInfo: data
                     })
-                    Alert.alert('Logged in!', `Hi ${userName}!`)
+                    AlertIOS.alert('Logged in!', `Hi ${userName}!`)
                 })
             } else {
                 // type === 'cancel'
             }
             this.logIn()
         } catch ({ message }) {
-            alert(`Facebook Login Error: ${message}`);
+            AlertIOS.alert(`Facebook Login Error: ${message}`);
         }
     }
 

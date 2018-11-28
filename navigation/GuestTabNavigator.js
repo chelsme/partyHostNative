@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    StyleSheet, Text, View, Button, TextInput, Alert,
+    StyleSheet, Text, View, Button, TextInput, AlertIOS,
     Image, TabBarIOS, TabBarItem, NavigatorIOS
 } from 'react-native';
 
