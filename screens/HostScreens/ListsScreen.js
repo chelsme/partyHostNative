@@ -19,10 +19,10 @@ export default class ListsScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch('http://localhost:3000/parties')
+        fetch(`http://localhost:3000/parties/${this.props.selectedParty}`)
             .then(resp => resp.json())
             .then(data => {
-                let partyTasks = data[0].tasks.filter((task) => {
+                let partyTasks = data.tasks.filter((task) => {
                     return task.party_id === this.props.selectedParty
                 })
                 this.props.setTaskCount(partyTasks.length)
@@ -122,7 +122,7 @@ export default class ListsScreen extends React.Component {
                         fetch(`http://localhost:3000/tasks/${task.id}`, {
                             method: 'DELETE', // or 'PUT'
                         })
-                            .then(this.makeRemoteRequest())
+                            .then(setTimeout(() => this.makeRemoteRequest(), 200))
                             .then(AlertIOS.alert(`${task.name} has been removed from the task list`))
                     }
                 },
@@ -145,7 +145,7 @@ export default class ListsScreen extends React.Component {
             .then(resp => resp.json())
             .then(console.log('it is done'))
             // .then(alert(`${this.state.firstName} ${this.state.lastName} has been invited to your party.`))
-            .then(() => this.makeRemoteRequest(), 200)
+            .then(setTimeout(() => this.makeRemoteRequest(), 200))
     }
 
     reassignTask = (taskGuest, task) => {
@@ -164,7 +164,7 @@ export default class ListsScreen extends React.Component {
         })
             .then(resp => resp.json())
             .then(console.log('it is done'))
-            .then(() => this.makeRemoteRequest(), 200)
+            .then(setTimeout(() => this.makeRemoteRequest(), 200))
             : AlertIOS.alert('Tasks can only be assigned to invited guests.')
     }
 

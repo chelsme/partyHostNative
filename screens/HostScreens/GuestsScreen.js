@@ -82,16 +82,18 @@ export default class GuestsScreen extends React.Component {
         let partyGuest = guest.party_guests.filter((x) => {
             return x.party_id === this.props.selectedParty
         })
-        AlertIOS.alert(
-            'Uninvite',
-            `Would you like to remove ${guest.name} from your party guest list?`,
-            [
-                { text: 'NO', onPress: () => AlertIOS.alert('phew!'), style: 'cancel' },
-                {
-                    text: 'YES', onPress: () => { this.uninviteFetch(partyGuest[0].id) }
-                },
-            ]
-        )
+        this.props.hostID === this.props.userID ?
+            AlertIOS.alert(
+                'Uninvite',
+                `Would you like to remove ${guest.name} from your party guest list?`,
+                [
+                    { text: 'NO', onPress: () => AlertIOS.alert('phew!'), style: 'cancel' },
+                    {
+                        text: 'YES', onPress: () => { this.uninviteFetch(partyGuest[0].id) }
+                    },
+                ]
+            )
+            : AlertIOS.alert('Only the party host can uninvite guests.')
     }
 
     uninviteFetch = (id) => {

@@ -109,7 +109,7 @@ export default class HostTabNavigator extends React.Component {
                         icon={require('../assets/crowd.png')}
                         onPress={() => this.changeTabs('guests', this.state.selectedParty, this.state.partyName)}>
                         <View>
-                            <GuestsScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} getGuestList={this.getGuestList} />
+                            <GuestsScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} getGuestList={this.getGuestList} hostID={this.state.hostID} />
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
@@ -118,7 +118,7 @@ export default class HostTabNavigator extends React.Component {
                         icon={require('../assets/lists.png')}
                         onPress={() => this.changeTabs('lists', this.state.selectedParty, this.state.partyName)}>
                         <View>
-                            <ListsScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} guests={this.state.guests} setTaskCount={this.setTaskCount} />
+                            <ListsScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} guests={this.state.guests} setTaskCount={this.setTaskCount} hostID={this.state.hostID} />
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
@@ -151,15 +151,17 @@ export default class HostTabNavigator extends React.Component {
                         onPress={() => this.changeTabs('more', this.state.selectedParty, this.state.partyName)}>
                         <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
                             <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>MORE</Text>
-                            <TouchableOpacity style={styles.textButton}>
-                                <Text
-                                    onPress={() => this.cancelParty(this.state.selectedParty)}
-                                    title="Cancel Party"
-                                    style={styles.text}
-                                    accessibilityLabel="Cancel Party"
-                                >Cancel Party
+                            {this.props.hostID === this.props.userID ?
+                                <TouchableOpacity style={styles.textButton}>
+                                    <Text
+                                        onPress={() => this.cancelParty(this.state.selectedParty)}
+                                        title="Cancel Party"
+                                        style={styles.text}
+                                        accessibilityLabel="Cancel Party"
+                                    >Cancel Party
                                 </Text>
-                            </TouchableOpacity>
+                                </TouchableOpacity>
+                                : null}
                             <TouchableOpacity style={styles.textButton}>
                                 <Text
                                     onPress={this.logOut}

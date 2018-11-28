@@ -141,7 +141,6 @@ export default class PartyListScreen extends React.Component {
                 let partyGuests = data.guests.map((guest) => {
                     return guest
                 })
-                console.log(partyGuests)
                 this.sendGuestList(partyGuests)
             })
     }
@@ -157,7 +156,7 @@ export default class PartyListScreen extends React.Component {
                         fetch(`http://localhost:3000/parties/${party.id}`, {
                             method: 'DELETE', // or 'PUT'
                         })
-                            .then(this.makeRemoteRequest())
+                            .then(setTimeout(() => this.makeRemoteRequest(), 200))
                     }
                 },
             ]

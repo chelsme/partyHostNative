@@ -93,22 +93,24 @@ export default class PlaylistScreen extends React.Component {
     }
 
     pressSong = (song) => {
-        AlertIOS.alert(
-            'Remove Song from Playlist',
-            `Would you like to remove ${song.name} by ${song.artist} from the playlist?`,
-            [
-                {
-                    text: 'Remove', onPress: () => {
-                        fetch(`http://localhost:3000/songs/${song.id}`, {
-                            method: 'DELETE', // or 'PUT'
-                        })
-                            .then(this.makeRemoteRequest())
-                            .then(alert(`${song.name} by ${song.artist} has been removed from the playlist`))
-                    }
-                },
-                { text: 'Cancel', style: 'cancel' }
-            ]
-        )
+        this.props.hostID === this.props.userID ?
+            AlertIOS.alert(
+                'Remove Song from Playlist',
+                `Would you like to remove ${song.name} by ${song.artist} from the playlist?`,
+                [
+                    {
+                        text: 'Remove', onPress: () => {
+                            fetch(`http://localhost:3000/songs/${song.id}`, {
+                                method: 'DELETE', // or 'PUT'
+                            })
+                                .then(setTimeout(() => this.makeRemoteRequest(), 200))
+                                .then(alert(`${song.name} by ${song.artist} has been removed from the playlist`))
+                        }
+                    },
+                    { text: 'Cancel', style: 'cancel' }
+                ]
+            )
+            : AlertIOS.alert('Only the party host can delete songs from playlists.')
     }
 
     render() {
