@@ -151,7 +151,7 @@ export default class HostTabNavigator extends React.Component {
                         onPress={() => this.changeTabs('more', this.state.selectedParty, this.state.partyName)}>
                         <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
                             <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>MORE</Text>
-                            {this.props.hostID === this.props.userID ?
+                            {this.props.userID === this.state.hostID ?
                                 <TouchableOpacity style={styles.textButton}>
                                     <Text
                                         onPress={() => this.cancelParty(this.state.selectedParty)}

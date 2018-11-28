@@ -151,9 +151,8 @@ export default class PlaylistScreen extends React.Component {
                     >Submit Song
                     </Text>
                 </TouchableOpacity>
-                <Text style={{ textDecorationLine: 'underline', padding: 5 }}>Party Playlist</Text>
 
-                <ScrollView style={{ padding: 0, height: 400 }} >
+                <ScrollView style={{ padding: 0, height: 400, width: 280 }} >
                     {
                         this.state.partyPlaylist ? this.state.partyPlaylist.map((song, index) => {
                             return <Text

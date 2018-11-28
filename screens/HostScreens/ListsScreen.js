@@ -11,6 +11,8 @@ export default class ListsScreen extends React.Component {
             addTaskShow: false,
             task: '',
             taskGuest: '',
+            guestNames: [],
+            self: {}
         }
     }
 
@@ -25,12 +27,20 @@ export default class ListsScreen extends React.Component {
                 let partyTasks = data.tasks.filter((task) => {
                     return task.party_id === this.props.selectedParty
                 })
+                let guestNames = this.props.guests.map((guest) => {
+                    return guest.name
+                })
+                let self = this.props.guests.find((guest) => {
+                    return guest.id === this.props.userID
+                })
                 this.props.setTaskCount(partyTasks.length)
                 this.setState({
                     partyTasks: partyTasks,
                     task: '',
                     taskGuest: '',
-                    addTaskShow: false
+                    addTaskShow: false,
+                    guestNames: guestNames,
+                    self: self
                 })
             })
     }
@@ -82,7 +92,30 @@ export default class ListsScreen extends React.Component {
         setTimeout(() => this.makeRemoteRequest(), 200)
     }
 
+    guestSubmitTask = () => {
+        fetch('http://localhost:3000/tasks', {
+            method: 'POST', // or 'PUT'
+            body: JSON.stringify({
+                action: this.state.task,
+                party_id: this.props.selectedParty,
+                guest_name: this.state.self.name
+            }), // data can be `string` or {object}!
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(resp => resp.json())
+            .then(AlertIOS.alert(`${this.state.task} assigned to you.`))
+        setTimeout(() => this.makeRemoteRequest(), 200)
+    }
+
     pressTask = (task) => {
+        this.props.userID === this.props.hostID ?
+            this.hostTaskUpdate(task)
+            : this.guestTaskUpdate(task)
+    }
+
+    hostTaskUpdate = (task) => {
         AlertIOS.alert(
             'some words',
             `other words ${task.action}?`,
@@ -131,6 +164,23 @@ export default class ListsScreen extends React.Component {
         )
     }
 
+    guestTaskUpdate = (task) => {
+        console.log(task.guest.name)
+        AlertIOS.alert(
+            'some words',
+            `other words ${task.action}?`,
+            [{
+                text: 'Accept Task', onPress: () => {
+
+                    // console.log(`user: ${self.name}, task: ${task}`)
+                    task.guest.name === "" ?
+                        this.reassignTask(this.state.self.name, task)
+                        : AlertIOS.alert("you can't steal an already assigned task!")
+                },
+            },
+            { text: 'Cancel', style: 'cancel' }]
+        )
+    }
 
     editTask = (newAction, task) => {
         fetch(`http://localhost:3000/tasks/${task.id}`, {
@@ -152,7 +202,6 @@ export default class ListsScreen extends React.Component {
         let newTaskGuest = this.props.guests.find((guest) => {
             return guest.name === taskGuest
         })
-        console.log(newTaskGuest)
         newTaskGuest ? fetch(`http://localhost:3000/tasks/${task.id}`, {
             method: 'PATCH', // or 'PUT'
             body: JSON.stringify({
@@ -175,44 +224,82 @@ export default class ListsScreen extends React.Component {
             <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>LISTS</Text>
 
-
-                {/* add task to task list */}
-                <TouchableOpacity style={styles.textButton}>
-                    <Text
-                        onPress={this.addTask}
-                        title="Add Task"
-                        style={styles.text}
-                        accessibilityLabel="Add Task"
-                    >Add Task
+                {this.props.userID === this.props.hostID ?
+                    /* host add task */
+                    /* add task to task list */
+                    <View>
+                        <TouchableOpacity style={styles.textButton}>
+                            <Text
+                                onPress={this.addTask}
+                                title="Add Task"
+                                style={styles.text}
+                                accessibilityLabel="Add Task"
+                            >Add Task
                     </Text>
-                </TouchableOpacity>
+                        </TouchableOpacity>
 
-                {/* hidden input fields */}
-                <TextInput
-                    style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='Task'
-                    onChangeText={this.handleChangeTextTask}
-                    value={this.state.task}
-                />
-                <TextInput
-                    style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='Assign To...'
-                    onChangeText={this.handleChangeTextTaskGuest}
-                    value={this.state.taskGuest}
-                />
-                <TouchableOpacity style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    onPress={this.handleSubmitTask}>
-                    <Text
-                        title="Submit Task"
-                        style={styles.text}
-                        accessibilityLabel="Submit Task"
-                    >Submit Task
+                        {/* hidden input fields */}
+                        <TextInput
+                            style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                            placeholder='Task'
+                            onChangeText={this.handleChangeTextTask}
+                            value={this.state.task}
+                        />
+                        <TextInput
+                            style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                            placeholder='Assign To...'
+                            onChangeText={this.handleChangeTextTaskGuest}
+                            value={this.state.taskGuest}
+                        />
+                        <TouchableOpacity style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                            onPress={this.handleSubmitTask}>
+                            <Text
+                                title="Submit Task"
+                                style={styles.text}
+                                accessibilityLabel="Submit Task"
+                            >Submit Task
                     </Text>
-                </TouchableOpacity>
+                        </TouchableOpacity>
+                    </View>
+                    /* end host add task */
 
+                    :
+                    /* guest add task */
+                    /* add task to task list */
+                    <View>
+                        <TouchableOpacity style={styles.textButton}>
+                            <Text
+                                onPress={this.addTask}
+                                title="Add Task"
+                                style={styles.text}
+                                accessibilityLabel="Add Task"
+                            >Add Task
+                    </Text>
+                        </TouchableOpacity>
+
+                        {/* hidden input fields */}
+                        <TextInput
+                            style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                            placeholder='Task'
+                            onChangeText={this.handleChangeTextTask}
+                            value={this.state.task}
+                        />
+                        <TouchableOpacity style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                            onPress={this.guestSubmitTask}>
+                            <Text
+                                title="Submit Task"
+                                style={styles.text}
+                                accessibilityLabel="Submit Task"
+                            >Submit Task
+                    </Text>
+                        </TouchableOpacity>
+                    </View>
+                    /* end guest add task */
+                }
 
                 <ScrollView
-                    style={{ padding: 0, height: 400 }}
+
+                    style={{ padding: 0, height: 400, width: 280 }}
                 >
                     {
                         this.state.partyTasks ? this.state.partyTasks.map((task, index) => {
@@ -235,7 +322,8 @@ export default class ListsScreen extends React.Component {
                                     }
                                     <Text>{task.action}</Text>
                                 </Text>
-                                {task.guest.name !== '' && this.props.guests.includes(task.guest.name)
+                                {console.log(this.props.guests)}
+                                {task.guest.name !== '' && this.state.guestNames.includes(task.guest.name)
                                     ? <Text style={styles.subtext}>        {task.guest.name}</Text>
                                     : <Text style={styles.subtext}>        unassigned</Text>
                                 }

@@ -109,44 +109,48 @@ export default class GuestsScreen extends React.Component {
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>
 
 
-
-                {/* add guest to guest list */}
-                <TouchableOpacity style={styles.textButton}>
-                    <Text
-                        onPress={this.addGuest}
-                        title="Add Guest"
-                        style={styles.text}
-                        accessibilityLabel="Add Guest"
-                    >Add Guest
+                {this.props.userID === this.props.hostID ?
+                    <View style={{ display: "flex", alignItems: "center" }} >
+                        {/* add guest to guest list */}
+                        <TouchableOpacity style={styles.textButton}>
+                            <Text
+                                onPress={this.addGuest}
+                                title="Add Guest"
+                                style={styles.text}
+                                accessibilityLabel="Add Guest"
+                            >Add Guest
         </Text>
-                </TouchableOpacity>
+                        </TouchableOpacity>
 
-                {/* hidden input fields */}
-                <TextInput
-                    style={{ display: this.state.addGuestShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='First Name'
-                    onChangeText={this.handleChangeFirstName}
-                    value={this.state.firstName}
-                />
-                <TextInput
-                    style={{ display: this.state.addGuestShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='Last Name'
-                    onChangeText={this.handleChangeLastName}
-                    value={this.state.lastName}
-                />
-                <TouchableOpacity style={{ display: this.state.addGuestShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    onPress={this.handleSubmitGuest}>
-                    <Text
-                        title="Invite Guest"
-                        style={styles.text}
-                        accessibilityLabel="Invite Guest"
-                    >Invite Guest
+                        {/* hidden input fields */}
+                        <TextInput
+                            style={{ display: this.state.addGuestShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                            placeholder='First Name'
+                            onChangeText={this.handleChangeFirstName}
+                            value={this.state.firstName}
+                        />
+                        <TextInput
+                            style={{ display: this.state.addGuestShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                            placeholder='Last Name'
+                            onChangeText={this.handleChangeLastName}
+                            value={this.state.lastName}
+                        />
+                        <TouchableOpacity style={{ display: this.state.addGuestShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                            onPress={this.handleSubmitGuest}>
+                            <Text
+                                title="Invite Guest"
+                                style={styles.text}
+                                accessibilityLabel="Invite Guest"
+                            >Invite Guest
                 </Text>
-                </TouchableOpacity>
+                        </TouchableOpacity>
 
 
 
-                <Text style={{ textDecorationLine: 'underline' }}>Invited Guests</Text>
+                        <Text style={{ textDecorationLine: 'underline' }}>Invited Guests</Text>
+                    </View>
+                    : null}
+
                 {this.state.party ? this.state.party.guests.map((guest, index) => {
                     if (guest.id !== this.props.userID) {
                         return <TouchableOpacity key={index} style={styles.textButton} onPress={() => { this.uninviteGuest(guest) }}>
