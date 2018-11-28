@@ -36,26 +36,21 @@ export default class App extends React.Component {
 					headers: {
 						'Content-Type': 'application/json'
 					}
-				}).then(resp => resp.json()).then(data => {
-					this.setState({
-						name: data.name,
-						userID: data.id
-					})
-					AlertIOS.alert('Logged in!', `Hi ${userName}!`)
 				})
-				this.logIn()
-			} else {
-				// type === 'cancel'
+					.then(resp => resp.json())
+					.then(data => {
+						console.log(data.name, data.id)
+						this.setState({
+							name: data.name,
+							userID: data.id,
+							loggedIn: true
+						})
+					})
+					.then(AlertIOS.alert('Logged in!', `Hi ${userName}!`))
 			}
 		} catch ({ message }) {
 			alert(`Facebook Login Error: ${message}`);
 		}
-	}
-
-	logIn = () => {
-		this.setState({
-			loggedIn: true
-		})
 	}
 
 	logOut = () => {

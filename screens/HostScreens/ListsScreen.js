@@ -117,14 +117,14 @@ export default class ListsScreen extends React.Component {
 
     hostTaskUpdate = (task) => {
         AlertIOS.alert(
-            'some words',
-            `other words ${task.action}?`,
+            'Task Options',
+            `${task.action}`,
             [
                 {
                     text: 'Edit', onPress: () => {
                         AlertIOS.prompt(
-                            'Enter password',
-                            'Enter your password to claim your $1.5B in lottery winnings',
+                            'Update Task',
+                            `${task.action}`,
                             [
                                 { text: 'Cancel', style: 'cancel' },
                                 {

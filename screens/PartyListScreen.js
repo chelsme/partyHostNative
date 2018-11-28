@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, Image } from 'react-native';
 import GuestsScreen from './HostScreens/GuestsScreen';
 
 
@@ -169,15 +169,21 @@ export default class PartyListScreen extends React.Component {
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>PARTIES</Text>
 
                 {/* create new party */}
-                < TouchableOpacity style={styles.addButton} >
-                    <Text
+                < TouchableOpacity onPress={this.addParty}>
+                    {/* <Text
                         onPress={this.addParty}
                         title="Add Party"
                         style={styles.addText}
                         accessibilityLabel="Add Party"
                     >+
-                    </Text>
+                    </Text> */}
+                    <Image
+                        style={{ width: 50, height: 50, marginBottom: 12 }}
+                        source={require('../assets/cupcake.png')}
+                        onPress={this.addParty}
+                    />
                 </TouchableOpacity >
+
 
                 {/* hidden input fields CREATE PARTY */}
                 < TextInput
@@ -249,14 +255,6 @@ export default class PartyListScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    addButton: {
-        backgroundColor: '#4d5a63',
-        opacity: 200,
-        width: 40,
-        height: 40,
-        borderRadius: 100,
-        borderColor: 'white'
-    },
     addText: {
         color: 'white',
         textAlign: 'center',
