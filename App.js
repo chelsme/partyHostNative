@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, NavigatorIOS, StyleSheet, ImageBackground, Image, TouchableOpacity, Text, AlertIOS } from 'react-native';
+import { View, NavigatorIOS, StyleSheet, ImageBackground, Image, TouchableOpacity, Text, AlertIOS, TextInput } from 'react-native';
 import HomeScreen from './screens/HomeScreen'
 import HostTabNavigator from './navigation/HostTabNavigator'
 import ProfileScreen from './screens/HostScreens/ProfileScreen';
@@ -11,8 +11,27 @@ export default class App extends React.Component {
 		this.state = {
 			loggedIn: false,
 			name: null,
-			userID: null
+			userID: null,
+			loginShow: false,
+			signUpShow: false,
+			name: "",
+			userName: "",
+			password: "",
+			passwordVerify: "",
+			loginUserName: "",
+			loginPassword: "",
+			allUsers: null,
 		}
+	}
+
+	componentDidMount() {
+		fetch('http://localhost:3000/guests')
+			.then(resp => resp.json())
+			.then(data => {
+				this.setState({
+					allUsers: data
+				})
+			})
 	}
 
 	async logInFB() {
@@ -59,6 +78,108 @@ export default class App extends React.Component {
 		})
 	}
 
+	show = (button) => {
+		switch (button) {
+			case 'login':
+				this.setState({
+					loginShow: !this.state.loginShow,
+					signUpShow: false
+				})
+				break;
+			case 'signup':
+				this.setState({
+					signUpShow: !this.state.signUpShow,
+					loginShow: false
+				})
+				break;
+			default:
+				console.log('broke it')
+		}
+	}
+
+	submit = (button) => {
+		switch (button) {
+			case 'login':
+				sessionUser = this.state.allUsers.find((user) => {
+					return user.username === this.state.loginUserName && user.password === this.state.loginPassword
+				})
+				sessionUser && this.state.loginUserName !== "" && this.state.loginPassword !== "" ?
+					this.setState({
+						userID: sessionUser.id,
+						loggedIn: true
+					})
+					: AlertIOS.alert('Incorrect Username or Password')
+				break;
+			case 'signup':
+				sessionUser = this.state.allUsers.find((user) => {
+					return user.username === this.state.UserName || user.name === this.state.name
+				})
+				if (sessionUser) {
+					AlertIOS.alert('Selected name or username already in use.')
+				} else if (this.state.password !== this.state.passwordVerify) {
+					AlertIOS.alert('Passwords do not match.')
+				} else if (this.state.name !== "" && this.state.userName !== "" && this.state.password !== "") {
+					fetch('http://localhost:3000/guests', {
+						method: 'POST', // or 'PUT'
+						body: JSON.stringify({
+							name: `${this.state.name}`,
+							username: this.state.userName,
+							password: this.state.password
+						}), // data can be `string` or {object}!
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					})
+						.then(resp => resp.json())
+						.then(data => {
+							this.setState({
+								userID: data.id,
+								loggedIn: true
+							})
+						})
+				}
+				break;
+			default:
+				console.log('broke it')
+		}
+	}
+
+	handleloginUserName = (typedText) => {
+		this.setState({
+			loginUserName: typedText
+		})
+	}
+
+	handleloginPassword = (typedText) => {
+		this.setState({
+			loginPassword: typedText
+		})
+	}
+
+	handleSignUpName = (typedText) => {
+		this.setState({
+			name: typedText
+		})
+	}
+
+	handleSignUpUsername = (typedText) => {
+		this.setState({
+			userName: typedText
+		})
+	}
+
+	handleSignUpPassword = (typedText) => {
+		this.setState({
+			password: typedText
+		})
+	}
+
+	handleSignUpPasswordVerify = (typedText) => {
+		this.setState({
+			passwordVerify: typedText
+		})
+	}
+
 	logInAmanda = () => {
 		this.setState({
 			loggedIn: true,
@@ -82,6 +203,8 @@ export default class App extends React.Component {
 					<ImageBackground source={require('./assets/bckgd.jpg')} style={{ width: '100%', height: '120%' }}>
 						<View style={{ display: "flex", alignItems: "center" }}>
 							<Image source={require('./assets/dancehostwhite.png')} style={styles.image} />
+
+							{/* login with facebook */}
 							<TouchableOpacity style={styles.textButton}>
 								<Text
 									onPress={this.logInFB.bind(this)}
@@ -91,6 +214,87 @@ export default class App extends React.Component {
 								>Facebook Login
                     			</Text>
 							</TouchableOpacity>
+
+							{/* login with username */}
+							<TouchableOpacity style={styles.textButton}>
+								<Text
+									onPress={() => this.show("login")}
+									title="Login with Username"
+									style={styles.text}
+									accessibilityLabel="Login with Username"
+								>Username Login
+                    </Text>
+							</TouchableOpacity>
+
+							{/* hidden input fields */}
+							<TextInput
+								style={{ display: this.state.loginShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								placeholder='Username'
+								onChangeText={this.handleloginUserName}
+								value={this.state.loginUserName}
+							/>
+							<TextInput
+								style={{ display: this.state.loginShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								placeholder='Password'
+								onChangeText={this.handleloginPassword}
+								value={this.state.loginPassword}
+							/>
+							<TouchableOpacity style={{ display: this.state.loginShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								onPress={() => this.submit("login")}>
+								<Text
+									title="Login"
+									style={styles.text}
+									accessibilityLabel="Login"
+								>Login
+                    </Text>
+							</TouchableOpacity>
+
+							{/* sign up */}
+							<TouchableOpacity style={styles.textButton}>
+								<Text
+									onPress={() => this.show('signup')}
+									title="Sign Up"
+									style={styles.text}
+									accessibilityLabel="Sign Up"
+								>Sign Up
+                    </Text>
+							</TouchableOpacity>
+
+							{/* hidden input fields */}
+							<TextInput
+								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								placeholder='Full Name'
+								onChangeText={this.handleSignUpName}
+								value={this.state.name}
+							/>
+							<TextInput
+								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								placeholder='Username'
+								onChangeText={this.handleSignUpUsername}
+								value={this.state.userName}
+							/>
+							<TextInput
+								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								placeholder='Password'
+								onChangeText={this.handleSignUpPassword}
+								value={this.state.password}
+							/>
+							<TextInput
+								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								placeholder='Password'
+								onChangeText={this.handleSignUpPasswordVerify}
+								value={this.state.passwordVerify}
+							/>
+							<TouchableOpacity style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								onPress={() => this.submit("signup")}>
+								<Text
+									title="Sign Up"
+									style={styles.text}
+									accessibilityLabel="Sign Up"
+								>Sign Up
+                    </Text>
+							</TouchableOpacity>
+
 							<TouchableOpacity style={styles.textButton}>
 								<Text
 									onPress={this.logInAmanda}
@@ -113,7 +317,8 @@ const styles = StyleSheet.create({
 		resizeMode: 'cover', // or 'stretch'
 	},
 	image: {
-		marginTop: 60,
+		marginTop: 40,
+		marginBottom: 10,
 		width: 170,
 		height: 220,
 		overlayColor: "white",
@@ -123,18 +328,18 @@ const styles = StyleSheet.create({
 		backgroundColor: '#4d5a63',
 		opacity: 200,
 		width: 200,
-		height: 40,
+		height: 35,
 		borderWidth: 1,
 		textAlignVertical: "center",
 		borderRadius: 50,
 		borderWidth: 1,
 		borderColor: 'white',
-		margin: 50
+		marginTop: 6
 	},
 	text: {
 		color: 'white',
 		textAlign: 'center',
 		padding: 5,
-		fontSize: 20
+		fontSize: 16
 	}
 })

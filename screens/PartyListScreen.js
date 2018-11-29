@@ -26,23 +26,6 @@ export default class PartyListScreen extends React.Component {
     }
 
     makeRemoteRequest() {
-        // fetch('http://localhost:3000/parties')
-        //     .then(resp => resp.json())
-        //     .then(data => {
-        //         let hostingParties = data.filter((party) => {
-        //             return party.host_id === this.props.userID
-        //         })
-        //         let attendingParties = data.filter((party) => {
-        //             if (party.host_id !== this.props.userID && party.guests.filter((guest) => {
-        //                 return guest.id === this.props.userID
-        //             }) !== []) { return party }
-        //         })
-        //         console.log(attendingParties)
-        //         this.setState({
-        //             hostingParties: hostingParties,
-        //             attendingParties: attendingParties
-        //         })
-        //     })
         fetch(`http://localhost:3000/guests/${this.props.userID}`)
             .then(resp => resp.json())
             .then(data => {
@@ -211,7 +194,7 @@ export default class PartyListScreen extends React.Component {
                     value={this.state.newPartyLocation}
                 />
 
-                <TouchableOpacity style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                <TouchableOpacity style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1, marginBottom: 8 }}
                     onPress={this.handleSubmitParty}>
                     <Text
                         title="Create New Party"
