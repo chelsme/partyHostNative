@@ -110,6 +110,7 @@ export default class GuestsScreen extends React.Component {
     }
 
     render() {
+        let colorWheel = ['#006F13', '#014E59', '#910B00', '#914500']
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>
@@ -159,7 +160,18 @@ export default class GuestsScreen extends React.Component {
                 <ScrollView style={{ height: 400 }}>
                     {this.state.party ? this.state.party.guests.map((guest, index) => {
                         if (guest.id !== this.props.userID) {
-                            return <TouchableOpacity key={index} style={styles.textButton} onPress={() => { this.uninviteGuest(guest) }}>
+                            return <TouchableOpacity key={index} style={{
+                                opacity: 200,
+                                width: 200,
+                                height: 30,
+                                borderWidth: 1,
+                                textAlignVertical: "center",
+                                borderRadius: 5,
+                                borderWidth: 1,
+                                borderColor: 'black',
+                                marginBottom: 4,
+                                backgroundColor: colorWheel[index % 4]
+                            }} onPress={() => { this.uninviteGuest(guest) }}>
                                 <Text
                                     title={guest.name}
                                     style={styles.text}
@@ -181,18 +193,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#4d5a63',
         opacity: 200,
         width: 200,
-        height: 40,
+        height: 30,
         borderWidth: 1,
         textAlignVertical: "center",
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        margin: 2
+        marginBottom: 4
     },
     text: {
         color: 'white',
         textAlign: 'center',
         padding: 5,
-        fontSize: 20
+        fontSize: 16
     }
 })

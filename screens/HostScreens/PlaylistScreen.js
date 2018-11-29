@@ -155,7 +155,8 @@ export default class PlaylistScreen extends React.Component {
                 <ScrollView style={{ padding: 0, height: 400, width: 280 }} >
                     {
                         this.state.partyPlaylist ? this.state.partyPlaylist.map((song, index) => {
-                            return <Text
+                            console.log(index)
+                            return <View
                                 key={index}
                                 title={song.name}
                                 onPress={() => this.pressSong(song)}
@@ -163,12 +164,17 @@ export default class PlaylistScreen extends React.Component {
                                     color: 'white',
                                     padding: 10,
                                     fontSize: 16,
-                                    width: 300,
-                                    backgroundColor: index % 2 == 0 ? '#666666' : 'grey',
+                                    width: 280,
+                                    backgroundColor: index % 2 == 0 ? '#B9CF1B' : '#2E7F8B',
+                                    borderTopLeftRadius: index === 0 ? 4 : null,
+                                    borderTopRightRadius: index === 0 ? 4 : null,
+                                    borderBottomLeftRadius: index === this.state.partyPlaylist.length - 1 ? 4 : null,
+                                    borderBottomRightRadius: index === this.state.partyPlaylist.length - 1 ? 4 : null
                                 }}
                                 accessibilityLabel={`${song.name} by ${song.artist}`}
-                            >&#127925;    {song.name} - {song.artist}
-                            </Text>
+                            >
+                                <Text>&#127925;    {song.name} - {song.artist}</Text>
+                            </View>
                         }) : null
                     }
                 </ScrollView>
@@ -182,19 +188,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#4d5a63',
         opacity: 200,
         width: 200,
-        height: 40,
+        height: 30,
         borderWidth: 1,
         textAlignVertical: "center",
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        margin: 2
+        marginBottom: 4
     },
     text: {
         color: 'white',
         textAlign: 'center',
         padding: 5,
-        fontSize: 20
+        fontSize: 16
     },
     song: {
         color: 'blue',

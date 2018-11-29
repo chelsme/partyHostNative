@@ -98,7 +98,7 @@ export default class HostTabNavigator extends React.Component {
     }
 
     render() {
-        const partyList = <PartyListScreen changeTabs={this.changeTabs} userID={this.props.userID} getGuestList={this.getGuestList} hostID={this.hostID} />
+        const partyList = <PartyListScreen changeTabs={this.changeTabs} userID={this.props.userID} getGuestList={this.getGuestList} hostID={this.hostID} logOut={this.logOut} />
         return (
             this.state.selectedTab === 'partyList' ?
                 partyList
@@ -113,7 +113,7 @@ export default class HostTabNavigator extends React.Component {
                         </View>
                     </TabBarIOS.Item>
                     <TabBarIOS.Item
-                        title="Lists"
+                        title="Tasks"
                         selected={this.state.selectedTab === 'lists'}
                         icon={require('../assets/lists.png')}
                         onPress={() => this.changeTabs('lists', this.state.selectedParty, this.state.partyName)}>

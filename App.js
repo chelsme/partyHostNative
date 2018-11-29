@@ -111,13 +111,34 @@ export default class App extends React.Component {
 					: AlertIOS.alert('Incorrect Username or Password')
 				break;
 			case 'signup':
-				sessionUser = this.state.allUsers.find((user) => {
-					return user.username === this.state.UserName || user.name === this.state.name
+				let sessionUser = this.state.allUsers.find((user) => {
+					return user.name === this.state.name && user.password !== ""
+				})
+				let newSessionUser = this.state.allUsers.find((user) => {
+					return user.name === this.state.name && user.password === ""
 				})
 				if (sessionUser) {
 					AlertIOS.alert('Selected name or username already in use.')
 				} else if (this.state.password !== this.state.passwordVerify) {
 					AlertIOS.alert('Passwords do not match.')
+				} else if (newSessionUser) {
+					fetch(`http://localhost:3000/guests/${newSessionUser.id}`, {
+						method: 'PATCH', // or 'PUT'
+						body: JSON.stringify({
+							username: this.state.userName,
+							password: this.state.password
+						}), // data can be `string` or {object}!
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					})
+						.then(resp => resp.json())
+						.then(data => {
+							this.setState({
+								userID: data.id,
+								loggedIn: true
+							})
+						})
 				} else if (this.state.name !== "" && this.state.userName !== "" && this.state.password !== "") {
 					fetch('http://localhost:3000/guests', {
 						method: 'POST', // or 'PUT'
@@ -187,12 +208,6 @@ export default class App extends React.Component {
 			userID: 2
 		})
 	}
-
-	// setUser = (name) => {
-	//   this.setState({
-	//     user: name
-	//   })
-	// }
 
 	render() {
 		return (

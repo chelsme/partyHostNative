@@ -147,11 +147,15 @@ export default class PartyListScreen extends React.Component {
     }
 
     render() {
+        let hostColorWheel = ['#FF7400', '#FFAA00', '#009999', '#1240AB']
+        let guestColorWheel = ['#092871', '#A84C00', '#A87000', '#006565']
         return (
             <View style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
-                <Text style={{ textAlign: "right", marginBottom: 5, fontSize: 10, textDecorationLine: 'underline', paddingRight: 20 }}>Logout</Text>
+                <Text style={{ textAlign: "right", marginBottom: 5, fontSize: 10, textDecorationLine: 'underline', paddingRight: 20 }}
+                    onPress={this.props.logOut}
+                >Logout</Text>
                 <View style={{ alignItems: "center" }} >
-                    <Text style={{ textAlign: "center", margin: 10, fontSize: 30, textDecorationLine: 'underline' }}>PARTIES</Text>
+                    <Text style={{ textAlign: "center", margin: 5, fontSize: 24, textDecorationLine: 'underline' }}>PARTIES</Text>
 
                     {/* create new party */}
                     < TouchableOpacity onPress={this.addParty}>
@@ -200,33 +204,40 @@ export default class PartyListScreen extends React.Component {
                     </TouchableOpacity>
 
                     {/* view parties */}
-                    <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Hosting</Text>
+                    <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold" }}>Parties I'm Hosting</Text>
                     <ScrollView style={{ height: 200 }}>
                         {
                             this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
                                 return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
-                                    <Text
+                                    <View style={{
+                                        borderTopLeftRadius: 4, borderTopRightRadius: 4, backgroundColor: hostColorWheel[index % 4],
+                                    }}><Text
                                         title={party.name}
                                         style={styles.text}
                                         accessibilityLabel={party.name}
                                     >{party.name}
-                                    </Text>
-                                    <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text>
+                                        </Text>
+                                        <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text>
+                                    </View>
                                 </TouchableOpacity>
                             }) : null
                         }
                     </ScrollView>
-                    <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Invited To</Text>
+                    <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold", marginTop: 3 }}>Parties I'm Invited To</Text>
                     <ScrollView style={{ height: 200 }}>
                         {
                             this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
                                 return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
-                                    <Text
-                                        title={party.name}
-                                        style={styles.text}
-                                        accessibilityLabel={party.name}
-                                    >{party.name}
-                                    </Text>
+                                    <View style={{
+                                        borderTopLeftRadius: 4, borderTopRightRadius: 4, backgroundColor: guestColorWheel[index % 4],
+                                    }}>
+                                        <Text
+                                            title={party.name}
+                                            style={styles.text}
+                                            accessibilityLabel={party.name}
+                                        >{party.name}
+                                        </Text>
+                                    </View>
                                 </TouchableOpacity>
                             }) : null
                         }
@@ -247,7 +258,7 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         borderRadius: 5,
         borderWidth: 1,
-        borderColor: 'white',
+        borderColor: '#4d5a63',
         margin: 2
     },
     cancel: {
@@ -257,10 +268,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'black'
     },
     text: {
-        color: '#4d5a63',
+        color: 'black',
         textAlign: 'center',
         padding: 3,
-        fontSize: 16,
+        fontSize: 14,
         textDecorationLine: 'underline',
+        // borderTopLeftRadius: 45,
+        // borderTopRightRadius: 45
     }
 })

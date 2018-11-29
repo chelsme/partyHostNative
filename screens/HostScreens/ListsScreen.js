@@ -224,7 +224,7 @@ export default class ListsScreen extends React.Component {
     render() {
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
-                <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>LISTS</Text>
+                <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>TASKS</Text>
 
                 {this.props.userID === this.props.hostID ?
                     /* host add task */
@@ -312,8 +312,12 @@ export default class ListsScreen extends React.Component {
                                     color: 'white',
                                     padding: 6,
                                     fontSize: 16,
-                                    width: 300,
-                                    backgroundColor: index % 2 == 0 ? '#666666' : 'grey',
+                                    width: 280,
+                                    backgroundColor: index % 2 == 0 ? '#E97E25' : '#FFC34C',
+                                    borderTopLeftRadius: index === 0 ? 4 : null,
+                                    borderTopRightRadius: index === 0 ? 4 : null,
+                                    borderBottomLeftRadius: index === this.state.partyTasks.length - 1 ? 4 : null,
+                                    borderBottomRightRadius: index === this.state.partyTasks.length - 1 ? 4 : null
                                 }}
                                 accessibilityLabel={task.guest.name !== '' ? `${task.action} assigned to ${task.guest.name}` : `${task.action} is unassigned`}
                             >
@@ -348,19 +352,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#4d5a63',
         opacity: 200,
         width: 200,
-        height: 40,
+        height: 30,
         borderWidth: 1,
         textAlignVertical: "center",
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        margin: 2
+        marginBottom: 4
     },
     text: {
         color: 'white',
         textAlign: 'center',
         padding: 5,
-        fontSize: 14
+        fontSize: 16
     },
     subtext: {
         color: 'white',
