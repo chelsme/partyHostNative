@@ -12,7 +12,8 @@ export default class ListsScreen extends React.Component {
             task: '',
             taskGuest: '',
             guestNames: [],
-            self: {}
+            self: {},
+            guestCount: 0
         }
     }
 
@@ -40,7 +41,8 @@ export default class ListsScreen extends React.Component {
                     taskGuest: '',
                     addTaskShow: false,
                     guestNames: guestNames,
-                    self: self
+                    self: self,
+                    guestCount: guestNames.length
                 })
             })
     }
@@ -138,8 +140,8 @@ export default class ListsScreen extends React.Component {
                 {
                     text: 'Reassign', onPress: () => {
                         AlertIOS.prompt(
-                            'Enter password',
-                            'Enter your password to claim your $1.5B in lottery winnings',
+                            'Assign/Reassign Task',
+                            `Assign ${task.action} to...`,
                             [
                                 { text: 'Cancel', style: 'cancel' },
                                 {
@@ -323,8 +325,9 @@ export default class ListsScreen extends React.Component {
                                     }
                                     <Text>{task.action}</Text>
                                 </Text>
-                                {console.log(this.props.guests)}
-                                {task.guest.name !== '' && this.state.guestNames.includes(task.guest.name)
+                                {task.guest.name !== '' && this.props.guests.find((guest) => {
+                                    return task.guest.name === guest.name
+                                })
                                     ? <Text style={styles.subtext}>        {task.guest.name}</Text>
                                     : <Text style={styles.subtext}>        unassigned</Text>
                                 }
