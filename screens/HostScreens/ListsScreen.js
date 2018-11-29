@@ -319,7 +319,9 @@ export default class ListsScreen extends React.Component {
                             >
                                 <Text
                                     onPress={() => this.pressTask(task)}>
-                                    {task.guest.name !== '' && this.props.guests.includes(task.guest.name)
+                                    {task.guest.name !== '' && this.props.guests.find((guest) => {
+                                        return task.guest.name === guest.name
+                                    })
                                         ? <Text>&#10003;  </Text>
                                         : <Text>&#9675;  </Text>
                                     }

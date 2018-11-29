@@ -148,94 +148,90 @@ export default class PartyListScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
-                <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>PARTIES</Text>
+            <View style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
+                <Text style={{ textAlign: "right", marginBottom: 5, fontSize: 10, textDecorationLine: 'underline', paddingRight: 20 }}>Logout</Text>
+                <View style={{ alignItems: "center" }} >
+                    <Text style={{ textAlign: "center", margin: 10, fontSize: 30, textDecorationLine: 'underline' }}>PARTIES</Text>
 
-                {/* create new party */}
-                < TouchableOpacity onPress={this.addParty}>
-                    {/* <Text
-                        onPress={this.addParty}
-                        title="Add Party"
-                        style={styles.addText}
-                        accessibilityLabel="Add Party"
-                    >+
-                    </Text> */}
-                    <Image
-                        style={{ width: 50, height: 50, marginBottom: 12 }}
-                        source={require('../assets/cupcake.png')}
-                        onPress={this.addParty}
+                    {/* create new party */}
+                    < TouchableOpacity onPress={this.addParty}>
+                        <Image
+                            style={{ width: 50, height: 50, marginBottom: 12 }}
+                            source={require('../assets/cupcakeadd.png')}
+                            onPress={this.addParty}
+                        />
+                    </TouchableOpacity >
+
+
+                    {/* hidden input fields CREATE PARTY */}
+                    < TextInput
+                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        placeholder='Party Name'
+                        onChangeText={this.handleChangePartyName}
+                        value={this.state.newPartyName}
                     />
-                </TouchableOpacity >
+                    <TextInput
+                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        placeholder='Party Date'
+                        onChangeText={this.handleChangePartyDate}
+                        value={this.state.newPartyDate}
+                    />
+                    <TextInput
+                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        placeholder='Party Time'
+                        onChangeText={this.handleChangePartyTime}
+                        value={this.state.newPartyTime}
+                    />
+                    <TextInput
+                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        placeholder='Party Location'
+                        onChangeText={this.handleChangePartyLocation}
+                        value={this.state.newPartyLocation}
+                    />
 
-
-                {/* hidden input fields CREATE PARTY */}
-                < TextInput
-                    style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='Party Name'
-                    onChangeText={this.handleChangePartyName}
-                    value={this.state.newPartyName}
-                />
-                <TextInput
-                    style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='Party Date'
-                    onChangeText={this.handleChangePartyDate}
-                    value={this.state.newPartyDate}
-                />
-                <TextInput
-                    style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='Party Time'
-                    onChangeText={this.handleChangePartyTime}
-                    value={this.state.newPartyTime}
-                />
-                <TextInput
-                    style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                    placeholder='Party Location'
-                    onChangeText={this.handleChangePartyLocation}
-                    value={this.state.newPartyLocation}
-                />
-
-                <TouchableOpacity style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1, marginBottom: 8 }}
-                    onPress={this.handleSubmitParty}>
-                    <Text
-                        title="Create New Party"
-                        style={styles.text}
-                        accessibilityLabel="Create New Party"
-                    >Create New Party
+                    <TouchableOpacity style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1, marginBottom: 8 }}
+                        onPress={this.handleSubmitParty}>
+                        <Text
+                            title="Create New Party"
+                            style={styles.text}
+                            accessibilityLabel="Create New Party"
+                        >Create New Party
                     </Text>
-                </TouchableOpacity>
+                    </TouchableOpacity>
 
-                {/* view parties */}
-                <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Hosting</Text>
-                <ScrollView style={{ height: 200 }}>
-                    {
-                        this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
-                            return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
-                                <Text
-                                    title={party.name}
-                                    style={styles.text}
-                                    accessibilityLabel={party.name}
-                                >{party.name}
-                                </Text>
-                                <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text>
-                            </TouchableOpacity>
-                        }) : null
-                    }
-                </ScrollView>
-                <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Invited To</Text>
-                <ScrollView style={{ height: 200 }}>
-                    {
-                        this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
-                            return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
-                                <Text
-                                    title={party.name}
-                                    style={styles.text}
-                                    accessibilityLabel={party.name}
-                                >{party.name}
-                                </Text>
-                            </TouchableOpacity>
-                        }) : null
-                    }
-                </ScrollView>
+                    {/* view parties */}
+                    <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Hosting</Text>
+                    <ScrollView style={{ height: 200 }}>
+                        {
+                            this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
+                                return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
+                                    <Text
+                                        title={party.name}
+                                        style={styles.text}
+                                        accessibilityLabel={party.name}
+                                    >{party.name}
+                                    </Text>
+                                    <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text>
+                                </TouchableOpacity>
+                            }) : null
+                        }
+                    </ScrollView>
+                    <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Invited To</Text>
+                    <ScrollView style={{ height: 200 }}>
+                        {
+                            this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
+                                return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
+                                    <Text
+                                        title={party.name}
+                                        style={styles.text}
+                                        accessibilityLabel={party.name}
+                                    >{party.name}
+                                    </Text>
+                                </TouchableOpacity>
+                            }) : null
+                        }
+                    </ScrollView>
+                </View>
             </View >
         );
     }
@@ -246,7 +242,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         opacity: 200,
         width: 200,
-        height: 80,
+        height: 65,
         borderWidth: 1,
         textAlignVertical: "center",
         borderRadius: 5,
