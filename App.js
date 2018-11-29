@@ -228,12 +228,15 @@ export default class App extends React.Component {
 
 							{/* hidden input fields */}
 							<TextInput
+								autoCapitalize='none'
 								style={{ display: this.state.loginShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
 								placeholder='Username'
 								onChangeText={this.handleloginUserName}
 								value={this.state.loginUserName}
 							/>
 							<TextInput
+								autoCapitalize='none'
+								secureTextEntry={true}
 								style={{ display: this.state.loginShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
 								placeholder='Password'
 								onChangeText={this.handleloginPassword}
@@ -268,20 +271,25 @@ export default class App extends React.Component {
 								value={this.state.name}
 							/>
 							<TextInput
+								autoCapitalize='none'
 								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
 								placeholder='Username'
 								onChangeText={this.handleSignUpUsername}
 								value={this.state.userName}
 							/>
 							<TextInput
+								autoCapitalize='none'
+								secureTextEntry={true}
 								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
 								placeholder='Password'
 								onChangeText={this.handleSignUpPassword}
 								value={this.state.password}
 							/>
 							<TextInput
+								autoCapitalize='none'
+								secureTextEntry={true}
 								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-								placeholder='Password'
+								placeholder='Password Verify'
 								onChangeText={this.handleSignUpPasswordVerify}
 								value={this.state.passwordVerify}
 							/>

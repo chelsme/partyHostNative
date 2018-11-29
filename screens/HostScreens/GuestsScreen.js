@@ -41,14 +41,16 @@ export default class GuestsScreen extends React.Component {
     }
 
     handleChangeFirstName = (typedText) => {
+        let first = typedText[0].toUpperCase() + typedText.slice(1)
         this.setState({
-            firstName: typedText
+            firstName: first
         })
     }
 
     handleChangeLastName = (typedText) => {
+        let last = typedText[0].toUpperCase() + typedText.slice(1)
         this.setState({
-            lastName: typedText
+            lastName: last
         })
     }
 

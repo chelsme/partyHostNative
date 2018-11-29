@@ -246,6 +246,7 @@ export default class ListsScreen extends React.Component {
                             value={this.state.task}
                         />
                         <TextInput
+                            autoCapitalize='words'
                             style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
                             placeholder='Assign To...'
                             onChangeText={this.handleChangeTextTaskGuest}
