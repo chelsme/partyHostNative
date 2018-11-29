@@ -27,7 +27,7 @@ export default class ProfileScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
+            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 {this.state.party ?
                     <View>
                         <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>{this.state.party.name}</Text>

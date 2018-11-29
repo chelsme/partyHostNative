@@ -149,7 +149,7 @@ export default class HostTabNavigator extends React.Component {
                         selected={this.state.selectedTab === 'more'}
                         systemIcon='more'
                         onPress={() => this.changeTabs('more', this.state.selectedParty, this.state.partyName)}>
-                        <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
+                        <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                             <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>MORE</Text>
                             {this.props.userID === this.state.hostID ?
                                 <TouchableOpacity style={styles.textButton}>

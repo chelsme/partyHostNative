@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, Image, ScrollView } from 'react-native';
 import GuestsScreen from './HostScreens/GuestsScreen';
 
 
@@ -148,7 +148,7 @@ export default class PartyListScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", margin: 20 }} >
+            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>PARTIES</Text>
 
                 {/* create new party */}
@@ -206,45 +206,44 @@ export default class PartyListScreen extends React.Component {
 
                 {/* view parties */}
                 <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Hosting</Text>
-                {
-                    this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
-                        return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
-                            <Text
-                                title={party.name}
-                                style={styles.text}
-                                accessibilityLabel={party.name}
-                            >{party.name}
-                            </Text>
-                            <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text>
-                        </TouchableOpacity>
-                    }) : null
-                }
+                <ScrollView style={{ height: 200 }}>
+                    {
+                        this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
+                            return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
+                                <Text
+                                    title={party.name}
+                                    style={styles.text}
+                                    accessibilityLabel={party.name}
+                                >{party.name}
+                                </Text>
+                                <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text>
+                            </TouchableOpacity>
+                        }) : null
+                    }
+                </ScrollView>
                 <Text style={{ textDecorationLine: 'underline' }}>Parties I'm Invited To</Text>
-                {
-                    this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
-                        return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
-                            <Text
-                                title={party.name}
-                                style={styles.text}
-                                accessibilityLabel={party.name}
-                            >{party.name}
-                            </Text>
-                        </TouchableOpacity>
-                    }) : null
-                }
+                <ScrollView style={{ height: 200 }}>
+                    {
+                        this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
+                            return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
+                                <Text
+                                    title={party.name}
+                                    style={styles.text}
+                                    accessibilityLabel={party.name}
+                                >{party.name}
+                                </Text>
+                            </TouchableOpacity>
+                        }) : null
+                    }
+                </ScrollView>
             </View >
         );
     }
 }
 
 const styles = StyleSheet.create({
-    addText: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: 30,
-    },
     partyButton: {
-        backgroundColor: '#4d5a63',
+        backgroundColor: 'white',
         opacity: 200,
         width: 200,
         height: 80,
@@ -262,7 +261,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'black'
     },
     text: {
-        color: 'white',
+        color: '#4d5a63',
         textAlign: 'center',
         padding: 3,
         fontSize: 16,

@@ -115,7 +115,7 @@ export default class PlaylistScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", margin: 20 }} key={this.state.key}>
+            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>PLAYLIST</Text>
 
                 {/* add song to playlist */}

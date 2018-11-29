@@ -223,7 +223,7 @@ export default class ListsScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", margin: 20 }}>
+            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>LISTS</Text>
 
                 {this.props.userID === this.props.hostID ?

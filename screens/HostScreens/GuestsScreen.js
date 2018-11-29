@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, ScrollView } from 'react-native';
 
 export default class GuestsScreen extends React.Component {
     constructor(props) {
@@ -55,7 +55,11 @@ export default class GuestsScreen extends React.Component {
     }
 
     handleSubmitGuest = () => {
-        {
+        if (this.state.guests.find((guest) => {
+            return guest.name === `${this.state.firstName} ${this.state.lastName}`
+        })) {
+            AlertIOS.alert(`${this.state.firstName} ${this.state.lastName} is already invited.`)
+        } else if (this.state.firstName !== '' && this.state.lastName !== '') {
             this.state.firstName !== '' && this.state.lastName !== '' ?
                 fetch('http://localhost:3000/guests', {
                     method: 'POST', // or 'PUT'
@@ -107,7 +111,7 @@ export default class GuestsScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", margin: 20 }} >
+            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>
 
 
@@ -152,31 +156,21 @@ export default class GuestsScreen extends React.Component {
                         <Text style={{ textDecorationLine: 'underline' }}>Invited Guests</Text>
                     </View>
                     : null}
-
-                {this.state.party ? this.state.party.guests.map((guest, index) => {
-                    if (guest.id !== this.props.userID) {
-                        return <TouchableOpacity key={index} style={styles.textButton} onPress={() => { this.uninviteGuest(guest) }}>
-                            <Text
-                                title={guest.name}
-                                style={styles.text}
-                                accessibilityLabel={guest.name}
-                            >{guest.name}
-                            </Text>
-                        </TouchableOpacity>
-                    }
-                    else { return null }
-                }) : null}
-
-                {/* {this.props.selectedParty.guests.map((guest) => {
-                    return <Text>{guest.name}</Text>
-                })} */}
-
-                {/* <Button
-                    onPress={this.logout}
-                    title="Logout"
-                    color="#841584"
-                    accessibilityLabel="Logout"
-                /> */}
+                <ScrollView style={{ height: 400 }}>
+                    {this.state.party ? this.state.party.guests.map((guest, index) => {
+                        if (guest.id !== this.props.userID) {
+                            return <TouchableOpacity key={index} style={styles.textButton} onPress={() => { this.uninviteGuest(guest) }}>
+                                <Text
+                                    title={guest.name}
+                                    style={styles.text}
+                                    accessibilityLabel={guest.name}
+                                >{guest.name}
+                                </Text>
+                            </TouchableOpacity>
+                        }
+                        else { return null }
+                    }) : null}
+                </ScrollView>
             </View>
         );
     }
