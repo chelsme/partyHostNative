@@ -1,5 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView, TextInput, AlertIOS } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView, TextInput, AlertIOS, Picker } from 'react-native';
+import SearchBar from 'react-native-searchbar'
+import SearchableDropdown from 'react-native-searchable-dropdown';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
+
+
 
 export default class ListsScreen extends React.Component {
     constructor(props) {
@@ -11,9 +16,10 @@ export default class ListsScreen extends React.Component {
             addTaskShow: false,
             task: '',
             taskGuest: '',
-            guestNames: [],
+            guestNames: null,
             self: {},
-            guestCount: 0
+            guestCount: 0,
+            results: null
         }
     }
 
@@ -59,9 +65,9 @@ export default class ListsScreen extends React.Component {
         })
     }
 
-    handleChangeTextTaskGuest = (typedText) => {
+    handleChangeTextTaskGuest = (name) => {
         this.setState({
-            taskGuest: typedText
+            taskGuest: name
         })
     }
 
@@ -167,14 +173,11 @@ export default class ListsScreen extends React.Component {
     }
 
     guestTaskUpdate = (task) => {
-        console.log(task.guest.name)
         AlertIOS.alert(
             'some words',
             `other words ${task.action}?`,
             [{
                 text: 'Accept Task', onPress: () => {
-
-                    // console.log(`user: ${self.name}, task: ${task}`)
                     task.guest.name === "" ?
                         this.reassignTask(this.state.self.name, task)
                         : AlertIOS.alert("you can't steal an already assigned task!")
@@ -195,8 +198,6 @@ export default class ListsScreen extends React.Component {
             }
         })
             .then(resp => resp.json())
-            .then(console.log('it is done'))
-            // .then(alert(`${this.state.firstName} ${this.state.lastName} has been invited to your party.`))
             .then(setTimeout(() => this.makeRemoteRequest(), 200))
     }
 
@@ -214,7 +215,6 @@ export default class ListsScreen extends React.Component {
             }
         })
             .then(resp => resp.json())
-            .then(console.log('it is done'))
             .then(setTimeout(() => this.makeRemoteRequest(), 200))
             : AlertIOS.alert('Tasks can only be assigned to invited guests.')
     }
@@ -222,6 +222,7 @@ export default class ListsScreen extends React.Component {
 
 
     render() {
+        console.log(this.state.guestNames)
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>TASKS</Text>
@@ -229,7 +230,7 @@ export default class ListsScreen extends React.Component {
                 {this.props.userID === this.props.hostID ?
                     /* host add task */
                     /* add task to task list */
-                    <View>
+                    <View style={{ display: "flex", alignItems: "center" }} >
                         <TouchableOpacity style={styles.textButton}>
                             <Text
                                 onPress={this.addTask}
@@ -237,7 +238,7 @@ export default class ListsScreen extends React.Component {
                                 style={styles.text}
                                 accessibilityLabel="Add Task"
                             >Add Task
-                    </Text>
+                            </Text>
                         </TouchableOpacity>
 
                         {/* hidden input fields */}
@@ -247,13 +248,36 @@ export default class ListsScreen extends React.Component {
                             onChangeText={this.handleChangeTextTask}
                             value={this.state.task}
                         />
-                        <TextInput
-                            autoCapitalize='words'
-                            style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                            placeholder='Assign To...'
-                            onChangeText={this.handleChangeTextTaskGuest}
-                            value={this.state.taskGuest}
-                        />
+
+                        {/* ********************** searchable dropdown ********************** */}
+                        <SearchableDropdown
+                            onTextChange={(text) => console.log(text)}
+                            onItemSelect={(item) => this.handleChangeTextTaskGuest(item.name)}
+                            containerStyle={{
+                                padding: 5,
+                                display: this.state.addTaskShow ? 'flex' : 'none',
+                            }}
+                            textInputStyle={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                            itemStyle={{
+                                padding: 10,
+                                marginTop: 2,
+                                backgroundColor: '#ddd',
+                                borderColor: '#bbb',
+                                borderWidth: 1,
+                                borderRadius: 5
+                            }}
+                            itemTextStyle={{
+                                color: '#222'
+                            }}
+                            itemsContainerStyle={{
+                                maxHeight: 140
+                            }}
+                            items={this.props.guests}
+                            placeholder="Guest Names"
+                            resetValue={false}
+                            underlineColorAndroid='transparent' />
+                        {/* ********************** end searchable dropdown ********************** */}
+
                         <TouchableOpacity style={{ display: this.state.addTaskShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
                             onPress={this.handleSubmitTask}>
                             <Text
@@ -327,6 +351,7 @@ export default class ListsScreen extends React.Component {
                                         return task.guest.name === guest.name
                                     })
                                         ? <Text>&#10003;  </Text>
+                                        // <Ionicons name="md-checkmark-circle" size={28} style={{marginTop: 10}} color="green" />
                                         : <Text>&#9675;  </Text>
                                     }
                                     <Text>{task.action}</Text>
@@ -370,5 +395,12 @@ const styles = StyleSheet.create({
         color: 'white',
         marginTop: 3,
         fontSize: 11
+    },
+    textInputStyle: {
+        padding: 5,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        backgroundColor: 'white',
+        borderRadius: 5
     }
 })

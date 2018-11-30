@@ -155,11 +155,9 @@ export default class PlaylistScreen extends React.Component {
                 <ScrollView style={{ padding: 0, height: 400, width: 280 }} >
                     {
                         this.state.partyPlaylist ? this.state.partyPlaylist.map((song, index) => {
-                            console.log(index)
                             return <View
                                 key={index}
                                 title={song.name}
-                                onPress={() => this.pressSong(song)}
                                 style={{
                                     color: 'white',
                                     padding: 10,
@@ -173,7 +171,7 @@ export default class PlaylistScreen extends React.Component {
                                 }}
                                 accessibilityLabel={`${song.name} by ${song.artist}`}
                             >
-                                <Text>&#127925;    {song.name} - {song.artist}</Text>
+                                <Text onPress={() => this.pressSong(song)}>&#127925;    {song.name} - {song.artist}</Text>
                             </View>
                         }) : null
                     }

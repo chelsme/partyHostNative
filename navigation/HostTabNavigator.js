@@ -5,8 +5,8 @@ import {
 } from 'react-native';
 
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
-import Icon from 'react-native-vector-icons';
-// import Icon from 'react-native-icons'
+// import Icon from 'react-native-vector-icons';
+import Icon from 'react-native-icons'
 
 import GuestsScreen from '../screens/HostScreens/GuestsScreen'
 import HomeScreen from '../screens/HomeScreen'
@@ -78,7 +78,7 @@ export default class HostTabNavigator extends React.Component {
             'Cancel Party',
             `Would you like to cancel ${this.state.partyName}?`,
             [
-                { text: 'NO', onPress: () => AlertIOS.alert('phew!'), style: 'cancel' },
+                { text: 'NO', style: 'cancel' },
                 {
                     text: 'YES', onPress: () => {
                         fetch(`http://localhost:3000/parties/${party}`, {
@@ -103,7 +103,7 @@ export default class HostTabNavigator extends React.Component {
             this.state.selectedTab === 'partyList' ?
                 partyList
                 : <TabBarIOS>
-                    <TabBarIOS.Item
+                    {/* <TabBarIOS.Item
                         title="Guests"
                         selected={this.state.selectedTab === 'guests'}
                         icon={require('../assets/crowd.png')}
@@ -143,8 +143,17 @@ export default class HostTabNavigator extends React.Component {
                         <View>
                             <PlaylistScreen name={this.props.name} userID={this.props.userID} selectedParty={this.state.selectedParty} partyName={this.state.partyName} setSongCount={this.setSongCount} hostID={this.state.hostID} />
                         </View>
-                    </TabBarIOS.Item>
-                    <TabBarIOS.Item
+                    </TabBarIOS.Item> */}
+                    <Icon.TabBarItemIOS
+                        iconName={'home'}
+                        iconSize={20}
+                        onPress={() => this.changeTabs('more', this.state.selectedParty, this.state.partyName)}
+                        title="more"
+                        selected={this.state.selectedTab === 'more'}
+                    >
+                        <Text>Stuff</Text>
+                    </Icon.TabBarItemIOS>
+                    {/* <TabBarIOS.Item
                         title="more"
                         selected={this.state.selectedTab === 'more'}
                         systemIcon='more'
@@ -172,7 +181,7 @@ export default class HostTabNavigator extends React.Component {
                                 </Text>
                             </TouchableOpacity>
                         </View>
-                    </TabBarIOS.Item>
+                    </TabBarIOS.Item> */}
                 </TabBarIOS>
         )
     }

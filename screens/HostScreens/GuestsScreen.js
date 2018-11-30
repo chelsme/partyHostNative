@@ -41,14 +41,14 @@ export default class GuestsScreen extends React.Component {
     }
 
     handleChangeFirstName = (typedText) => {
-        let first = typedText[0].toUpperCase() + typedText.slice(1)
+        let first = typedText.length > 0 ? typedText[0].toUpperCase() + typedText.slice(1) : null
         this.setState({
             firstName: first
         })
     }
 
     handleChangeLastName = (typedText) => {
-        let last = typedText[0].toUpperCase() + typedText.slice(1)
+        let last = typedText.length > 0 ? typedText[0].toUpperCase() + typedText.slice(1) : null
         this.setState({
             lastName: last
         })
@@ -93,7 +93,7 @@ export default class GuestsScreen extends React.Component {
                 'Uninvite',
                 `Would you like to remove ${guest.name} from your party guest list?`,
                 [
-                    { text: 'NO', onPress: () => AlertIOS.alert('phew!'), style: 'cancel' },
+                    { text: 'NO', style: 'cancel' },
                     {
                         text: 'YES', onPress: () => { this.uninviteFetch(partyGuest[0].id) }
                     },

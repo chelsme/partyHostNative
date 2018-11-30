@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, Image, ScrollView } from 'react-native';
 import GuestsScreen from './HostScreens/GuestsScreen';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
+
 
 
 export default class PartyListScreen extends React.Component {
@@ -133,7 +135,7 @@ export default class PartyListScreen extends React.Component {
             'Cancel Party',
             `Would you like to cancel ${party.name}?`,
             [
-                { text: 'NO', onPress: () => alert('phew!'), style: 'cancel' },
+                { text: 'NO', style: 'cancel' },
                 {
                     text: 'YES', onPress: () => {
                         fetch(`http://localhost:3000/parties/${party.id}`, {
@@ -165,6 +167,7 @@ export default class PartyListScreen extends React.Component {
                             onPress={this.addParty}
                         />
                     </TouchableOpacity >
+                    <Ionicons name="md-checkmark-circle" size={32} color="green" />
 
 
                     {/* hidden input fields CREATE PARTY */}
