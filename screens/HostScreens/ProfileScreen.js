@@ -27,17 +27,24 @@ export default class ProfileScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
+            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
                 {this.state.party ?
                     <View>
-                        <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>{this.state.party.name}</Text>
-                        <Text style={{ textAlign: "center", margin: 20, fontSize: 25, textDecorationLine: 'underline' }}>{this.state.party.date} at {this.state.party.time}</Text>
-                        <Text style={{ textAlign: "center", margin: 20, fontSize: 20 }}>Location:&nbsp;{this.state.party.location}</Text>
-                        <Text style={{ textAlign: "center", margin: 12, fontSize: 18 }}>Guests Invited:&nbsp;
-                        {this.props.guests.length ? this.props.guests.length - 1 : this.state.party.guests.length - 1}</Text>
-                        <Text style={{ textAlign: "center", margin: 12, fontSize: 18 }}>Songs on Playlist:&nbsp;
-                        {this.props.songCount ? this.props.songCount : this.state.party.songs.length}</Text>
-                        <Text style={{ textAlign: "center", margin: 12, fontSize: 18 }}>Tasks Assigned:&nbsp;{this.props.taskCount ? this.props.taskCount : this.state.party.tasks.length}</Text>
+                        <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 20, margin: 5, marginTop: 20 }} >
+                            <Text style={{ textAlign: "center", fontSize: 20, textDecorationLine: 'underline', fontWeight: "bold" }}>{this.state.party.name}</Text>
+                        </View>
+                        <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
+                            <Text style={{ textAlign: "center", margin: 10, fontSize: 22 }}>Date: {this.state.party.date}</Text>
+                            <Text style={{ textAlign: "center", margin: 10, fontSize: 22 }}>Time: {this.state.party.time}</Text>
+                            <Text style={{ textAlign: "center", margin: 10, fontSize: 20 }}>Location:&nbsp;{this.state.party.location}</Text>
+                        </View>
+                        <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
+                            <Text style={{ textAlign: "center", margin: 8, fontSize: 18 }}>Guests Invited:&nbsp;
+                            {this.props.guests.length ? this.props.guests.length - 1 : this.state.party.guests.length - 1}</Text>
+                            <Text style={{ textAlign: "center", margin: 8, fontSize: 18 }}>Songs on Playlist:&nbsp;
+                            {this.props.songCount ? this.props.songCount : this.state.party.songs.length}</Text>
+                            <Text style={{ textAlign: "center", margin: 8, fontSize: 18 }}>Tasks Assigned:&nbsp;{this.props.taskCount ? this.props.taskCount : this.state.party.tasks.length}</Text>
+                        </View>
                     </View>
                     : null}
             </View>
