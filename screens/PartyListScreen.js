@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, Image, ScrollView } from 'react-native';
-import GuestsScreen from './HostScreens/GuestsScreen';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 
@@ -18,7 +17,7 @@ export default class PartyListScreen extends React.Component {
             newPartyDate: '',
             newPartyTime: '',
             newPartyLocation: '',
-            guests: ''
+            guests: '',
         }
     }
 
@@ -110,14 +109,6 @@ export default class PartyListScreen extends React.Component {
     }
     // end create new party
 
-    changeTabs = (party) => {
-        let partyID = party.id
-        let partyName = party.name
-        this.props.screenProps.setHostID(party.host_id)
-        this.props.screenProps.changeTabs('profile', partyID, partyName)
-        this.getGuestList(party.id)
-    }
-
     getGuestList = (id) => {
         fetch(`http://localhost:3000/parties/${id}`)
             .then(resp => resp.json())
@@ -127,6 +118,15 @@ export default class PartyListScreen extends React.Component {
                 })
                 this.sendGuestList(partyGuests)
             })
+    }
+
+    changeTabs = (party) => {
+        let partyID = party.id
+        let partyName = party.name
+        this.props.screenProps.setHostID(party.host_id)
+        this.props.screenProps.changeTabs('profile', partyID, partyName)
+        this.getGuestList(party.id)
+        this.props.navigation.navigate('Details')
     }
 
     cancelParty = (party) => {
@@ -150,7 +150,6 @@ export default class PartyListScreen extends React.Component {
     render() {
         let hostColorWheel = ['#FF7400', '#FFAA00', '#009999', '#1240AB']
         let guestColorWheel = ['#092871', '#A84C00', '#A87000', '#006565']
-        console.log(this.props.screenProps.selectedParty)
         return (
             <View style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "right", marginBottom: 5, fontSize: 10, textDecorationLine: 'underline', paddingRight: 20 }}
