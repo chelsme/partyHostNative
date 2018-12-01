@@ -17,7 +17,7 @@ export default class ProfileScreen extends React.Component {
             .then(resp => resp.json())
             .then(data => {
                 let setParty = data.find((party) => {
-                    return party.id === this.props.selectedParty
+                    return party.id === this.props.screenProps.selectedParty
                 })
                 this.setState({
                     party: setParty
@@ -40,10 +40,10 @@ export default class ProfileScreen extends React.Component {
                         </View>
                         <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
                             <Text style={{ textAlign: "center", margin: 8, fontSize: 18 }}>Guests Invited:&nbsp;
-                            {this.props.guests.length ? this.props.guests.length - 1 : this.state.party.guests.length - 1}</Text>
+                            {this.props.screenProps.guests.length ? this.props.screenProps.guests.length - 1 : this.state.party.guests.length - 1}</Text>
                             <Text style={{ textAlign: "center", margin: 8, fontSize: 18 }}>Songs on Playlist:&nbsp;
-                            {this.props.songCount ? this.props.songCount : this.state.party.songs.length}</Text>
-                            <Text style={{ textAlign: "center", margin: 8, fontSize: 18 }}>Tasks Assigned:&nbsp;{this.props.taskCount ? this.props.taskCount : this.state.party.tasks.length}</Text>
+                            {this.props.screenProps.songCount ? this.props.screenProps.songCount : this.state.party.songs.length}</Text>
+                            <Text style={{ textAlign: "center", margin: 8, fontSize: 18 }}>Tasks Assigned:&nbsp;{this.props.screenProps.taskCount ? this.props.screenProps.taskCount : this.state.party.tasks.length}</Text>
                         </View>
                     </View>
                     : null}

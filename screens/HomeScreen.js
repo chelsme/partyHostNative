@@ -10,7 +10,7 @@ export default class HomeScreen extends React.Component {
             // loginH: false,
             // loginG: false,
             userInfo: false,
-            loggedIn: this.props.loggedIn,
+            loggedIn: this.props.screenProps.loggedIn,
             userInfo: null
         }
     }
@@ -32,7 +32,7 @@ export default class HomeScreen extends React.Component {
     // }
 
     goToProfile = () => {
-        this.props.navigator.push({
+        this.props.screenProps.navigator.push({
             title: 'profileScreen',
             component: ProfileScreen,
             passProps: { myElement: 'some value' }

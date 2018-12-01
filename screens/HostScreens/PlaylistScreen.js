@@ -24,9 +24,9 @@ export default class PlaylistScreen extends React.Component {
             .then(resp => resp.json())
             .then(data => {
                 let partyPlaylist = data.filter((song) => {
-                    return song.party_id === this.props.selectedParty
+                    return song.party_id === this.props.screenProps.selectedParty
                 })
-                this.props.setSongCount(partyPlaylist.length)
+                this.props.screenProps.setSongCount(partyPlaylist.length)
                 this.setState({
                     allSongs: data,
                     partyPlaylist: partyPlaylist,
@@ -37,11 +37,11 @@ export default class PlaylistScreen extends React.Component {
     }
 
     // logout = () => {
-    //     this.props.navigator.popToTop();
+    //     this.props.screenProps.navigator.popToTop();
     // }
 
     // goToGuests = () => {
-    //     this.props.navigator.push({
+    //     this.props.screenProps.navigator.push({
     //         title: 'Guests',
     //         component: GuestsScreen,
     //     });
@@ -73,7 +73,7 @@ export default class PlaylistScreen extends React.Component {
                     body: JSON.stringify({
                         name: this.state.song,
                         artist: this.state.artist,
-                        party_id: this.props.selectedParty
+                        party_id: this.props.screenProps.selectedParty
                     }), // data can be `string` or {object}!
                     headers: {
                         'Content-Type': 'application/json'
@@ -93,7 +93,7 @@ export default class PlaylistScreen extends React.Component {
     }
 
     pressSong = (song) => {
-        this.props.hostID === this.props.userID ?
+        this.props.screenProps.hostID === this.props.screenProps.userID ?
             AlertIOS.alert(
                 'Remove Song from Playlist',
                 `Would you like to remove ${song.name} by ${song.artist} from the playlist?`,

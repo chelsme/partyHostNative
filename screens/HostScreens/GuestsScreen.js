@@ -22,9 +22,9 @@ export default class GuestsScreen extends React.Component {
             .then(resp => resp.json())
             .then(data => {
                 let setParty = data.find((party) => {
-                    return party.id === this.props.selectedParty
+                    return party.id === this.props.screenProps.selectedParty
                 })
-                this.props.getGuestList(setParty.guests)
+                this.props.screenProps.getGuestList(setParty.guests)
                 this.setState({
                     party: setParty,
                     guests: setParty.guests,
@@ -65,7 +65,7 @@ export default class GuestsScreen extends React.Component {
                     method: 'POST', // or 'PUT'
                     body: JSON.stringify({
                         name: `${this.state.firstName} ${this.state.lastName}`,
-                        party_id: this.props.selectedParty
+                        party_id: this.props.screenProps.selectedParty
                     }), // data can be `string` or {object}!
                     headers: {
                         'Content-Type': 'application/json'
@@ -86,9 +86,9 @@ export default class GuestsScreen extends React.Component {
 
     uninviteGuest = (guest) => {
         let partyGuest = guest.party_guests.filter((x) => {
-            return x.party_id === this.props.selectedParty
+            return x.party_id === this.props.screenProps.selectedParty
         })
-        this.props.hostID === this.props.userID ?
+        this.props.screenProps.hostID === this.props.screenProps.userID ?
             AlertIOS.alert(
                 'Uninvite',
                 `Would you like to remove ${guest.name} from your party guest list?`,
@@ -116,7 +116,7 @@ export default class GuestsScreen extends React.Component {
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>
 
 
-                {this.props.userID === this.props.hostID ?
+                {this.props.screenProps.userID === this.props.screenProps.hostID ?
                     <View style={{ display: "flex", alignItems: "center" }} >
                         {/* add guest to guest list */}
                         <TouchableOpacity style={styles.textButton}>
@@ -159,7 +159,7 @@ export default class GuestsScreen extends React.Component {
                     : null}
                 <ScrollView style={{ height: 400 }}>
                     {this.state.party ? this.state.party.guests.map((guest, index) => {
-                        if (guest.id !== this.props.userID) {
+                        if (guest.id !== this.props.screenProps.userID) {
                             return <TouchableOpacity key={index} style={{
                                 opacity: 200,
                                 width: 200,

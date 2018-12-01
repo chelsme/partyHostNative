@@ -9,8 +9,7 @@ export default class PartyListScreen extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            host_id: this.props.userID,
-            // allParties: null,
+            host_id: this.props.screenProps.userID,
             hostingParties: null,
             attendingParties: null,
             selectedParty: null,
@@ -28,14 +27,14 @@ export default class PartyListScreen extends React.Component {
     }
 
     makeRemoteRequest() {
-        fetch(`http://localhost:3000/guests/${this.props.userID}`)
+        fetch(`http://localhost:3000/guests/${this.props.screenProps.userID}`)
             .then(resp => resp.json())
             .then(data => {
                 let hostingParties = data.parties.filter((party) => {
-                    return party.host_id === this.props.userID
+                    return party.host_id === this.props.screenProps.userID
                 })
                 let attendingParties = data.parties.filter((party) => {
-                    return party.host_id !== this.props.userID
+                    return party.host_id !== this.props.screenProps.userID
                 })
                 this.setState({
                     hostingParties: hostingParties,
@@ -45,7 +44,7 @@ export default class PartyListScreen extends React.Component {
     }
 
     sendGuestList = (guests) => {
-        this.props.getGuestList(guests)
+        this.props.screenProps.getGuestList(guests)
     }
 
     // create new party
@@ -89,7 +88,7 @@ export default class PartyListScreen extends React.Component {
                         date: this.state.newPartyDate,
                         time: this.state.newPartyTime,
                         location: this.state.newPartyLocation,
-                        host_id: this.props.userID
+                        host_id: this.props.screenProps.userID
                     }), // data can be `string` or {object}!
                     headers: {
                         'Content-Type': 'application/json'
@@ -114,8 +113,8 @@ export default class PartyListScreen extends React.Component {
     changeTabs = (party) => {
         let partyID = party.id
         let partyName = party.name
-        this.props.hostID(party.host_id)
-        this.props.changeTabs('profile', partyID, partyName)
+        this.props.screenProps.setHostID(party.host_id)
+        this.props.screenProps.changeTabs('profile', partyID, partyName)
         this.getGuestList(party.id)
     }
 
@@ -151,10 +150,11 @@ export default class PartyListScreen extends React.Component {
     render() {
         let hostColorWheel = ['#FF7400', '#FFAA00', '#009999', '#1240AB']
         let guestColorWheel = ['#092871', '#A84C00', '#A87000', '#006565']
+        console.log(this.props.screenProps)
         return (
             <View style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "right", marginBottom: 5, fontSize: 10, textDecorationLine: 'underline', paddingRight: 20 }}
-                    onPress={this.props.logOut}
+                    onPress={this.props.screenProps.logOut}
                 >Logout</Text>
                 <View style={{ alignItems: "center" }} >
                     <Text style={{ textAlign: "center", margin: 5, fontSize: 24, textDecorationLine: 'underline' }}>PARTIES</Text>

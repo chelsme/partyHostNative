@@ -28,19 +28,19 @@ export default class ListsScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch(`http://localhost:3000/parties/${this.props.selectedParty}`)
+        fetch(`http://localhost:3000/parties/${this.props.screenProps.selectedParty}`)
             .then(resp => resp.json())
             .then(data => {
                 let partyTasks = data.tasks.filter((task) => {
-                    return task.party_id === this.props.selectedParty
+                    return task.party_id === this.props.screenProps.selectedParty
                 })
-                let guestNames = this.props.guests.map((guest) => {
+                let guestNames = this.props.screenProps.guests.map((guest) => {
                     return guest.name
                 })
-                let self = this.props.guests.find((guest) => {
-                    return guest.id === this.props.userID
+                let self = this.props.screenProps.guests.find((guest) => {
+                    return guest.id === this.props.screenProps.userID
                 })
-                this.props.setTaskCount(partyTasks.length)
+                this.props.screenProps.setTaskCount(partyTasks.length)
                 this.setState({
                     partyTasks: partyTasks,
                     task: '',
@@ -73,12 +73,12 @@ export default class ListsScreen extends React.Component {
 
     handleSubmitTask = () => {
         {
-            this.state.task !== '' && (this.props.guests.find((guest) => { return guest.name === this.state.taskGuest }) || this.state.taskGuest === '') ?
+            this.state.task !== '' && (this.props.screenProps.guests.find((guest) => { return guest.name === this.state.taskGuest }) || this.state.taskGuest === '') ?
                 fetch('http://localhost:3000/tasks', {
                     method: 'POST', // or 'PUT'
                     body: JSON.stringify({
                         action: this.state.task,
-                        party_id: this.props.selectedParty,
+                        party_id: this.props.screenProps.selectedParty,
                         guest_name: this.state.taskGuest
                     }), // data can be `string` or {object}!
                     headers: {
@@ -105,7 +105,7 @@ export default class ListsScreen extends React.Component {
             method: 'POST', // or 'PUT'
             body: JSON.stringify({
                 action: this.state.task,
-                party_id: this.props.selectedParty,
+                party_id: this.props.screenProps.selectedParty,
                 guest_name: this.state.self.name
             }), // data can be `string` or {object}!
             headers: {
@@ -118,7 +118,7 @@ export default class ListsScreen extends React.Component {
     }
 
     pressTask = (task) => {
-        this.props.userID === this.props.hostID ?
+        this.props.screenProps.userID === this.props.screenProps.hostID ?
             this.hostTaskUpdate(task)
             : this.guestTaskUpdate(task)
     }
@@ -202,7 +202,7 @@ export default class ListsScreen extends React.Component {
     }
 
     reassignTask = (taskGuest, task) => {
-        let newTaskGuest = this.props.guests.find((guest) => {
+        let newTaskGuest = this.props.screenProps.guests.find((guest) => {
             return guest.name === taskGuest
         })
         newTaskGuest ? fetch(`http://localhost:3000/tasks/${task.id}`, {
@@ -222,12 +222,12 @@ export default class ListsScreen extends React.Component {
 
 
     render() {
-        console.log(this.state.guestNames)
+        console.log(this.props.screenProps)
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>TASKS</Text>
 
-                {this.props.userID === this.props.hostID ?
+                {this.props.screenProps.userID === this.props.screenProps.hostID ?
                     /* host add task */
                     /* add task to task list */
                     <View style={{ display: "flex", alignItems: "center" }} >
@@ -272,7 +272,7 @@ export default class ListsScreen extends React.Component {
                             itemsContainerStyle={{
                                 maxHeight: 140
                             }}
-                            items={this.props.guests}
+                            items={this.props.screenProps.guests}
                             placeholder="Guest Names"
                             resetValue={false}
                             underlineColorAndroid='transparent' />
@@ -347,7 +347,7 @@ export default class ListsScreen extends React.Component {
                             >
                                 <Text
                                     onPress={() => this.pressTask(task)}>
-                                    {task.guest.name !== '' && this.props.guests.find((guest) => {
+                                    {task.guest.name !== '' && this.props.screenProps.guests.find((guest) => {
                                         return task.guest.name === guest.name
                                     })
                                         ? <Text>&#10003;  </Text>
@@ -356,7 +356,7 @@ export default class ListsScreen extends React.Component {
                                     }
                                     <Text>{task.action}</Text>
                                 </Text>
-                                {task.guest.name !== '' && this.props.guests.find((guest) => {
+                                {task.guest.name !== '' && this.props.screenProps.guests.find((guest) => {
                                     return task.guest.name === guest.name
                                 })
                                     ? <Text style={styles.subtext}>        {task.guest.name}</Text>
