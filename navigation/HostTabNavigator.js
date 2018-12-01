@@ -3,7 +3,7 @@ import {
     StyleSheet, Text, View, Button, TextInput, AlertIOS,
     Image, TabBarIOS, TabBarItem, NavigatorIOS, TouchableOpacity
 } from 'react-native';
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
+import { createBottomTabNavigator, createSwitchNavigator } from 'react-navigation'
 
 import { Ionicons, FontAwesome, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,6 +15,16 @@ import ListsScreen from '../screens/HostScreens/ListsScreen'
 import PlaylistScreen from '../screens/HostScreens/PlaylistScreen'
 import ProfileScreen from '../screens/HostScreens/ProfileScreen'
 import PartyListScreen from '../screens/PartyListScreen';
+
+const SwitchNavigator = createSwitchNavigator(
+    {
+        Party: PartyListScreen,
+        Details: ProfileScreen,
+    },
+    {
+        initialRouteName: 'Party',
+    },
+);
 
 const LoginNavigator = createBottomTabNavigator({
     Guests:
@@ -106,22 +116,10 @@ const MainNavigator = createBottomTabNavigator({
             tabBarIcon: ({ tintColor }) => (
                 <MaterialCommunityIcons name="cupcake" color={tintColor} size={24} />
             ),
-            // tabBarOnPress: (navigation) => {
-            //     console.log(navigation.navigation.actions.navigate)
-            //     // navigation.actions.navigate('Playlist')
-            // },
-            // tabBarOnPress: ({ navigation }) => {
-            //     navigation.isFocused() ? console.log('yeah!') : console.log('naw')
-            // },
-            // tabBarOnPress: ({ navigation, defaultHandler }) => {
-            //     let parentNavigation = navigation.dangerouslyGetParent();
-            //     let prevRoute = ProfileScreen;
-            //     let nextRoute = PartyListScreen;
-            //     console.log({ prevRoute, nextRoute });
+            // tabBarOnPress: ({ navigation: onPressNavigation, defaultHandler }) => {
+            //     console.log('navigation#############################################', onPressNavigation);
             //     defaultHandler();
-            // },
-            // tabBarOnPress: ({ navigation }) => {
-            //     navigation.navigate({ routeName: PartyListScreen });
+            //     console.log('navigation2############################################', onPressNavigation);
             // },
         }
     },
@@ -244,6 +242,7 @@ export default class HostTabNavigator extends React.Component {
         return (
 
             <View style={{ flex: 1 }} >
+                {/* <SwitchNavigator screenProps={screenProps} /> */}
                 {this.state.selectedTab === 'partyList' ? <LoginNavigator screenProps={screenProps} />
                     : <MainNavigator screenProps={screenProps} />}
             </View>

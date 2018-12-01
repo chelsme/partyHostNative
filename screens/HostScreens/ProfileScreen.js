@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, LinearGradient } from 'react-native';
+import { StyleSheet, Text, View, Button, LinearGradient, TouchableOpacity } from 'react-native';
 import GuestsScreen from './GuestsScreen';
 
 
@@ -25,6 +25,10 @@ export default class ProfileScreen extends React.Component {
             })
     }
 
+    goToAllParties = () => {
+        this.props.navigation.navigate('Party')
+    }
+
     render() {
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
@@ -47,7 +51,37 @@ export default class ProfileScreen extends React.Component {
                         </View>
                     </View>
                     : null}
+                <TouchableOpacity style={styles.textButton}>
+                    <Text
+                        onPress={this.goToAllParties}
+                        title="View All Parties"
+                        style={styles.text}
+                        accessibilityLabel="View All Parties"
+                    >View All Parties
+                            </Text>
+                </TouchableOpacity>
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    textButton: {
+        backgroundColor: '#4d5a63',
+        opacity: 200,
+        width: 200,
+        height: 30,
+        borderWidth: 1,
+        textAlignVertical: "center",
+        borderRadius: 50,
+        borderWidth: 1,
+        borderColor: 'white',
+        marginBottom: 4
+    },
+    text: {
+        color: 'white',
+        textAlign: 'center',
+        padding: 5,
+        fontSize: 16
+    }
+})
