@@ -222,7 +222,7 @@ export default class ListsScreen extends React.Component {
 
 
     render() {
-        console.log(this.props.screenProps)
+        console.log(this.props.screenProps.selectedParty)
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>TASKS</Text>

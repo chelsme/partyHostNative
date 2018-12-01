@@ -26,6 +26,7 @@ export default class ProfileScreen extends React.Component {
     }
 
     render() {
+        console.log(this.props.screenProps.selectedParty)
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
                 {this.state.party ?

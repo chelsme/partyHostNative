@@ -150,7 +150,7 @@ export default class PartyListScreen extends React.Component {
     render() {
         let hostColorWheel = ['#FF7400', '#FFAA00', '#009999', '#1240AB']
         let guestColorWheel = ['#092871', '#A84C00', '#A87000', '#006565']
-        console.log(this.props.screenProps)
+        console.log(this.props.screenProps.selectedParty)
         return (
             <View style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "right", marginBottom: 5, fontSize: 10, textDecorationLine: 'underline', paddingRight: 20 }}
