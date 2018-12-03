@@ -17,12 +17,6 @@ export default class GuestsScreen extends React.Component {
         this.makeRemoteRequest()
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.selectedParty !== this.props.screenProps.selectedParty) {
-            this.makeRemoteRequest()
-        }
-    }
-
     makeRemoteRequest = () => {
         fetch('http://localhost:3000/parties')
             .then(resp => resp.json())
@@ -118,7 +112,7 @@ export default class GuestsScreen extends React.Component {
     render() {
         let colorWheel = ['#006F13', '#014E59', '#910B00', '#914500']
         return (
-            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
+            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>
 
 

@@ -19,12 +19,6 @@ export default class PlaylistScreen extends React.Component {
         this.makeRemoteRequest()
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.selectedParty !== this.props.screenProps.selectedParty) {
-            this.makeRemoteRequest()
-        }
-    }
-
     makeRemoteRequest = () => {
         fetch('http://localhost:3000/songs')
             .then(resp => resp.json())
@@ -41,6 +35,17 @@ export default class PlaylistScreen extends React.Component {
                 })
             })
     }
+
+    // logout = () => {
+    //     this.props.screenProps.navigator.popToTop();
+    // }
+
+    // goToGuests = () => {
+    //     this.props.screenProps.navigator.push({
+    //         title: 'Guests',
+    //         component: GuestsScreen,
+    //     });
+    // }
 
     addSong = () => {
         this.setState((state) => {
