@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { createBottomTabNavigator, createSwitchNavigator } from 'react-navigation'
 
-import { Ionicons, FontAwesome, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, MaterialCommunityIcons, Octicons, MaterialIcons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/Ionicons';
 // import Icon from 'react-native-icons'
 
@@ -16,73 +16,75 @@ import PlaylistScreen from '../screens/HostScreens/PlaylistScreen'
 import ProfileScreen from '../screens/HostScreens/ProfileScreen'
 import PartyListScreen from '../screens/PartyListScreen';
 
-const SwitchNavigator = createSwitchNavigator(
-    {
-        Party: PartyListScreen,
-        Details: ProfileScreen,
-    },
-    {
-        initialRouteName: 'Party',
-    },
-);
+// const SwitchNavigator = createSwitchNavigator(
+//     {
+//         Party: PartyListScreen,
+//         Details: ProfileScreen,
+//     },
+//     {
+//         initialRouteName: 'Party',
+//     },
+// );
 
-const LoginNavigator = createBottomTabNavigator({
-    Guests:
-    {
-        screen: GuestsScreen,
-        navigationOptions: {
-            tabBarLabel: 'Guests',
-            tabBarIcon: ({ tintColor }) => (
-                <Ionicons name="ios-people" color={tintColor} size={24} />
-            )
-        }
-    },
-    Tasks:
-    {
-        screen: ListsScreen,
-        navigationOptions: {
-            tabBarLabel: 'Tasks',
-            tabBarIcon: ({ tintColor }) => (
-                <Octicons name="checklist" color={tintColor} size={24} />
-            )
-        }
-    },
-    Party:
-    {
-        screen: PartyListScreen,
-        navigationOptions: {
-            tabBarLabel: 'Party',
-            tabBarIcon: ({ tintColor }) => (
-                <MaterialCommunityIcons name="cupcake" color={tintColor} size={24} />
-            ),
-            tabBarVisible: false,
-            // tabBarOnPress: (navigation) => {
-            //     console.log(navigation.navigation.actions.navigate)
-            //     // navigation.actions.navigate('Playlist')
-            // },
-        }
-    },
-    Playlist:
-    {
-        screen: PlaylistScreen,
-        navigationOptions: {
-            tabBarLabel: 'Playlist',
-            tabBarIcon: ({ tintColor }) => (
-                <Ionicons name="md-musical-notes" color={tintColor} size={24} />
-            )
-        }
-    },
-}, {
-        initialRouteName: 'Party',
-        // order: ['Guests', 'Tasks', 'Party', 'Playlist', 'Details'],
-        navigationOptions: {
-            tabBarVisible: true
-        },
-        tabBarOptions: {
-            activeTintColor: 'red',
-            inactiveTintColor: 'grey'
-        }
-    })
+
+
+// const LoginNavigator = createBottomTabNavigator({
+//     Guests:
+//     {
+//         screen: GuestsScreen,
+//         navigationOptions: {
+//             tabBarLabel: 'Guests',
+//             tabBarIcon: ({ tintColor }) => (
+//                 <Ionicons name="ios-people" color={tintColor} size={24} />
+//             )
+//         }
+//     },
+//     Tasks:
+//     {
+//         screen: ListsScreen,
+//         navigationOptions: {
+//             tabBarLabel: 'Tasks',
+//             tabBarIcon: ({ tintColor }) => (
+//                 <Octicons name="checklist" color={tintColor} size={24} />
+//             )
+//         }
+//     },
+//     Party:
+//     {
+//         screen: PartyListScreen,
+//         navigationOptions: {
+//             tabBarLabel: 'Party',
+//             tabBarIcon: ({ tintColor }) => (
+//                 <MaterialCommunityIcons name="cupcake" color={tintColor} size={24} />
+//             ),
+//             tabBarVisible: false,
+//             tabBarOnPress: ({ navigation: onPressNavigation, defaultHandler }) => {
+//                 console.log('navigation#############################################', onPressNavigation.isFocused());
+//                 onPressNavigation.isFocused() ? onPressNavigation.navigate('Details') : null
+//             },
+//         }
+//     },
+//     Playlist:
+//     {
+//         screen: PlaylistScreen,
+//         navigationOptions: {
+//             tabBarLabel: 'Playlist',
+//             tabBarIcon: ({ tintColor }) => (
+//                 <Ionicons name="md-musical-notes" color={tintColor} size={24} />
+//             )
+//         }
+//     },
+// }, {
+//         initialRouteName: 'Party',
+//         // order: ['Guests', 'Tasks', 'Party', 'Playlist', 'Details'],
+//         navigationOptions: {
+//             tabBarVisible: true
+//         },
+//         tabBarOptions: {
+//             activeTintColor: 'red',
+//             inactiveTintColor: 'grey'
+//         }
+//     })
 
 
 
@@ -110,16 +112,29 @@ const MainNavigator = createBottomTabNavigator({
     },
     Party:
     {
+        screen: PartyListScreen,
+        navigationOptions: {
+            tabBarLabel: 'All Parties',
+            tabBarIcon: ({ tintColor }) => (
+                <MaterialIcons name="whatshot" color={tintColor} size={24} />
+            ),
+            tabBarVisible: false,
+            // tabBarOnPress: ({ navigation: onPressNavigation, defaultHandler }) => {
+            //     console.log('navigation#############################################', onPressNavigation.isFocused());
+            //     // onPressNavigation.isFocused() ? onPressNavigation.navigate('Details') : null
+            // },
+        }
+    },
+    Details:
+    {
         screen: ProfileScreen,
         navigationOptions: {
-            tabBarLabel: 'Party',
+            tabBarLabel: 'Details',
             tabBarIcon: ({ tintColor }) => (
                 <MaterialCommunityIcons name="cupcake" color={tintColor} size={24} />
             ),
             // tabBarOnPress: ({ navigation: onPressNavigation, defaultHandler }) => {
-            //     console.log('navigation#############################################', onPressNavigation);
-            //     defaultHandler();
-            //     console.log('navigation2############################################', onPressNavigation);
+            //     onPressNavigation.isFocused() ? onPressNavigation.navigate('Party') : onPressNavigation.navigate('Details')
             // },
         }
     },
@@ -135,15 +150,30 @@ const MainNavigator = createBottomTabNavigator({
     },
 }, {
         initialRouteName: 'Party',
-        // order: ['Guests', 'Tasks', 'Party', 'Playlist', 'Details'],
+        order: ['Guests', 'Tasks', 'Details', 'Playlist', 'Party'],
         navigationOptions: {
             tabBarVisible: true
         },
         tabBarOptions: {
             activeTintColor: 'red',
-            inactiveTintColor: 'grey'
+            inactiveTintColor: 'grey',
         }
     })
+
+
+// const Nav = createBottomTabNavigator({
+//     tabBarComponent: ({ navigation, ...rest }) =>
+//         <MainNavigator
+//             {...rest}
+//             navigation={{
+//                 ...navigation,
+//                 state: {
+//                     ...navigation.state, routes: navigation.state.routes.filter(r => r.name !== 'Party')
+//                 }
+//             }}
+//         />,
+
+// })
 
 
 export default class HostTabNavigator extends React.Component {
@@ -217,7 +247,7 @@ export default class HostTabNavigator extends React.Component {
     }
 
     logOut = () => {
-        this.props.screenProps.logOut()
+        this.props.logOut()
     }
 
     render() {
@@ -243,8 +273,10 @@ export default class HostTabNavigator extends React.Component {
 
             <View style={{ flex: 1 }} >
                 {/* <SwitchNavigator screenProps={screenProps} /> */}
-                {this.state.selectedTab === 'partyList' ? <LoginNavigator screenProps={screenProps} />
-                    : <MainNavigator screenProps={screenProps} />}
+                {/* {this.state.selectedTab === 'partyList' ? <LoginNavigator screenProps={screenProps} />
+                    :  */}
+                <MainNavigator screenProps={screenProps} />
+                {/* } */}
             </View>
 
         );

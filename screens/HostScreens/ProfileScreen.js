@@ -26,6 +26,7 @@ export default class ProfileScreen extends React.Component {
     }
 
     goToAllParties = () => {
+        console.log(this.props)
         this.props.navigation.navigate('Party')
     }
 

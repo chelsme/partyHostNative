@@ -78,7 +78,7 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <View style={{ display: "flex", alignItems: "center" }}>
-                <Image source={require('../assets/dancehostwhite.png')} style={styles.image} />
+                <Image source={require('../assets/images/dancehostwhite.png')} style={styles.image} />
                 <TouchableOpacity style={styles.textButton}>
                     <Text
                         onPress={this.logInFB.bind(this)}

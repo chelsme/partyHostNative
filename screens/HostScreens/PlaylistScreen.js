@@ -20,7 +20,7 @@ export default class PlaylistScreen extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.screenProps.selectedParty !== this.props.screenProps.selectedParty) {
+        if (prevProps.selectedParty !== this.props.screenProps.selectedParty) {
             this.makeRemoteRequest()
         }
     }

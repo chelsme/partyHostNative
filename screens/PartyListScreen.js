@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, Image, ScrollView } from 'react-native';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
 
@@ -152,21 +153,24 @@ export default class PartyListScreen extends React.Component {
         let guestColorWheel = ['#092871', '#A84C00', '#A87000', '#006565']
         return (
             <View style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
-                <Text style={{ textAlign: "right", marginBottom: 5, fontSize: 10, textDecorationLine: 'underline', paddingRight: 20 }}
-                    onPress={this.props.screenProps.logOut}
-                >Logout</Text>
+                <View style={{ alignItems: 'flex-end' }}>
+                    <TouchableOpacity style={{ display: 'flex', width: 70, marginBottom: 5, fontSize: 14, marginRight: 20, marginTop: 5, borderRadius: 5, backgroundColor: 'grey', right: 0 }}>
+                        <Text style={{ textAlign: "center", fontSize: 14, textAlignVertical: "center", padding: 5 }}
+                            onPress={() => this.props.screenProps.logOut()}
+                        >Logout</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={{ alignItems: "center" }} >
-                    <Text style={{ textAlign: "center", margin: 5, fontSize: 24, textDecorationLine: 'underline' }}>PARTIES</Text>
+                    <Text style={{ textAlign: "center", margin: 5, marginTop: -10, fontSize: 24, textDecorationLine: 'underline' }}>PARTIES</Text>
 
                     {/* create new party */}
                     < TouchableOpacity onPress={this.addParty}>
                         <Image
                             style={{ width: 50, height: 50, marginBottom: 12 }}
-                            source={require('../assets/cupcakeadd.png')}
+                            source={require('../assets/images/cupcakeadd.png')}
                             onPress={this.addParty}
                         />
                     </TouchableOpacity >
-                    <Ionicons name="md-checkmark-circle" size={32} color="green" />
 
 
                     {/* hidden input fields CREATE PARTY */}
@@ -219,7 +223,10 @@ export default class PartyListScreen extends React.Component {
                                         accessibilityLabel={party.name}
                                     >{party.name}
                                         </Text>
-                                        <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text>
+                                        <TouchableOpacity style={{ marginLeft: 170 }}>
+                                            <MaterialIcons name="delete-forever" color='black' size={18} style={{ marginTop: -20, marginBottom: 4, textAlign: 'right', width: 18 }} onPress={() => this.cancelParty(party)} />
+                                        </TouchableOpacity>
+                                        {/* <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text> */}
                                     </View>
                                 </TouchableOpacity>
                             }) : null

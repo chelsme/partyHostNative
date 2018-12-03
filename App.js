@@ -215,9 +215,9 @@ export default class App extends React.Component {
 				{this.state.loggedIn ?
 					<HostTabNavigator logOut={this.logOut} name={this.state.name} userID={this.state.userID} />
 					:
-					<ImageBackground source={require('./assets/bckgd.jpg')} style={{ width: '100%', height: '120%' }}>
+					<ImageBackground source={require('./assets/images/bckgd.jpg')} style={{ width: '100%', height: '120%' }}>
 						<View style={{ display: "flex", alignItems: "center" }}>
-							<Image source={require('./assets/dancehostwhite.png')} style={styles.image} />
+							<Image source={require('./assets/images/dancehostwhite.png')} style={styles.image} />
 
 							{/* login with facebook */}
 							<TouchableOpacity style={styles.textButton}>
