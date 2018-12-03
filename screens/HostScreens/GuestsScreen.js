@@ -111,9 +111,10 @@ export default class GuestsScreen extends React.Component {
 
     render() {
         let colorWheel = ['#006F13', '#014E59', '#910B00', '#914500']
+        console.log(this.state.guests)
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
-                <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>GUESTS</Text>
+                <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline', color: 'white', fontWeight: "bold", fontFamily: "Verdana" }}>GUESTS</Text>
 
 
                 {this.props.screenProps.userID === this.props.screenProps.hostID ?
@@ -154,7 +155,7 @@ export default class GuestsScreen extends React.Component {
 
 
 
-                        <Text style={{ textDecorationLine: 'underline' }}>Invited Guests</Text>
+                        <Text style={{ textDecorationLine: 'underline', marginBottom: 10 }}>Invited Guests</Text>
                     </View>
                     : null}
                 <ScrollView style={{ height: 400 }}>
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        marginBottom: 4
+        marginBottom: 10
     },
     text: {
         color: 'white',

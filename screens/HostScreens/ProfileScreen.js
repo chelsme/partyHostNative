@@ -36,7 +36,7 @@ export default class ProfileScreen extends React.Component {
                 {this.state.party ?
                     <View>
                         <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 20, margin: 5, marginTop: 20 }} >
-                            <Text style={{ textAlign: "center", fontSize: 20, textDecorationLine: 'underline', fontWeight: "bold" }}>{this.state.party.name}</Text>
+                            <Text style={{ textAlign: "center", fontSize: 30, textDecorationLine: 'underline', fontWeight: "bold" }}>{this.state.party.name}</Text>
                         </View>
                         <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
                             <Text style={{ textAlign: "center", margin: 10, fontSize: 22 }}>Date: {this.state.party.date}</Text>
@@ -77,7 +77,8 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        marginBottom: 4
+        marginBottom: 10,
+        marginTop: 10
     },
     text: {
         color: 'white',

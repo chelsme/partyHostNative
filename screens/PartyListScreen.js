@@ -161,12 +161,12 @@ export default class PartyListScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{ alignItems: "center" }} >
-                    <Text style={{ textAlign: "center", margin: 5, marginTop: -10, fontSize: 24, textDecorationLine: 'underline' }}>PARTIES</Text>
+                    <Text style={{ textAlign: "center", margin: 5, marginTop: -5, fontSize: 30, textDecorationLine: 'underline', color: 'white', fontWeight: "bold", fontFamily: "Verdana" }}>PARTIES</Text>
 
                     {/* create new party */}
                     < TouchableOpacity onPress={this.addParty}>
                         <Image
-                            style={{ width: 50, height: 50, marginBottom: 12 }}
+                            style={{ width: 50, height: 50, marginBottom: 5 }}
                             source={require('../assets/images/cupcakeadd.png')}
                             onPress={this.addParty}
                         />
@@ -211,7 +211,7 @@ export default class PartyListScreen extends React.Component {
 
                     {/* view parties */}
                     <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold" }}>Parties I'm Hosting</Text>
-                    <ScrollView style={{ height: 200 }}>
+                    <ScrollView style={{ height: 190 }}>
                         {
                             this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
                                 return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
@@ -228,12 +228,15 @@ export default class PartyListScreen extends React.Component {
                                         </TouchableOpacity>
                                         {/* <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text> */}
                                     </View>
+                                    <Text style={{ textAlign: "center", fontSize: 14, marginTop: 2 }}>{party.date}</Text>
+                                    <Text style={{ textAlign: "center", fontSize: 10 }}>Click for more details...</Text>
                                 </TouchableOpacity>
                             }) : null
+
                         }
                     </ScrollView>
                     <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold", marginTop: 3 }}>Parties I'm Invited To</Text>
-                    <ScrollView style={{ height: 200 }}>
+                    <ScrollView style={{ height: 190 }}>
                         {
                             this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
                                 return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
@@ -247,6 +250,8 @@ export default class PartyListScreen extends React.Component {
                                         >{party.name}
                                         </Text>
                                     </View>
+                                    <Text style={{ textAlign: "center", fontSize: 14, marginTop: 2 }}>{party.date}</Text>
+                                    <Text style={{ textAlign: "center", fontSize: 10 }}>Click for more details...</Text>
                                 </TouchableOpacity>
                             }) : null
                         }

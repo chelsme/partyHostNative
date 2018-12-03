@@ -230,7 +230,7 @@ export default class ListsScreen extends React.Component {
     render() {
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
-                <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline' }}>TASKS</Text>
+                <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline', color: 'white', fontWeight: "bold", fontFamily: "Verdana" }}>TASKS</Text>
 
                 {this.props.screenProps.userID === this.props.screenProps.hostID ?
                     /* host add task */
@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        marginBottom: 4
+        marginBottom: 10
     },
     text: {
         color: 'white',
