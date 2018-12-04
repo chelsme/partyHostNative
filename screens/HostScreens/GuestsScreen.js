@@ -10,6 +10,7 @@ export default class GuestsScreen extends React.Component {
             addGuestShow: false,
             firstName: '',
             lastName: '',
+            rsvps: []
         }
     }
 
@@ -24,16 +25,23 @@ export default class GuestsScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch('http://localhost:3000/parties')
+        fetch(`http://localhost:3000/parties/${this.props.screenProps.selectedParty}`)
             .then(resp => resp.json())
             .then(data => {
-                let setParty = data.find((party) => {
-                    return party.id === this.props.screenProps.selectedParty
+                let rsvps = data.guests.filter((guest) => {
+                    let guestList = guest.party_guests.filter((partyGuest) => {
+                        // console.log('heyoooooo', partyGuest)
+                        return partyGuest.party_id === this.props.screenProps.selectedParty
+                    })
+                    this.setState({
+                        rsvps: [...this.state.rsvps, guestList]
+                    })
+                    return guestList
                 })
-                this.props.screenProps.getGuestList(setParty.guests)
+                this.props.screenProps.getGuestList(data.guests)
                 this.setState({
-                    party: setParty,
-                    guests: setParty.guests,
+                    party: data,
+                    guests: data.guests,
                     firstName: '',
                     lastName: ''
                 })
@@ -117,7 +125,8 @@ export default class GuestsScreen extends React.Component {
 
     render() {
         let colorWheel = ['#006F13', '#014E59', '#910B00', '#914500']
-        console.log(this.state.guests)
+        let rsvpArray = [].concat(...this.state.rsvps)
+        console.log('here it is......', rsvpArray)
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline', color: 'white', fontWeight: "bold", fontFamily: "Verdana" }}>GUESTS</Text>
@@ -130,10 +139,15 @@ export default class GuestsScreen extends React.Component {
                             <Text
                                 onPress={this.addGuest}
                                 title="Add Guest"
-                                style={styles.text}
+                                style={{
+                                    color: 'white',
+                                    padding: 5,
+                                    fontSize: 16,
+                                    textAlign: 'center'
+                                }}
                                 accessibilityLabel="Add Guest"
                             >Add Guest
-        </Text>
+                            </Text>
                         </TouchableOpacity>
 
                         {/* hidden input fields */}
@@ -156,36 +170,50 @@ export default class GuestsScreen extends React.Component {
                                 style={styles.text}
                                 accessibilityLabel="Invite Guest"
                             >Invite Guest
-                </Text>
+                            </Text>
                         </TouchableOpacity>
-
-
-
                         <Text style={{ textDecorationLine: 'underline', marginBottom: 10 }}>Invited Guests</Text>
                     </View>
                     : null}
                 <ScrollView style={{ height: 400 }}>
                     {this.state.party ? this.state.party.guests.map((guest, index) => {
+                        let partyRsvp = rsvpArray.find((rsvp) => {
+                            return rsvp.guest_id === guest.id
+                        })
                         if (guest.id !== this.props.screenProps.userID) {
-                            return <TouchableOpacity key={index} style={{
-                                opacity: 200,
-                                width: 200,
-                                height: 30,
-                                borderWidth: 1,
-                                textAlignVertical: "center",
-                                borderRadius: 5,
-                                borderWidth: 1,
-                                borderColor: 'black',
-                                marginBottom: 4,
-                                backgroundColor: colorWheel[index % 4]
-                            }} onPress={() => { this.uninviteGuest(guest) }}>
-                                <Text
-                                    title={guest.name}
-                                    style={styles.text}
-                                    accessibilityLabel={guest.name}
-                                >{guest.name}
-                                </Text>
-                            </TouchableOpacity>
+                            return <View key={index}>
+                                <TouchableOpacity style={{
+                                    opacity: 200,
+                                    width: 250,
+                                    height: 30,
+                                    borderWidth: 1,
+                                    textAlignVertical: "center",
+                                    borderRadius: 5,
+                                    borderWidth: 1,
+                                    borderColor: 'black',
+                                    marginBottom: 4,
+                                    backgroundColor: colorWheel[index % 4]
+                                }} onPress={() => { this.uninviteGuest(guest) }}>
+                                    <Text
+                                        title={guest.name}
+                                        style={styles.text}
+                                        accessibilityLabel={guest.name}
+                                    >{guest.name}
+                                    </Text>
+                                </TouchableOpacity>
+                                {/* <Text>{partyRsvp.RSVP}</Text> */}
+                                {(() => {
+                                    if (partyRsvp.RSVP === 'yes') {
+                                        return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: &#10003;</Text>
+                                    } else if (partyRsvp.RSVP === 'no') {
+                                        return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: X</Text>
+                                    } else if (partyRsvp.RSVP === 'maybe') {
+                                        return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: &#63;</Text>
+                                    } else if (partyRsvp.RSVP === 'tbd') {
+                                        return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: &#9675;</Text>
+                                    }
+                                })()}
+                            </View>
                         }
                         else { return null }
                     }) : null}
@@ -210,7 +238,6 @@ const styles = StyleSheet.create({
     },
     text: {
         color: 'white',
-        textAlign: 'center',
         padding: 5,
         fontSize: 16
     }

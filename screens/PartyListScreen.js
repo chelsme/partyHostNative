@@ -463,9 +463,6 @@ export default class PartyListScreen extends React.Component {
                                                 return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: &#9675;</Text>
                                             }
                                         })()}
-
-
-                                        {/* <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: {partyRsvp.RSVP}</Text> */}
                                     </View>
                                     <Text style={{ textAlign: "center", fontSize: 14, marginTop: 2 }}>{party.date}</Text>
                                     <Text style={{ textAlign: "center", fontSize: 10 }}>Click for more details...</Text>
