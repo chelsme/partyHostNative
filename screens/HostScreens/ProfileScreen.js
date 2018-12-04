@@ -8,7 +8,8 @@ export default class ProfileScreen extends React.Component {
         super(props)
 
         this.state = {
-            party: null
+            party: null,
+            rsvps: null
         }
     }
 
@@ -23,16 +24,24 @@ export default class ProfileScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch('http://localhost:3000/parties')
+        fetch(`http://localhost:3000/parties/${this.props.screenProps.selectedParty}`)
             .then(resp => resp.json())
             .then(data => {
-                let setParty = data.find((party) => {
-                    return party.id === this.props.screenProps.selectedParty
-                })
                 this.setState({
-                    party: setParty
+                    party: data
                 })
             })
+            .then(fetch('http://localhost:3000/party_guests')
+                .then(resp => resp.json())
+                .then(data => {
+                    let rsvps = data.filter((guest) => {
+                        return guest.party_id === this.props.screenProps.selectedParty
+                    })
+                    this.setState({
+                        rsvps: rsvps
+                    })
+                })
+            )
     }
 
     goToAllParties = () => {
@@ -41,39 +50,54 @@ export default class ProfileScreen extends React.Component {
     }
 
     render() {
+        console.log(this.state.rsvps)
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
                 {this.state.party ?
                     <View>
-                        <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 20, margin: 5, marginTop: 20 }} >
-                            <Text style={{ textAlign: "center", fontSize: 30, textDecorationLine: 'underline', fontWeight: "bold" }}>{this.state.party.name}</Text>
+                        <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 15, margin: 5, marginTop: 20 }} >
+                            <Text style={{ textAlign: "center", fontSize: 25, textDecorationLine: 'underline', fontWeight: "bold" }}>{this.state.party.name}</Text>
                         </View>
                         <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
-                            <Text style={{ margin: 8 }}>
-                                <Text style={{ textAlign: "center", fontSize: 22, fontWeight: 'bold' }}>Date:&nbsp;</Text>
-                                <Text style={{ fontSize: 20 }}>{this.state.party.date}</Text>
+                            <Text style={{ margin: 4 }}>
+                                <Text style={styles.boldText}>Date:&nbsp;</Text>
+                                <Text style={{ fontSize: 16 }}>{this.state.party.date}</Text>
                             </Text>
-                            <Text style={{ margin: 8 }}>
-                                <Text style={{ textAlign: "center", fontSize: 22, fontWeight: 'bold' }}>Time:&nbsp;</Text>
-                                <Text style={{ fontSize: 20 }}>{this.state.party.time}</Text>
+                            <Text style={{ margin: 4 }}>
+                                <Text style={styles.boldText}>Time:&nbsp;</Text>
+                                <Text style={{ fontSize: 16 }}>{this.state.party.time}</Text>
                             </Text>
-                            <Text style={{ margin: 8 }}>
-                                <Text style={{ textAlign: "center", fontSize: 20, fontWeight: 'bold' }}>Location:&nbsp;</Text>
-                                <Text style={{ fontSize: 20 }}>{this.state.party.location}</Text>
+                            <Text style={{ margin: 4 }}>
+                                <Text style={styles.boldText}>Location:&nbsp;</Text>
+                                <Text style={{ fontSize: 16 }}>{this.state.party.location}</Text>
                             </Text>
                         </View>
                         <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
-                            <Text style={{ margin: 6 }}>
-                                <Text style={{ textAlign: "center", fontSize: 18, fontWeight: 'bold' }}>Guests Invited:&nbsp;</Text>
-                                <Text style={{ fontSize: 18 }}>{this.props.screenProps.guests.length ? this.props.screenProps.guests.length : this.state.party.guests.length}</Text>
+                            <Text style={{ margin: 4 }}>
+                                <Text style={styles.boldText}>Guests Invited:&nbsp;</Text>
+                                <Text style={{ fontSize: 16 }}>{this.props.screenProps.guests.length ? this.props.screenProps.guests.length : this.state.party.guests.length}</Text>
                             </Text>
-                            <Text style={{ margin: 6 }}>
-                                <Text style={{ textAlign: "center", fontSize: 18, fontWeight: 'bold' }}>Songs on Playlist:&nbsp;</Text>
-                                <Text style={{ fontSize: 18 }}>{this.props.screenProps.songCount ? this.props.screenProps.songCount : this.state.party.songs.length}</Text>
+                            <Text style={{ margin: 4 }}>
+                                <Text style={styles.boldText}>Guests Accepted:&nbsp;</Text>
+                                <Text style={{ fontSize: 16 }}>{this.state.rsvps ? this.state.rsvps.filter((rsvp) => {
+                                    return rsvp.RSVP === 'yes'
+                                }).length : null}</Text>
                             </Text>
-                            <Text style={{ margin: 6 }}>
-                                <Text style={{ textAlign: "center", fontSize: 18, fontWeight: 'bold' }}>Tasks Assigned:&nbsp;</Text>
-                                <Text style={{ fontSize: 18 }}>{this.props.screenProps.taskCount ? this.props.screenProps.taskCount : this.state.party.tasks.length}</Text>
+                            <Text style={{ margin: 4 }}>
+                                <Text style={styles.boldText}>Guests Not Responded:&nbsp;</Text>
+                                <Text style={{ fontSize: 16 }}>{this.state.rsvps ? this.state.rsvps.filter((rsvp) => {
+                                    return rsvp.RSVP === 'tbd'
+                                }).length : null}</Text>
+                            </Text>
+                        </View>
+                        <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
+                            <Text style={{ margin: 4 }}>
+                                <Text style={styles.boldText}>Songs on Playlist:&nbsp;</Text>
+                                <Text style={{ fontSize: 16 }}>{this.props.screenProps.songCount ? this.props.screenProps.songCount : this.state.party.songs.length}</Text>
+                            </Text>
+                            <Text style={{ margin: 4 }}>
+                                <Text style={styles.boldText}>Tasks Assigned:&nbsp;</Text>
+                                <Text style={{ fontSize: 16 }}>{this.props.screenProps.taskCount ? this.props.screenProps.taskCount : this.state.party.tasks.length}</Text>
                             </Text>
                         </View>
                     </View>
@@ -112,7 +136,6 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        marginBottom: 10,
         marginTop: 10
     },
     text: {
@@ -120,5 +143,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 5,
         fontSize: 16
+    },
+    boldText: {
+        textAlign: "center",
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+    data: {
+
     }
 })

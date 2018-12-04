@@ -418,10 +418,10 @@ export default class PartyListScreen extends React.Component {
                                     >{party.name}
                                         </Text>
                                         <TouchableOpacity style={{ marginLeft: 10 }}>
-                                            <MaterialIcons name="edit" color='black' size={18} style={{ marginTop: -20, marginBottom: 4, width: 18 }} onPress={() => this.editParty(party)} />
+                                            <MaterialIcons name="edit" color='white' size={18} style={{ marginTop: -20, marginBottom: 4, width: 18 }} onPress={() => this.editParty(party)} />
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{ marginLeft: 220 }}>
-                                            <MaterialIcons name="delete-forever" color='black' size={18} style={{ marginTop: -22, marginBottom: 4, width: 18 }} onPress={() => this.cancelParty(party)} />
+                                            <MaterialIcons name="delete-forever" color='white' size={18} style={{ marginTop: -22, marginBottom: 4, width: 18 }} onPress={() => this.cancelParty(party)} />
                                         </TouchableOpacity>
                                     </View>
                                     <Text style={{ textAlign: "center", fontSize: 14, marginTop: 2 }}>{party.date}</Text>
@@ -449,7 +449,7 @@ export default class PartyListScreen extends React.Component {
                                         >{party.name}
                                         </Text>
                                         <TouchableOpacity style={{ marginLeft: 10 }}>
-                                            <Octicons name="mail-read" color='black' size={18} style={{ marginTop: -20, marginBottom: 2, width: 18 }} onPress={() => this.rsvp(party, partyRsvp)} />
+                                            <Octicons name="mail-read" color='white' size={18} style={{ marginTop: -20, marginBottom: 2, width: 18 }} onPress={() => this.rsvp(party, partyRsvp)} />
                                         </TouchableOpacity>
 
                                         {(() => {
