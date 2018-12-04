@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, Image, ScrollView } from 'react-native';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
+import { Ionicons, FontAwesome, Octicons } from '@expo/vector-icons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
@@ -24,7 +25,9 @@ export default class PartyListScreen extends React.Component {
             editPartyTime: '',
             editPartyLocation: '',
             guests: '',
-            editParty: null
+            editParty: null,
+            rsvps: null,
+            RsvpValue: null
         }
     }
 
@@ -48,9 +51,11 @@ export default class PartyListScreen extends React.Component {
                 let attendingParties = data.parties.filter((party) => {
                     return party.host_id !== this.props.screenProps.userID
                 })
+                let rsvps = data.party_guests
                 this.setState({
                     hostingParties: hostingParties,
-                    attendingParties: attendingParties
+                    attendingParties: attendingParties,
+                    rsvps: rsvps
                 })
             })
     }
@@ -126,7 +131,6 @@ export default class PartyListScreen extends React.Component {
                 AlertIOS.alert('must fill out party details')
         }
         setTimeout(() => {
-            console.log(this.state.newPartyName)
             this.makeRemoteRequest()
         }, 200)
     }
@@ -145,7 +149,6 @@ export default class PartyListScreen extends React.Component {
                 editParty: party.id
             };
         });
-        console.log(party)
     }
 
     handleChangePartyName = (typedText) => {
@@ -246,6 +249,65 @@ export default class PartyListScreen extends React.Component {
         )
     }
 
+    rsvp = (party, rsvp) => {
+        console.log(rsvp.id)
+        AlertIOS.alert(
+            'RSVP',
+            `${party.name}`,
+            [
+                {
+                    text: 'Yes', onPress: () => {
+                        fetch(`http://localhost:3000/party_guests/${rsvp.id}`, {
+                            method: 'PATCH', // or 'PUT'
+                            body: JSON.stringify({
+                                RSVP: 'yes',
+                            }), // data can be `string` or {object}!
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                            .then(resp => resp.json())
+                            .then(setTimeout(() => this.makeRemoteRequest(), 200))
+                            .then(AlertIOS.alert(`You RSVP'd yes to ${party.name}`))
+                    }
+                },
+                {
+                    text: 'No', onPress: () => {
+                        fetch(`http://localhost:3000/party_guests/${rsvp.id}`, {
+                            method: 'PATCH', // or 'PUT'
+                            body: JSON.stringify({
+                                RSVP: 'no',
+                            }), // data can be `string` or {object}!
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                            .then(resp => resp.json())
+                            .then(setTimeout(() => this.makeRemoteRequest(), 200))
+                            .then(AlertIOS.alert(`You RSVP'd no to ${party.name}`))
+                    }
+                },
+                {
+                    text: 'Maybe', onPress: () => {
+                        fetch(`http://localhost:3000/party_guests/${rsvp.id}`, {
+                            method: 'PATCH', // or 'PUT'
+                            body: JSON.stringify({
+                                RSVP: 'maybe',
+                            }), // data can be `string` or {object}!
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                            .then(resp => resp.json())
+                            .then(setTimeout(() => this.makeRemoteRequest(), 200))
+                            .then(AlertIOS.alert(`You RSVP'd maybe to ${party.name}`))
+                    }
+                },
+                { text: 'Cancel', style: 'cancel' }
+            ]
+        )
+    }
+
     render() {
         let hostColorWheel = ['#FF7400', '#FFAA00', '#009999', '#1240AB']
         let guestColorWheel = ['#092871', '#A84C00', '#A87000', '#006565']
@@ -260,7 +322,6 @@ export default class PartyListScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{ alignItems: "center" }} >
-                    {/* <Text style={{ textAlign: "center", margin: 5, marginTop: -5, fontSize: 30, textDecorationLine: 'underline', color: 'white', fontWeight: "bold", fontFamily: "Verdana" }}>PARTIES</Text> */}
 
                     {/* create new party */}
                     < TouchableOpacity onPress={this.addParty}>
@@ -271,11 +332,9 @@ export default class PartyListScreen extends React.Component {
                         />
                     </TouchableOpacity >
 
-
                     {/* hidden input fields CREATE PARTY */}
                     < TextInput
                         style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                        autoFocus={true}
                         placeholder={'Party Name'}
                         onChangeText={this.handleNewName}
                         value={this.state.newPartyName}
@@ -364,7 +423,6 @@ export default class PartyListScreen extends React.Component {
                                         <TouchableOpacity style={{ marginLeft: 220 }}>
                                             <MaterialIcons name="delete-forever" color='black' size={18} style={{ marginTop: -22, marginBottom: 4, width: 18 }} onPress={() => this.cancelParty(party)} />
                                         </TouchableOpacity>
-                                        {/* <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text> */}
                                     </View>
                                     <Text style={{ textAlign: "center", fontSize: 14, marginTop: 2 }}>{party.date}</Text>
                                     <Text style={{ textAlign: "center", fontSize: 10 }}>Click for more details...</Text>
@@ -377,6 +435,9 @@ export default class PartyListScreen extends React.Component {
                     <ScrollView style={{ height: 205, marginBottom: 10 }}>
                         {
                             this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
+                                let partyRsvp = this.state.rsvps.find((rsvp) => {
+                                    return rsvp.party_id === party.id
+                                })
                                 return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
                                     <View style={{
                                         borderTopLeftRadius: 4, borderTopRightRadius: 4, backgroundColor: guestColorWheel[index % 4],
@@ -387,6 +448,24 @@ export default class PartyListScreen extends React.Component {
                                             accessibilityLabel={party.name}
                                         >{party.name}
                                         </Text>
+                                        <TouchableOpacity style={{ marginLeft: 10 }}>
+                                            <Octicons name="mail-read" color='black' size={18} style={{ marginTop: -20, marginBottom: 2, width: 18 }} onPress={() => this.rsvp(party, partyRsvp)} />
+                                        </TouchableOpacity>
+
+                                        {(() => {
+                                            if (partyRsvp.RSVP === 'yes') {
+                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: &#10003;</Text>
+                                            } else if (partyRsvp.RSVP === 'no') {
+                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: X</Text>
+                                            } else if (partyRsvp.RSVP === 'maybe') {
+                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: &#63;</Text>
+                                            } else if (partyRsvp.RSVP === 'tbd') {
+                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: &#9675;</Text>
+                                            }
+                                        })()}
+
+
+                                        {/* <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: {partyRsvp.RSVP}</Text> */}
                                     </View>
                                     <Text style={{ textAlign: "center", fontSize: 14, marginTop: 2 }}>{party.date}</Text>
                                     <Text style={{ textAlign: "center", fontSize: 10 }}>Click for more details...</Text>
