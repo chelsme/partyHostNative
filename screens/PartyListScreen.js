@@ -14,11 +14,17 @@ export default class PartyListScreen extends React.Component {
             attendingParties: null,
             selectedParty: this.props.screenProps.selectedParty,
             addPartyShow: false,
+            editPartyShow: false,
             newPartyName: '',
             newPartyDate: '',
             newPartyTime: '',
             newPartyLocation: '',
+            editPartyName: '',
+            editPartyDate: '',
+            editPartyTime: '',
+            editPartyLocation: '',
             guests: '',
+            editParty: null
         }
     }
 
@@ -60,30 +66,6 @@ export default class PartyListScreen extends React.Component {
         });
     }
 
-    handleChangePartyName = (typedText) => {
-        this.setState({
-            newPartyName: typedText
-        })
-    }
-
-    handleChangePartyDate = (typedText) => {
-        this.setState({
-            newPartyDate: typedText
-        })
-    }
-
-    handleChangePartyTime = (typedText) => {
-        this.setState({
-            newPartyTime: typedText
-        })
-    }
-
-    handleChangePartyLocation = (typedText) => {
-        this.setState({
-            newPartyLocation: typedText
-        })
-    }
-
     handleSubmitParty = () => {
         {
             this.state.newPartyName !== '' && this.state.newPartyDate !== '' && this.state.newPartyTime !== '' && this.state.newPartyLocation !== '' ?
@@ -115,6 +97,80 @@ export default class PartyListScreen extends React.Component {
         setTimeout(() => this.makeRemoteRequest(), 200)
     }
     // end create new party
+
+    // edit party
+    editParty = (party) => {
+        this.setState((state) => {
+            return {
+                editPartyShow: !state.editPartyShow,
+                editPartyName: party.name,
+                editPartyDate: party.date,
+                editPartyTime: party.time,
+                editPartyLocation: party.location,
+                editParty: party.id
+            };
+        });
+        console.log(party)
+    }
+
+    handleChangePartyName = (typedText) => {
+        this.setState({
+            editPartyName: typedText
+        })
+    }
+
+    handleChangePartyDate = (typedText) => {
+        this.setState({
+            editPartyDate: typedText
+        })
+    }
+
+    handleChangePartyTime = (typedText) => {
+        this.setState({
+            editPartyTime: typedText
+        })
+    }
+
+    handleChangePartyLocation = (typedText) => {
+        this.setState({
+            editPartyLocation: typedText
+        })
+    }
+
+    handleChange = (typedText, option) => {
+        this.setState({
+            ['newParty' + option]: typedText
+        })
+        console.log(typedText)
+    }
+
+    handleEditParty = () => {
+        {
+            fetch(`http://localhost:3000/parties/${this.state.editParty}`, {
+                method: 'PATCH', // or 'PUT'
+                body: JSON.stringify({
+                    name: this.state.editPartyName,
+                    date: this.state.editPartyDate,
+                    time: this.state.editPartyTime,
+                    location: this.state.editPartyLocation,
+                }), // data can be `string` or {object}!
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(resp => resp.json())
+                .then(alert(`Your party has been updated.`))
+        }
+        this.setState({
+            editPartyShow: false,
+            editPartyName: '',
+            editPartyDate: '',
+            editPartyTime: '',
+            editPartyLocation: ''
+        })
+        setTimeout(() => this.makeRemoteRequest(), 200)
+    }
+    // end edit party
 
     getGuestList = (id) => {
         fetch(`http://localhost:3000/parties/${id}`)
@@ -158,8 +214,9 @@ export default class PartyListScreen extends React.Component {
     render() {
         let hostColorWheel = ['#FF7400', '#FFAA00', '#009999', '#1240AB']
         let guestColorWheel = ['#092871', '#A84C00', '#A87000', '#006565']
+        let partyOptions = ['Name', 'Date', 'Time', 'Location']
         return (
-            <View style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
+            <View style={{ display: "flex", peditingTop: 20, backgroundColor: '#4d5a63' }} >
                 <View style={{ alignItems: 'flex-end' }}>
                     <TouchableOpacity style={{ display: 'flex', width: 70, marginBottom: 5, fontSize: 14, marginRight: 20, marginTop: 5, borderRadius: 5, backgroundColor: 'grey', right: 0 }}>
                         <Text style={{ textAlign: "center", fontSize: 14, textAlignVertical: "center", padding: 5 }}
@@ -181,31 +238,14 @@ export default class PartyListScreen extends React.Component {
 
 
                     {/* hidden input fields CREATE PARTY */}
-                    < TextInput
-                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                        placeholder='Party Name'
-                        onChangeText={this.handleChangePartyName}
-                        value={this.state.newPartyName}
-                    />
-                    <TextInput
-                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                        placeholder='Party Date'
-                        onChangeText={this.handleChangePartyDate}
-                        value={this.state.newPartyDate}
-                    />
-                    <TextInput
-                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                        placeholder='Party Time'
-                        onChangeText={this.handleChangePartyTime}
-                        value={this.state.newPartyTime}
-                    />
-                    <TextInput
-                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
-                        placeholder='Party Location'
-                        onChangeText={this.handleChangePartyLocation}
-                        value={this.state.newPartyLocation}
-                    />
-
+                    {partyOptions.map((option, index) => {
+                        return < TextInput key={index}
+                            style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                            placeholder={`Party ${option}`}
+                            onChangeText={(typedText) => this.handleChange(typedText, option)}
+                        // value={this.state.newPartyName}
+                        />
+                    })}
                     <TouchableOpacity style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1, marginBottom: 8 }}
                         onPress={this.handleSubmitParty}>
                         <Text
@@ -213,6 +253,42 @@ export default class PartyListScreen extends React.Component {
                             style={styles.text}
                             accessibilityLabel="Create New Party"
                         >Create New Party
+                    </Text>
+                    </TouchableOpacity>
+
+                    {/* hidden input fields EDIT PARTY */}
+                    < TextInput
+                        style={{ display: this.state.editPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        placeholder='Party Name'
+                        onChangeText={this.handleChangePartyName}
+                        value={this.state.editPartyName}
+                    />
+                    <TextInput
+                        style={{ display: this.state.editPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        placeholder='Party Date'
+                        onChangeText={this.handleChangePartyDate}
+                        value={this.state.editPartyDate}
+                    />
+                    <TextInput
+                        style={{ display: this.state.editPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        placeholder='Party Time'
+                        onChangeText={this.handleChangePartyTime}
+                        value={this.state.editPartyTime}
+                    />
+                    <TextInput
+                        style={{ display: this.state.editPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        placeholder='Party Location'
+                        onChangeText={this.handleChangePartyLocation}
+                        value={this.state.editPartyLocation}
+                    />
+
+                    <TouchableOpacity style={{ display: this.state.editPartyShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1, marginBottom: 8 }}
+                        onPress={this.handleEditParty}>
+                        <Text
+                            title="Edit Party"
+                            style={styles.text}
+                            accessibilityLabel="Edit Party"
+                        >Edit Party
                     </Text>
                     </TouchableOpacity>
 
@@ -231,7 +307,7 @@ export default class PartyListScreen extends React.Component {
                                     >{party.name}
                                         </Text>
                                         <TouchableOpacity style={{ marginLeft: 10 }}>
-                                            <MaterialIcons name="edit" color='black' size={18} style={{ marginTop: -20, marginBottom: 4, width: 18 }} onPress={() => console.log('edit this')} />
+                                            <MaterialIcons name="edit" color='black' size={18} style={{ marginTop: -20, marginBottom: 4, width: 18 }} onPress={() => this.editParty(party)} />
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{ marginLeft: 170 }}>
                                             <MaterialIcons name="delete-forever" color='black' size={18} style={{ marginTop: -22, marginBottom: 4, width: 18 }} onPress={() => this.cancelParty(party)} />
