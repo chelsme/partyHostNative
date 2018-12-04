@@ -12,7 +12,7 @@ export default class PartyListScreen extends React.Component {
             host_id: this.props.screenProps.userID,
             hostingParties: null,
             attendingParties: null,
-            selectedParty: null,
+            selectedParty: this.props.screenProps.selectedParty,
             addPartyShow: false,
             newPartyName: '',
             newPartyDate: '',
@@ -24,6 +24,12 @@ export default class PartyListScreen extends React.Component {
 
     componentDidMount() {
         this.makeRemoteRequest()
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.screenProps.selectedParty !== this.props.screenProps.selectedParty) {
+            this.makeRemoteRequest()
+        }
     }
 
     makeRemoteRequest() {
@@ -122,12 +128,13 @@ export default class PartyListScreen extends React.Component {
     }
 
     changeTabs = (party) => {
-        let partyID = party.id
-        let partyName = party.name
         this.props.screenProps.setHostID(party.host_id)
-        this.props.screenProps.changeTabs('profile', partyID, partyName)
+        this.props.screenProps.changeTabs('profile', party.id, party.name)
         this.getGuestList(party.id)
         this.props.navigation.navigate('Details')
+        this.setState({
+            selectedParty: party.id
+        })
     }
 
     cancelParty = (party) => {
@@ -211,7 +218,7 @@ export default class PartyListScreen extends React.Component {
 
                     {/* view parties */}
                     <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold" }}>Parties I'm Hosting</Text>
-                    <ScrollView style={{ height: 190 }}>
+                    <ScrollView style={{ height: 185 }}>
                         {
                             this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
                                 return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
@@ -223,8 +230,11 @@ export default class PartyListScreen extends React.Component {
                                         accessibilityLabel={party.name}
                                     >{party.name}
                                         </Text>
+                                        <TouchableOpacity style={{ marginLeft: 10 }}>
+                                            <MaterialIcons name="edit" color='black' size={18} style={{ marginTop: -20, marginBottom: 4, width: 18 }} onPress={() => console.log('edit this')} />
+                                        </TouchableOpacity>
                                         <TouchableOpacity style={{ marginLeft: 170 }}>
-                                            <MaterialIcons name="delete-forever" color='black' size={18} style={{ marginTop: -20, marginBottom: 4, textAlign: 'right', width: 18 }} onPress={() => this.cancelParty(party)} />
+                                            <MaterialIcons name="delete-forever" color='black' size={18} style={{ marginTop: -22, marginBottom: 4, width: 18 }} onPress={() => this.cancelParty(party)} />
                                         </TouchableOpacity>
                                         {/* <Text style={styles.cancel} onPress={() => this.cancelParty(party)} >Cancel Party</Text> */}
                                     </View>
@@ -236,7 +246,7 @@ export default class PartyListScreen extends React.Component {
                         }
                     </ScrollView>
                     <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold", marginTop: 3 }}>Parties I'm Invited To</Text>
-                    <ScrollView style={{ height: 190 }}>
+                    <ScrollView style={{ height: 185, marginBottom: 10 }}>
                         {
                             this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
                                 return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>

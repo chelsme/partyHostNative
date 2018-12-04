@@ -19,6 +19,12 @@ export default class PlaylistScreen extends React.Component {
         this.makeRemoteRequest()
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.screenProps.selectedParty !== this.props.screenProps.selectedParty) {
+            this.makeRemoteRequest()
+        }
+    }
+
     makeRemoteRequest = () => {
         fetch('http://localhost:3000/songs')
             .then(resp => resp.json())

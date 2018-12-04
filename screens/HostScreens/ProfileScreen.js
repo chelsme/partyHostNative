@@ -13,6 +13,16 @@ export default class ProfileScreen extends React.Component {
     }
 
     componentDidMount() {
+        this.makeRemoteRequest()
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.screenProps.selectedParty !== this.props.screenProps.selectedParty) {
+            this.makeRemoteRequest()
+        }
+    }
+
+    makeRemoteRequest = () => {
         fetch('http://localhost:3000/parties')
             .then(resp => resp.json())
             .then(data => {
@@ -39,16 +49,32 @@ export default class ProfileScreen extends React.Component {
                             <Text style={{ textAlign: "center", fontSize: 30, textDecorationLine: 'underline', fontWeight: "bold" }}>{this.state.party.name}</Text>
                         </View>
                         <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
-                            <Text style={{ textAlign: "center", margin: 10, fontSize: 22 }}>Date: {this.state.party.date}</Text>
-                            <Text style={{ textAlign: "center", margin: 10, fontSize: 22 }}>Time: {this.state.party.time}</Text>
-                            <Text style={{ textAlign: "center", margin: 10, fontSize: 20 }}>Location:&nbsp;{this.state.party.location}</Text>
+                            <Text style={{ margin: 8 }}>
+                                <Text style={{ textAlign: "center", fontSize: 22, fontWeight: 'bold' }}>Date:&nbsp;</Text>
+                                <Text style={{ fontSize: 20 }}>{this.state.party.date}</Text>
+                            </Text>
+                            <Text style={{ margin: 8 }}>
+                                <Text style={{ textAlign: "center", fontSize: 22, fontWeight: 'bold' }}>Time:&nbsp;</Text>
+                                <Text style={{ fontSize: 20 }}>{this.state.party.time}</Text>
+                            </Text>
+                            <Text style={{ margin: 8 }}>
+                                <Text style={{ textAlign: "center", fontSize: 20, fontWeight: 'bold' }}>Location:&nbsp;</Text>
+                                <Text style={{ fontSize: 20 }}>{this.state.party.location}</Text>
+                            </Text>
                         </View>
                         <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
-                            <Text style={{ textAlign: "center", margin: 8, fontSize: 18 }}>Guests Invited:&nbsp;
-                            {this.props.screenProps.guests.length ? this.props.screenProps.guests.length - 1 : this.state.party.guests.length - 1}</Text>
-                            <Text style={{ textAlign: "center", margin: 8, fontSize: 18 }}>Songs on Playlist:&nbsp;
-                            {this.props.screenProps.songCount ? this.props.screenProps.songCount : this.state.party.songs.length}</Text>
-                            <Text style={{ textAlign: "center", margin: 8, fontSize: 18 }}>Tasks Assigned:&nbsp;{this.props.screenProps.taskCount ? this.props.screenProps.taskCount : this.state.party.tasks.length}</Text>
+                            <Text style={{ margin: 6 }}>
+                                <Text style={{ textAlign: "center", fontSize: 18, fontWeight: 'bold' }}>Guests Invited:&nbsp;</Text>
+                                <Text style={{ fontSize: 18 }}>{this.props.screenProps.guests.length ? this.props.screenProps.guests.length - 1 : this.state.party.guests.length - 1}</Text>
+                            </Text>
+                            <Text style={{ margin: 6 }}>
+                                <Text style={{ textAlign: "center", fontSize: 18, fontWeight: 'bold' }}>Songs on Playlist:&nbsp;</Text>
+                                <Text style={{ fontSize: 18 }}>{this.props.screenProps.songCount ? this.props.screenProps.songCount : this.state.party.songs.length}</Text>
+                            </Text>
+                            <Text style={{ margin: 6 }}>
+                                <Text style={{ textAlign: "center", fontSize: 18, fontWeight: 'bold' }}>Tasks Assigned:&nbsp;</Text>
+                                <Text style={{ fontSize: 18 }}>{this.props.screenProps.taskCount ? this.props.screenProps.taskCount : this.state.party.tasks.length}</Text>
+                            </Text>
                         </View>
                     </View>
                     : null}
@@ -59,6 +85,15 @@ export default class ProfileScreen extends React.Component {
                         style={styles.text}
                         accessibilityLabel="View All Parties"
                     >View All Parties
+                            </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.textButton}>
+                    <Text
+                        onPress={this.props.screenProps.logOut}
+                        title="Logout"
+                        style={styles.text}
+                        accessibilityLabel="Logout"
+                    >Logout
                             </Text>
                 </TouchableOpacity>
             </View>
