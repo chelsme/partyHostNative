@@ -65,7 +65,7 @@ export default class ProfileScreen extends React.Component {
                         <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
                             <Text style={{ margin: 6 }}>
                                 <Text style={{ textAlign: "center", fontSize: 18, fontWeight: 'bold' }}>Guests Invited:&nbsp;</Text>
-                                <Text style={{ fontSize: 18 }}>{this.props.screenProps.guests.length ? this.props.screenProps.guests.length - 1 : this.state.party.guests.length - 1}</Text>
+                                <Text style={{ fontSize: 18 }}>{this.props.screenProps.guests.length ? this.props.screenProps.guests.length : this.state.party.guests.length}</Text>
                             </Text>
                             <Text style={{ margin: 6 }}>
                                 <Text style={{ textAlign: "center", fontSize: 18, fontWeight: 'bold' }}>Songs on Playlist:&nbsp;</Text>

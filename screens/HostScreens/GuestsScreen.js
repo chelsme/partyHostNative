@@ -180,42 +180,44 @@ export default class GuestsScreen extends React.Component {
                         let partyRsvp = rsvpArray.find((rsvp) => {
                             return rsvp.guest_id === guest.id
                         })
-                        if (guest.id !== this.props.screenProps.userID) {
-                            return <View key={index}>
-                                <TouchableOpacity style={{
-                                    opacity: 200,
-                                    width: 250,
-                                    height: 30,
-                                    borderWidth: 1,
-                                    textAlignVertical: "center",
-                                    borderRadius: 5,
-                                    borderWidth: 1,
-                                    borderColor: 'black',
-                                    marginBottom: 4,
-                                    backgroundColor: colorWheel[index % 4]
-                                }} onPress={() => { this.uninviteGuest(guest) }}>
-                                    <Text
-                                        title={guest.name}
-                                        style={styles.text}
-                                        accessibilityLabel={guest.name}
-                                    >{guest.name}
-                                    </Text>
-                                </TouchableOpacity>
-                                {/* <Text>{partyRsvp.RSVP}</Text> */}
-                                {(() => {
-                                    if (partyRsvp.RSVP === 'yes') {
-                                        return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: &#10003;</Text>
-                                    } else if (partyRsvp.RSVP === 'no') {
-                                        return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: X</Text>
-                                    } else if (partyRsvp.RSVP === 'maybe') {
-                                        return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: &#63;</Text>
-                                    } else if (partyRsvp.RSVP === 'tbd') {
-                                        return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: &#9675;</Text>
-                                    }
-                                })()}
-                            </View>
-                        }
-                        else { return null }
+                        // if (guest.id !== this.props.screenProps.userID) {
+                        return <View key={index}>
+                            <TouchableOpacity style={{
+                                opacity: 200,
+                                width: 250,
+                                height: 30,
+                                borderWidth: 1,
+                                textAlignVertical: "center",
+                                borderRadius: 5,
+                                borderWidth: 1,
+                                borderColor: 'black',
+                                marginBottom: 4,
+                                backgroundColor: colorWheel[index % 4]
+                            }} onPress={() => { this.uninviteGuest(guest) }}>
+                                <Text
+                                    title={guest.name}
+                                    style={styles.text}
+                                    accessibilityLabel={guest.name}
+                                >{guest.name}
+                                </Text>
+                            </TouchableOpacity>
+                            {/* <Text>{partyRsvp.RSVP}</Text> */}
+                            {(() => {
+                                if (guest.id === this.props.screenProps.hostID) {
+                                    return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: &#10003;</Text>
+                                } else if (partyRsvp.RSVP === 'yes') {
+                                    return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: &#10003;</Text>
+                                } else if (partyRsvp.RSVP === 'no') {
+                                    return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: X</Text>
+                                } else if (partyRsvp.RSVP === 'maybe') {
+                                    return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: &#63;</Text>
+                                } else if (partyRsvp.RSVP === 'tbd') {
+                                    return <Text style={{ fontSize: 12, marginTop: -25, marginBottom: 10, paddingRight: 5, width: 245, textAlign: 'right', color: 'white' }}>RSVP: &#9675;</Text>
+                                }
+                            })()}
+                        </View>
+                        // }
+                        // else { return null }
                     }) : null}
                 </ScrollView>
             </View>
