@@ -326,7 +326,7 @@ export default class PartyListScreen extends React.Component {
                     {/* create new party */}
                     < TouchableOpacity onPress={this.addParty}>
                         <Image
-                            style={{ width: 70, height: 70, marginBottom: 5, marginTop: -20 }}
+                            style={{ width: 60, height: 60, marginBottom: 5, marginTop: -20 }}
                             source={require('../assets/images/cupcakeadd.png')}
                             onPress={this.addParty}
                         />
@@ -404,7 +404,7 @@ export default class PartyListScreen extends React.Component {
                     </TouchableOpacity>
 
                     {/* view parties */}
-                    <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold", color: 'white' }}>Parties I'm Hosting</Text>
+                    <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold", color: 'white', marginBottom: 3 }}>Parties I'm Hosting</Text>
                     <ScrollView style={{ height: 205 }}>
                         {
                             this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
@@ -431,7 +431,7 @@ export default class PartyListScreen extends React.Component {
 
                         }
                     </ScrollView>
-                    <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold", marginTop: 3, color: 'white' }}>Parties I'm Invited To</Text>
+                    <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold", marginTop: 3, color: 'white', marginBottom: 3 }}>Parties I'm Invited To</Text>
                     <ScrollView style={{ height: 205, marginBottom: 10 }}>
                         {
                             this.state.attendingParties ? this.state.attendingParties.map((party, index) => {

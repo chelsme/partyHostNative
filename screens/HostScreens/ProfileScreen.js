@@ -54,11 +54,14 @@ export default class ProfileScreen extends React.Component {
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
                 {this.state.party ?
-                    <View>
-                        <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 15, margin: 5, marginTop: 20 }} >
+                    <View style={{ width: 300 }} >
+                        <View style={{ borderRadius: 5, backgroundColor: 'white', marginTop: 15, padding: 10 }} >
                             <Text style={{ textAlign: "center", fontSize: 25, textDecorationLine: 'underline', fontWeight: "bold" }}>{this.state.party.name}</Text>
                         </View>
-                        <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
+                        <View style={styles.section} >
+                            <View style={styles.header}>
+                                <Text style={styles.boldText}>Details</Text>
+                            </View>
                             <Text style={{ margin: 4 }}>
                                 <Text style={styles.boldText}>Date:&nbsp;</Text>
                                 <Text style={{ fontSize: 16 }}>{this.state.party.date}</Text>
@@ -72,26 +75,30 @@ export default class ProfileScreen extends React.Component {
                                 <Text style={{ fontSize: 16 }}>{this.state.party.location}</Text>
                             </Text>
                         </View>
-                        <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
-                            <Text style={{ margin: 4 }}>
-                                <Text style={styles.boldText}>Guests Invited:&nbsp;</Text>
+                        <View style={styles.section} >
+                            <View style={styles.header}>
+                                <Text style={styles.boldText}>Guests</Text>
+                            </View><Text style={{ margin: 4 }}>
+                                <Text style={styles.boldText}>Invited:&nbsp;</Text>
                                 <Text style={{ fontSize: 16 }}>{this.props.screenProps.guests.length ? this.props.screenProps.guests.length : this.state.party.guests.length}</Text>
                             </Text>
                             <Text style={{ margin: 4 }}>
-                                <Text style={styles.boldText}>Guests Accepted:&nbsp;</Text>
+                                <Text style={styles.boldText}>Accepted:&nbsp;</Text>
                                 <Text style={{ fontSize: 16 }}>{this.state.rsvps ? this.state.rsvps.filter((rsvp) => {
                                     return rsvp.RSVP === 'yes'
                                 }).length : null}</Text>
                             </Text>
                             <Text style={{ margin: 4 }}>
-                                <Text style={styles.boldText}>Guests Not Responded:&nbsp;</Text>
+                                <Text style={styles.boldText}>Not Responded:&nbsp;</Text>
                                 <Text style={{ fontSize: 16 }}>{this.state.rsvps ? this.state.rsvps.filter((rsvp) => {
                                     return rsvp.RSVP === 'tbd'
                                 }).length : null}</Text>
                             </Text>
                         </View>
-                        <View style={{ borderRadius: 5, backgroundColor: 'white', width: 300, padding: 10, margin: 5 }} >
-                            <Text style={{ margin: 4 }}>
+                        <View style={styles.section} >
+                            <View style={styles.header}>
+                                <Text style={styles.boldText}>Lists</Text>
+                            </View><Text style={{ margin: 4 }}>
                                 <Text style={styles.boldText}>Songs on Playlist:&nbsp;</Text>
                                 <Text style={{ fontSize: 16 }}>{this.props.screenProps.songCount ? this.props.screenProps.songCount : this.state.party.songs.length}</Text>
                             </Text>
@@ -149,7 +156,16 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold'
     },
-    data: {
-
+    header: {
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4,
+        backgroundColor: '#e2a535',
+        width: 300,
+        padding: 3
+    },
+    section: {
+        borderRadius: 5,
+        backgroundColor: 'white',
+        marginTop: 10
     }
 })
