@@ -170,7 +170,7 @@ export default class ListsScreen extends React.Component {
                             method: 'DELETE', // or 'PUT'
                         })
                             .then(setTimeout(() => this.makeRemoteRequest(), 200))
-                            .then(AlertIOS.alert(`${task.name} has been removed from the task list`))
+                            .then(AlertIOS.alert(`${task.action} has been removed from the task list`))
                     }
                 },
                 { text: 'Cancel', style: 'cancel' }
