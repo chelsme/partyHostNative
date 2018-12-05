@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, ScrollView, ImageBackground } from 'react-native';
 import { withTheme } from 'react-native-paper';
+import { Ionicons, FontAwesome, MaterialCommunityIcons, Octicons, MaterialIcons } from '@expo/vector-icons';
+
 
 export default class GuestsScreen extends React.Component {
     constructor(props) {
@@ -99,7 +101,8 @@ export default class GuestsScreen extends React.Component {
             return guest.name === `${this.state.firstName} ${this.state.lastName}`
         })) {
             AlertIOS.alert(`${this.state.firstName} ${this.state.lastName} is already invited.`)
-        } else if (this.state.firstName !== '' && this.state.lastName !== '') {
+        }
+        if (this.state.firstName !== '' && this.state.lastName !== '') {
             this.state.firstName !== '' && this.state.lastName !== '' ?
                 fetch('http://10.185.4.126:3000/guests', {
                     method: 'POST', // or 'PUT'
@@ -115,6 +118,13 @@ export default class GuestsScreen extends React.Component {
                     .then(alert(`${this.state.firstName} ${this.state.lastName} has been invited to your party.`))
                 :
                 AlertIOS.alert('must provide full name')
+        } else {
+            this.setState({
+                addGuestShow: false,
+                firstName: '',
+                lastName: '',
+            })
+            AlertIOS.alert('must provide full name')
         }
         this.setState({
             addGuestShow: false,
@@ -202,6 +212,7 @@ export default class GuestsScreen extends React.Component {
                         </View>
                         <TouchableOpacity style={styles.guestButton}>
                             <Text style={styles.guestText}>{this.state.hostName}</Text>
+                            <MaterialCommunityIcons name="crown" color={'gold'} style={{ marginTop: -22, marginLeft: 30, width: 22 }} size={22} />
                         </TouchableOpacity>
                         {this.state.party ? this.state.yes.map((guest, index) => {
                             return <TouchableOpacity key={index} style={styles.guestButton} onPress={() => { this.uninviteGuest(guest) }}>
