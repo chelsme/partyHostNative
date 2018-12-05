@@ -78,14 +78,17 @@ export default class ProfileScreen extends React.Component {
                         <View style={styles.section} >
                             <View style={styles.header}>
                                 <Text style={styles.boldText}>Guests</Text>
-                            </View><Text style={{ margin: 4 }}>
-                                <Text style={styles.boldText}>Invited:&nbsp;</Text>
-                                <Text style={{ fontSize: 16 }}>{this.props.screenProps.guests.length ? this.props.screenProps.guests.length : this.state.party.guests.length}</Text>
-                            </Text>
+                            </View>
                             <Text style={{ margin: 4 }}>
                                 <Text style={styles.boldText}>Accepted:&nbsp;</Text>
                                 <Text style={{ fontSize: 16 }}>{this.state.rsvps ? this.state.rsvps.filter((rsvp) => {
                                     return rsvp.RSVP === 'yes'
+                                }).length + 1 : null}</Text>
+                            </Text>
+                            <Text style={{ margin: 4 }}>
+                                <Text style={styles.boldText}>Maybe:&nbsp;</Text>
+                                <Text style={{ fontSize: 16 }}>{this.state.rsvps ? this.state.rsvps.filter((rsvp) => {
+                                    return rsvp.RSVP === 'maybe'
                                 }).length : null}</Text>
                             </Text>
                             <Text style={{ margin: 4 }}>
