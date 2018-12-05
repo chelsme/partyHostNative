@@ -79,7 +79,7 @@ export default class ListsScreen extends React.Component {
 
     handleSubmitTask = () => {
         {
-            this.state.task !== '' && (this.props.screenProps.guests.find((guest) => { return guest.name === this.state.taskGuest }) || this.state.taskGuest === '') ?
+            this.state.task !== '' && (this.props.screenProps.guests.find((guest) => { return guest.name === this.state.taskGuest })) ?
                 fetch('http://localhost:3000/tasks', {
                     method: 'POST', // or 'PUT'
                     body: JSON.stringify({

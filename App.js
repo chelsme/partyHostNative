@@ -58,7 +58,6 @@ export default class App extends React.Component {
 				})
 					.then(resp => resp.json())
 					.then(data => {
-						console.log(data.name, data.id)
 						this.setState({
 							name: data.name,
 							userID: data.id,

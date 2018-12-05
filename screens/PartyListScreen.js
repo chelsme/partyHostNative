@@ -175,13 +175,6 @@ export default class PartyListScreen extends React.Component {
         })
     }
 
-    // handleChange = (typedText, option) => {
-    //     this.setState({
-    //         ['newParty' + option]: typedText
-    //     })
-    //     console.log(typedText)
-    // }
-
     handleEditParty = () => {
         {
             fetch(`http://localhost:3000/parties/${this.state.editParty}`, {

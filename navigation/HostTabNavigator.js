@@ -16,79 +16,6 @@ import PlaylistScreen from '../screens/HostScreens/PlaylistScreen'
 import ProfileScreen from '../screens/HostScreens/ProfileScreen'
 import PartyListScreen from '../screens/PartyListScreen';
 
-// const SwitchNavigator = createSwitchNavigator(
-//     {
-//         Party: PartyListScreen,
-//         Details: ProfileScreen,
-//     },
-//     {
-//         initialRouteName: 'Party',
-//     },
-// );
-
-
-
-// const LoginNavigator = createBottomTabNavigator({
-//     Guests:
-//     {
-//         screen: GuestsScreen,
-//         navigationOptions: {
-//             tabBarLabel: 'Guests',
-//             tabBarIcon: ({ tintColor }) => (
-//                 <Ionicons name="ios-people" color={tintColor} size={24} />
-//             )
-//         }
-//     },
-//     Tasks:
-//     {
-//         screen: ListsScreen,
-//         navigationOptions: {
-//             tabBarLabel: 'Tasks',
-//             tabBarIcon: ({ tintColor }) => (
-//                 <Octicons name="checklist" color={tintColor} size={24} />
-//             )
-//         }
-//     },
-//     Party:
-//     {
-//         screen: PartyListScreen,
-//         navigationOptions: {
-//             tabBarLabel: 'Party',
-//             tabBarIcon: ({ tintColor }) => (
-//                 <MaterialCommunityIcons name="cupcake" color={tintColor} size={24} />
-//             ),
-//             tabBarVisible: false,
-//             tabBarOnPress: ({ navigation: onPressNavigation, defaultHandler }) => {
-//                 console.log('navigation#############################################', onPressNavigation.isFocused());
-//                 onPressNavigation.isFocused() ? onPressNavigation.navigate('Details') : null
-//             },
-//         }
-//     },
-//     Playlist:
-//     {
-//         screen: PlaylistScreen,
-//         navigationOptions: {
-//             tabBarLabel: 'Playlist',
-//             tabBarIcon: ({ tintColor }) => (
-//                 <Ionicons name="md-musical-notes" color={tintColor} size={24} />
-//             )
-//         }
-//     },
-// }, {
-//         initialRouteName: 'Party',
-//         // order: ['Guests', 'Tasks', 'Party', 'Playlist', 'Details'],
-//         navigationOptions: {
-//             tabBarVisible: true
-//         },
-//         tabBarOptions: {
-//             activeTintColor: 'red',
-//             inactiveTintColor: 'grey'
-//         }
-//     })
-
-
-
-
 const MainNavigator = createBottomTabNavigator({
     Guests:
     {
@@ -119,10 +46,6 @@ const MainNavigator = createBottomTabNavigator({
                 <MaterialIcons name="whatshot" color={tintColor} size={24} />
             ),
             tabBarVisible: false,
-            // tabBarOnPress: ({ navigation: onPressNavigation, defaultHandler }) => {
-            //     console.log('navigation#############################################', onPressNavigation.isFocused());
-            //     // onPressNavigation.isFocused() ? onPressNavigation.navigate('Details') : null
-            // },
         }
     },
     Details:

@@ -45,12 +45,10 @@ export default class ProfileScreen extends React.Component {
     }
 
     goToAllParties = () => {
-        console.log(this.props)
         this.props.navigation.navigate('Party')
     }
 
     render() {
-        console.log(this.state.rsvps)
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
                 {this.state.party ?
@@ -95,7 +93,7 @@ export default class ProfileScreen extends React.Component {
                                 <Text style={styles.boldText}>Not Responded:&nbsp;</Text>
                                 <Text style={{ fontSize: 16 }}>{this.state.rsvps ? this.state.rsvps.filter((rsvp) => {
                                     return rsvp.RSVP === 'tbd'
-                                }).length : null}</Text>
+                                }).length - 1 : null}</Text>
                             </Text>
                         </View>
                         <View style={styles.section} >

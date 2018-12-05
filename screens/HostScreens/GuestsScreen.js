@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, ScrollView } from 'react-native';
+import { withTheme } from 'react-native-paper';
 
 export default class GuestsScreen extends React.Component {
     constructor(props) {
@@ -10,7 +11,11 @@ export default class GuestsScreen extends React.Component {
             addGuestShow: false,
             firstName: '',
             lastName: '',
-            rsvps: []
+            yes: [],
+            no: [],
+            maybe: [],
+            tbd: [],
+            hostName: null
         }
     }
 
@@ -28,24 +33,43 @@ export default class GuestsScreen extends React.Component {
         fetch(`http://localhost:3000/parties/${this.props.screenProps.selectedParty}`)
             .then(resp => resp.json())
             .then(data => {
-                let rsvps = data.guests.filter((guest) => {
-                    let guestList = guest.party_guests.filter((partyGuest) => {
-                        // console.log('heyoooooo', partyGuest)
-                        return partyGuest.party_id === this.props.screenProps.selectedParty
-                    })
-                    this.setState({
-                        rsvps: [...this.state.rsvps, guestList]
-                    })
-                    return guestList
-                })
                 this.props.screenProps.getGuestList(data.guests)
+                let host = data.guests.find((guest) => {
+                    return guest.id === this.props.screenProps.hostID
+                })
                 this.setState({
                     party: data,
-                    guests: data.guests,
                     firstName: '',
-                    lastName: ''
+                    lastName: '',
+                    hostName: host.name
                 })
             })
+            .then(fetch('http://localhost:3000/party_guests')
+                .then(resp => resp.json())
+                .then(data => {
+                    let guests = data.filter((guest) => {
+                        return guest.party_id === this.props.screenProps.selectedParty
+                    })
+                    let yes = guests.filter((rsvp) => {
+                        return rsvp.RSVP === 'yes'
+                    })
+                    let no = guests.filter((rsvp) => {
+                        return rsvp.RSVP === 'no'
+                    })
+                    let maybe = guests.filter((rsvp) => {
+                        return rsvp.RSVP === 'maybe'
+                    })
+                    let tbd = guests.filter((rsvp) => {
+                        return rsvp.RSVP === 'tbd' && rsvp.guest_id !== this.props.screenProps.hostID
+                    })
+                    this.setState({
+                        yes: yes,
+                        no: no,
+                        maybe: maybe,
+                        tbd: tbd,
+                    })
+                })
+            )
     }
 
     addGuest = () => {
@@ -124,9 +148,6 @@ export default class GuestsScreen extends React.Component {
     }
 
     render() {
-        let colorWheel = ['#006F13', '#014E59', '#910B00', '#914500']
-        let rsvpArray = [].concat(...this.state.rsvps)
-        console.log('here it is......', rsvpArray)
         return (
             <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline', color: 'white', fontWeight: "bold", fontFamily: "Verdana" }}>GUESTS</Text>
@@ -174,72 +195,66 @@ export default class GuestsScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                     : null}
-                <ScrollView style={{ height: 400 }}>
-                    <Text style={styles.guestsHeader}>Accepted</Text>
-                    {this.state.party ? this.state.party.guests.map((guest, index) => {
-                        let partyRsvp = rsvpArray.find((rsvp) => {
-                            return rsvp.guest_id === guest.id
-                        })
-                        if (partyRsvp.RSVP === 'yes' || guest.id === this.props.screenProps.hostID) {
-                            return <TouchableOpacity key={index} style={[styles.guest, { backgroundColor: colorWheel[index % 4] }]} onPress={() => { this.uninviteGuest(guest) }}>
-                                <Text
-                                    title={guest.name}
-                                    style={styles.text}
-                                    accessibilityLabel={guest.name}
-                                >{guest.name}
-                                </Text>
+                {/* *************** guest sections *************** */}
+                <ScrollView style={{ height: 400, width: 300 }}>
+                    <View style={styles.section} >
+                        <View style={styles.header}>
+                            <Text style={styles.boldText}>Accepted</Text>
+                        </View>
+                        <TouchableOpacity style={styles.guestButton} onPress={() => { this.uninviteGuest(guest) }}>
+                            <Text style={styles.guestText}>{this.state.hostName}</Text>
+                        </TouchableOpacity>
+                        {this.state.party ? this.state.yes.map((guest, index) => {
+                            return <TouchableOpacity key={index} style={styles.guestButton} onPress={() => { this.uninviteGuest(guest) }}>
+                                <Text style={styles.guestText}>{guest.guest.name}</Text>
                             </TouchableOpacity>
-                        }
-                    }) : null}
-                    <Text style={styles.guestsHeader}>Maybe</Text>
-                    {this.state.party ? this.state.party.guests.map((guest, index) => {
-                        let partyRsvp = rsvpArray.find((rsvp) => {
-                            return rsvp.guest_id === guest.id
                         })
-                        if (partyRsvp.RSVP === 'maybe' && guest.id !== this.props.screenProps.hostID) {
-                            return <TouchableOpacity key={index} style={[styles.guest, { backgroundColor: colorWheel[index % 4] }]} onPress={() => { this.uninviteGuest(guest) }}>
-                                <Text
-                                    title={guest.name}
-                                    style={styles.text}
-                                    accessibilityLabel={guest.name}
-                                >{guest.name}
-                                </Text>
+                            : null}
+                    </View>
+                    <View style={styles.section} >
+                        <View style={styles.header}>
+                            <Text style={styles.boldText}>Maybe</Text>
+                        </View>
+                        {this.state.party ? this.state.maybe.map((guest, index) => {
+                            return <TouchableOpacity key={index} style={styles.guestButton} onPress={() => { this.uninviteGuest(guest) }}>
+                                <Text style={styles.guestText}>{guest.guest.name}</Text>
                             </TouchableOpacity>
-                        }
-                    }) : null}
-                    <Text style={styles.guestsHeader}>Awaiting Response</Text>
-                    {this.state.party ? this.state.party.guests.map((guest, index) => {
-                        let partyRsvp = rsvpArray.find((rsvp) => {
-                            return rsvp.guest_id === guest.id
                         })
-                        if (partyRsvp.RSVP === 'tbd' && guest.id !== this.props.screenProps.hostID) {
-                            return <TouchableOpacity key={index} style={[styles.guest, { backgroundColor: colorWheel[index % 4] }]} onPress={() => { this.uninviteGuest(guest) }}>
-                                <Text
-                                    title={guest.name}
-                                    style={styles.text}
-                                    accessibilityLabel={guest.name}
-                                >{guest.name}
-                                </Text>
+                            : null}
+                        {this.state.maybe.length === 0 ? <TouchableOpacity style={styles.guestButton}>
+                            <Text style={styles.guestText}></Text>
+                        </TouchableOpacity> : null}
+                    </View>
+                    <View style={styles.section} >
+                        <View style={styles.header}>
+                            <Text style={styles.boldText}>Awaiting Response</Text>
+                        </View>
+                        {this.state.party ? this.state.tbd.map((guest, index) => {
+                            return <TouchableOpacity key={index} style={styles.guestButton} onPress={() => { this.uninviteGuest(guest) }}>
+                                <Text style={styles.guestText}>{guest.guest.name}</Text>
                             </TouchableOpacity>
-                        }
-                    }) : null}
-                    <Text style={styles.guestsHeader}>Can't Make It</Text>
-                    {this.state.party ? this.state.party.guests.map((guest, index) => {
-                        let partyRsvp = rsvpArray.find((rsvp) => {
-                            return rsvp.guest_id === guest.id
                         })
-                        if (partyRsvp.RSVP === 'no' && guest.id !== this.props.screenProps.hostID) {
-                            return <TouchableOpacity key={index} style={[styles.guest, { backgroundColor: colorWheel[index % 4] }]} onPress={() => { this.uninviteGuest(guest) }}>
-                                <Text
-                                    title={guest.name}
-                                    style={styles.text}
-                                    accessibilityLabel={guest.name}
-                                >{guest.name}
-                                </Text>
+                            : null}
+                        {this.state.tbd.length === 0 ? <TouchableOpacity style={styles.guestButton}>
+                            <Text style={styles.guestText}></Text>
+                        </TouchableOpacity> : null}
+                    </View>
+                    <View style={styles.section} >
+                        <View style={styles.header}>
+                            <Text style={styles.boldText}>Can't Make It</Text>
+                        </View>
+                        {this.state.party ? this.state.no.map((guest, index) => {
+                            return <TouchableOpacity key={index} style={styles.guestButton} onPress={() => { this.uninviteGuest(guest) }}>
+                                <Text style={styles.guestText}>{guest.guest.name}</Text>
                             </TouchableOpacity>
-                        }
-                    }) : null}
+                        })
+                            : null}
+                        {this.state.no.length === 0 ? <TouchableOpacity style={styles.guestButton}>
+                            <Text style={styles.guestText}></Text>
+                        </TouchableOpacity> : null}
+                    </View>
                 </ScrollView>
+                {/* *************** end guest sections *************** */}
             </View>
         );
     }
@@ -264,20 +279,42 @@ const styles = StyleSheet.create({
         fontSize: 16,
         alignSelf: 'center'
     },
-    guest: {
+    guestButton: {
         opacity: 200,
-        width: 200,
-        height: 30,
-        borderWidth: 1,
+        width: 300,
         textAlignVertical: "center",
-        borderRadius: 5,
+        textAlign: 'center',
+        borderColor: 'white',
+        borderTopColor: 'grey',
         borderWidth: 1,
-        borderColor: 'black',
-        marginBottom: 4
+        padding: 4,
+        borderBottomLeftRadius: 4,
+        borderBottomRightRadius: 4,
+    },
+    guestText: {
+        fontSize: 16,
+        textAlign: 'center'
     },
     guestsHeader: {
         textDecorationLine: 'underline',
         marginBottom: 10,
         textAlign: "center"
+    },
+    boldText: {
+        textAlign: "center",
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+    header: {
+        borderTopLeftRadius: 4,
+        borderTopRightRadius: 4,
+        backgroundColor: '#e2a535',
+        width: 300,
+        padding: 3
+    },
+    section: {
+        borderRadius: 5,
+        backgroundColor: 'white',
+        marginTop: 10
     }
 })
