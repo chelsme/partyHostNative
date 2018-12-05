@@ -3,6 +3,7 @@ import { View, NavigatorIOS, StyleSheet, ImageBackground, Image, TouchableOpacit
 import HomeScreen from './screens/HomeScreen'
 import HostTabNavigator from './navigation/HostTabNavigator'
 import ProfileScreen from './screens/HostScreens/ProfileScreen';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -215,7 +216,7 @@ export default class App extends React.Component {
 					<HostTabNavigator logOut={this.logOut} name={this.state.name} userID={this.state.userID} />
 					:
 					<ImageBackground source={require('./assets/images/bckgd.jpg')} style={{ width: '100%', height: '120%' }}>
-						<View style={{ display: "flex", alignItems: "center" }}>
+						<KeyboardAwareScrollView style={{ display: "flex" }}>
 							<Image source={require('./assets/images/dancehostwhite.png')} style={styles.image} />
 
 							{/* login with facebook */}
@@ -243,7 +244,7 @@ export default class App extends React.Component {
 							{/* hidden input fields */}
 							<TextInput
 								autoCapitalize='none'
-								style={{ display: this.state.loginShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								style={[styles.textInput, { display: this.state.loginShow ? 'flex' : 'none' }]}
 								placeholder='Username'
 								onChangeText={this.handleloginUserName}
 								value={this.state.loginUserName}
@@ -251,12 +252,12 @@ export default class App extends React.Component {
 							<TextInput
 								autoCapitalize='none'
 								secureTextEntry={true}
-								style={{ display: this.state.loginShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								style={[styles.textInput, { display: this.state.loginShow ? 'flex' : 'none' }]}
 								placeholder='Password'
 								onChangeText={this.handleloginPassword}
 								value={this.state.loginPassword}
 							/>
-							<TouchableOpacity style={{ display: this.state.loginShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+							<TouchableOpacity style={[styles.submitButton, { display: this.state.loginShow ? 'flex' : 'none' }]}
 								onPress={() => this.submit("login")}>
 								<Text
 									title="Login"
@@ -279,14 +280,14 @@ export default class App extends React.Component {
 
 							{/* hidden input fields */}
 							<TextInput
-								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								style={[styles.textInput, { display: this.state.signUpShow ? 'flex' : 'none' }]}
 								placeholder='Full Name'
 								onChangeText={this.handleSignUpName}
 								value={this.state.name}
 							/>
 							<TextInput
 								autoCapitalize='none'
-								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								style={[styles.textInput, { display: this.state.signUpShow ? 'flex' : 'none' }]}
 								placeholder='Username'
 								onChangeText={this.handleSignUpUsername}
 								value={this.state.userName}
@@ -294,7 +295,7 @@ export default class App extends React.Component {
 							<TextInput
 								autoCapitalize='none'
 								secureTextEntry={true}
-								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								style={[styles.textInput, { display: this.state.signUpShow ? 'flex' : 'none' }]}
 								placeholder='Password'
 								onChangeText={this.handleSignUpPassword}
 								value={this.state.password}
@@ -302,12 +303,12 @@ export default class App extends React.Component {
 							<TextInput
 								autoCapitalize='none'
 								secureTextEntry={true}
-								style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+								style={[styles.textInput, { display: this.state.signUpShow ? 'flex' : 'none' }]}
 								placeholder='Password Verify'
 								onChangeText={this.handleSignUpPasswordVerify}
 								value={this.state.passwordVerify}
 							/>
-							<TouchableOpacity style={{ display: this.state.signUpShow ? 'flex' : 'none', backgroundColor: 'grey', paddingLeft: 5, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+							<TouchableOpacity style={[styles.submitButton, { display: this.state.signUpShow ? 'flex' : 'none' }]}
 								onPress={() => this.submit("signup")}>
 								<Text
 									title="Sign Up"
@@ -326,7 +327,7 @@ export default class App extends React.Component {
 								>Log In Test
                     			</Text>
 							</TouchableOpacity>
-						</View >
+						</KeyboardAwareScrollView >
 					</ImageBackground>}
 			</View>
 		)
@@ -344,7 +345,8 @@ const styles = StyleSheet.create({
 		width: 170,
 		height: 220,
 		overlayColor: "white",
-		margin: 3
+		margin: 3,
+		alignSelf: 'center'
 	},
 	textButton: {
 		backgroundColor: '#4d5a63',
@@ -356,7 +358,27 @@ const styles = StyleSheet.create({
 		borderRadius: 50,
 		borderWidth: 1,
 		borderColor: 'white',
-		marginTop: 6
+		marginTop: 6,
+		alignSelf: 'center'
+	},
+	textInput: {
+		backgroundColor: 'white',
+		padding: 5,
+		paddingLeft: 10,
+		borderRadius: 50,
+		width: 190,
+		margin: 2,
+		borderWidth: 1,
+		alignSelf: 'center'
+	},
+	submitButton: {
+		backgroundColor: 'grey',
+		paddingLeft: 5,
+		borderRadius: 50,
+		width: 190,
+		margin: 2,
+		borderWidth: 1,
+		alignSelf: 'center'
 	},
 	text: {
 		color: 'white',
