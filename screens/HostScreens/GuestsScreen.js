@@ -11,6 +11,7 @@ export default class GuestsScreen extends React.Component {
             addGuestShow: false,
             firstName: '',
             lastName: '',
+            guests: [],
             yes: [],
             no: [],
             maybe: [],
@@ -39,6 +40,7 @@ export default class GuestsScreen extends React.Component {
                 })
                 this.setState({
                     party: data,
+                    guests: data.guests,
                     firstName: '',
                     lastName: '',
                     hostName: host.name
@@ -198,7 +200,7 @@ export default class GuestsScreen extends React.Component {
                 {/* *************** guest sections *************** */}
                 <ScrollView style={{ height: 400, width: 300 }}>
                     <View style={styles.section} >
-                        <View style={styles.header}>
+                        <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
                             <Text style={styles.boldText}>Accepted</Text>
                         </View>
                         <TouchableOpacity style={styles.guestButton} onPress={() => { this.uninviteGuest(guest) }}>
@@ -212,7 +214,7 @@ export default class GuestsScreen extends React.Component {
                             : null}
                     </View>
                     <View style={styles.section} >
-                        <View style={styles.header}>
+                        <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
                             <Text style={styles.boldText}>Maybe</Text>
                         </View>
                         {this.state.party ? this.state.maybe.map((guest, index) => {
@@ -226,7 +228,7 @@ export default class GuestsScreen extends React.Component {
                         </TouchableOpacity> : null}
                     </View>
                     <View style={styles.section} >
-                        <View style={styles.header}>
+                        <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
                             <Text style={styles.boldText}>Awaiting Response</Text>
                         </View>
                         {this.state.party ? this.state.tbd.map((guest, index) => {
@@ -240,7 +242,7 @@ export default class GuestsScreen extends React.Component {
                         </TouchableOpacity> : null}
                     </View>
                     <View style={styles.section} >
-                        <View style={styles.header}>
+                        <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
                             <Text style={styles.boldText}>Can't Make It</Text>
                         </View>
                         {this.state.party ? this.state.no.map((guest, index) => {
@@ -308,7 +310,6 @@ const styles = StyleSheet.create({
     header: {
         borderTopLeftRadius: 4,
         borderTopRightRadius: 4,
-        backgroundColor: '#e2a535',
         width: 300,
         padding: 3
     },

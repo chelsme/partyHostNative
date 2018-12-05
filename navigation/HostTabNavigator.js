@@ -112,8 +112,15 @@ export default class HostTabNavigator extends React.Component {
             taskCount: null,
             songCount: null,
             hostID: null,
-            userID: this.props.userID
+            userID: this.props.userID,
+            color: null
         }
+    }
+
+    setColor = (color) => {
+        this.setState({
+            color: color
+        })
     }
 
     changeTabs = (tabId, partyID, partyName) => {
@@ -183,7 +190,9 @@ export default class HostTabNavigator extends React.Component {
             taskCount: this.state.taskCount,
             songCount: this.state.songCount,
             hostID: this.state.hostID,
+            color: this.state.color,
             userID: this.props.userID,
+            setColor: this.setColor,
             changeTabs: this.changeTabs,
             setHostID: this.setHostID,
             getGuestList: this.getGuestList,

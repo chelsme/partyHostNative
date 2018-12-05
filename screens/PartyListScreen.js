@@ -212,7 +212,7 @@ export default class PartyListScreen extends React.Component {
             })
     }
 
-    changeTabs = (party) => {
+    changeTabs = (party, color) => {
         this.props.screenProps.setHostID(party.host_id)
         this.props.screenProps.changeTabs('profile', party.id, party.name)
         this.getGuestList(party.id)
@@ -220,6 +220,11 @@ export default class PartyListScreen extends React.Component {
         this.setState({
             selectedParty: party.id
         })
+        this.setColor(color)
+    }
+
+    setColor = (color) => {
+        this.props.screenProps.setColor(color)
     }
 
     cancelParty = (party) => {
@@ -301,8 +306,7 @@ export default class PartyListScreen extends React.Component {
 
     render() {
         let hostColorWheel = ['#FF7400', '#FFAA00', '#009999', '#1240AB']
-        let guestColorWheel = ['#092871', '#A84C00', '#A87000', '#006565']
-        let partyOptions = ['Name', 'Date', 'Time', 'Location']
+        let guestColorWheel = ['#092871', '#A84C00', '#EBAC00', '#006565']
         return (
             <View style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
                 <View style={{ alignItems: 'flex-end' }}>
@@ -399,7 +403,7 @@ export default class PartyListScreen extends React.Component {
                     <ScrollView style={{ height: 205 }}>
                         {
                             this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
-                                return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
+                                return <TouchableOpacity key={index} onPress={() => this.changeTabs(party, hostColorWheel[index % 4])} style={styles.partyButton}>
                                     <View style={{
                                         borderTopLeftRadius: 4, borderTopRightRadius: 4, backgroundColor: hostColorWheel[index % 4],
                                     }}><Text
@@ -429,7 +433,7 @@ export default class PartyListScreen extends React.Component {
                                 let partyRsvp = this.state.rsvps.find((rsvp) => {
                                     return rsvp.party_id === party.id
                                 })
-                                return <TouchableOpacity key={index} onPress={() => this.changeTabs(party)} style={styles.partyButton}>
+                                return <TouchableOpacity key={index} onPress={() => this.changeTabs(party, guestColorWheel[index % 4])} style={styles.partyButton}>
                                     <View style={{
                                         borderTopLeftRadius: 4, borderTopRightRadius: 4, backgroundColor: guestColorWheel[index % 4],
                                     }}>
@@ -492,7 +496,5 @@ const styles = StyleSheet.create({
         padding: 3,
         fontSize: 14,
         textDecorationLine: 'underline',
-        // borderTopLeftRadius: 45,
-        // borderTopRightRadius: 45
     }
 })

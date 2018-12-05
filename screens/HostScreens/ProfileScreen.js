@@ -57,7 +57,7 @@ export default class ProfileScreen extends React.Component {
                             <Text style={{ textAlign: "center", fontSize: 25, textDecorationLine: 'underline', fontWeight: "bold" }}>{this.state.party.name}</Text>
                         </View>
                         <View style={styles.section} >
-                            <View style={styles.header}>
+                            <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
                                 <Text style={styles.boldText}>Details</Text>
                             </View>
                             <Text style={{ margin: 4 }}>
@@ -74,7 +74,7 @@ export default class ProfileScreen extends React.Component {
                             </Text>
                         </View>
                         <View style={styles.section} >
-                            <View style={styles.header}>
+                            <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
                                 <Text style={styles.boldText}>Guests</Text>
                             </View>
                             <Text style={{ margin: 4 }}>
@@ -97,7 +97,7 @@ export default class ProfileScreen extends React.Component {
                             </Text>
                         </View>
                         <View style={styles.section} >
-                            <View style={styles.header}>
+                            <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
                                 <Text style={styles.boldText}>Lists</Text>
                             </View><Text style={{ margin: 4 }}>
                                 <Text style={styles.boldText}>Songs on Playlist:&nbsp;</Text>
@@ -160,9 +160,11 @@ const styles = StyleSheet.create({
     header: {
         borderTopLeftRadius: 4,
         borderTopRightRadius: 4,
-        backgroundColor: '#e2a535',
-        width: 300,
-        padding: 3
+        width: 301,
+        padding: 3,
+        borderColor: 'black',
+        borderWidth: .5,
+        marginLeft: -.5
     },
     section: {
         borderRadius: 5,
