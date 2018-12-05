@@ -1,9 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, Image, ScrollView } from 'react-native';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
-import { Ionicons, FontAwesome, Octicons } from '@expo/vector-icons';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-
+import { Ionicons, FontAwesome, Octicons, MaterialIcons } from '@expo/vector-icons';
 
 
 export default class PartyListScreen extends React.Component {

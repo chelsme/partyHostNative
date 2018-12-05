@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, ScrollView } from 'react-native';
-import { Icon } from 'react-native-elements'
-import GuestsScreen from './GuestsScreen';
+import { Ionicons, FontAwesome, Octicons, MaterialIcons } from '@expo/vector-icons';
 
 export default class PlaylistScreen extends React.Component {
     constructor(props) {
@@ -41,17 +40,6 @@ export default class PlaylistScreen extends React.Component {
                 })
             })
     }
-
-    // logout = () => {
-    //     this.props.screenProps.navigator.popToTop();
-    // }
-
-    // goToGuests = () => {
-    //     this.props.screenProps.navigator.push({
-    //         title: 'Guests',
-    //         component: GuestsScreen,
-    //     });
-    // }
 
     addSong = () => {
         this.setState((state) => {
@@ -158,7 +146,7 @@ export default class PlaylistScreen extends React.Component {
                     </Text>
                 </TouchableOpacity>
 
-                <ScrollView style={{ padding: 0, height: 400, width: 280 }} >
+                <ScrollView style={{ padding: 0, height: 385, width: 280, marginTop: 10 }} >
                     {
                         this.state.partyPlaylist ? this.state.partyPlaylist.map((song, index) => {
                             return <View
@@ -177,7 +165,8 @@ export default class PlaylistScreen extends React.Component {
                                 }}
                                 accessibilityLabel={`${song.name} by ${song.artist}`}
                             >
-                                <Text onPress={() => this.pressSong(song)}>&#127925;    {song.name} - {song.artist}</Text>
+                                <Text>&#127925;    {song.name} - {song.artist}</Text>
+                                {this.props.screenProps.userID === this.props.screenProps.hostID ? <MaterialIcons name="delete-forever" color='black' size={18} style={{ marginTop: -18, marginLeft: 240, width: 18 }} onPress={() => this.pressSong(song)} /> : null}
                             </View>
                         }) : null
                     }
@@ -198,7 +187,6 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        marginBottom: 10
     },
     text: {
         color: 'white',

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView, TextInput, AlertIOS, Picker } from 'react-native';
 import SearchBar from 'react-native-searchbar'
 import SearchableDropdown from 'react-native-searchable-dropdown';
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { Ionicons, FontAwesome, Octicons, MaterialIcons } from '@expo/vector-icons';
 
 
 
@@ -180,8 +180,8 @@ export default class ListsScreen extends React.Component {
 
     guestTaskUpdate = (task) => {
         AlertIOS.alert(
-            'some words',
-            `other words ${task.action}?`,
+            'Task Options',
+            `${task.action}`,
             [{
                 text: 'Accept Task', onPress: () => {
                     task.guest.name === "" ?
@@ -331,7 +331,7 @@ export default class ListsScreen extends React.Component {
 
                 <ScrollView
 
-                    style={{ padding: 0, height: 400, width: 280 }}
+                    style={{ padding: 0, height: 385, width: 280, marginTop: 10 }}
                 >
                     {
                         this.state.partyTasks ? this.state.partyTasks.map((task, index) => {
@@ -350,24 +350,25 @@ export default class ListsScreen extends React.Component {
                                 }}
                                 accessibilityLabel={task.guest.name !== '' ? `${task.action} assigned to ${task.guest.name}` : `${task.action} is unassigned`}
                             >
-                                <Text
-                                    onPress={() => this.pressTask(task)}>
+                                <Text>
                                     {task.guest.name !== '' && this.props.screenProps.guests.find((guest) => {
                                         return task.guest.name === guest.name
                                     })
                                         ? <Text>&#10003;  </Text>
-                                        // <Ionicons name="md-checkmark-circle" size={28} style={{marginTop: 10}} color="green" />
-                                        : <Text>&#9675;  </Text>
+                                        : <Text>&#9675;   </Text>
                                     }
                                     <Text>{task.action}</Text>
                                 </Text>
+
+
                                 {task.guest.name !== '' && this.props.screenProps.guests.find((guest) => {
                                     return task.guest.name === guest.name
                                 })
-                                    ? <Text style={styles.subtext}>        {task.guest.name}</Text>
-                                    : <Text style={styles.subtext}>        unassigned</Text>
+                                    ? <Text style={styles.subtext}>          {task.guest.name}</Text>
+                                    : <Text style={styles.subtext}>          unassigned</Text>
                                 }
 
+                                <MaterialIcons name="edit" color='white' size={18} style={{ marginTop: -28, marginLeft: 240, marginBottom: 8, width: 18 }} onPress={() => this.pressTask(task)} />
                             </View>
                         }) : null
                     }
@@ -388,7 +389,6 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        marginBottom: 10
     },
     text: {
         color: 'white',
