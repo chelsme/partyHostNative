@@ -9,8 +9,8 @@ export default class PlaylistScreen extends React.Component {
         this.state = {
             partyPlaylist: null,
             addSongShow: false,
-            addSongTitle: null,
-            addSongArtist: null
+            addSongTitle: '',
+            addSongArtist: ''
         }
     }
 
