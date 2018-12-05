@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, LinearGradient, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, LinearGradient, TouchableOpacity, ImageBackground } from 'react-native';
 import GuestsScreen from './GuestsScreen';
 
 
@@ -24,14 +24,14 @@ export default class ProfileScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch(`http://10.185.4.126:3000/parties/${this.props.screenProps.selectedParty}`)
+        fetch(`http://localhost:3000/parties/${this.props.screenProps.selectedParty}`)
             .then(resp => resp.json())
             .then(data => {
                 this.setState({
                     party: data
                 })
             })
-            .then(fetch('http://10.185.4.126:3000/party_guests')
+            .then(fetch('http://localhost:3000/party_guests')
                 .then(resp => resp.json())
                 .then(data => {
                     let rsvps = data.filter((guest) => {
@@ -50,7 +50,7 @@ export default class ProfileScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
+            <ImageBackground source={require('../../assets/images/background.jpg')} style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
                 {this.state.party ?
                     <View style={{ width: 300 }} >
                         <View style={{ borderRadius: 5, backgroundColor: 'white', marginTop: 15, padding: 10 }} >
@@ -128,7 +128,7 @@ export default class ProfileScreen extends React.Component {
                     >Logout
                             </Text>
                 </TouchableOpacity>
-            </View>
+            </ImageBackground>
         );
     }
 }

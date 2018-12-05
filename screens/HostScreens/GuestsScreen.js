@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, ScrollView, ImageBackground } from 'react-native';
 import { withTheme } from 'react-native-paper';
 
 export default class GuestsScreen extends React.Component {
@@ -151,7 +151,7 @@ export default class GuestsScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
+            <ImageBackground source={require('../../assets/images/background.jpg')} style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline', color: 'white', fontWeight: "bold", fontFamily: "Verdana" }}>GUESTS</Text>
 
 
@@ -257,7 +257,7 @@ export default class GuestsScreen extends React.Component {
                     </View>
                 </ScrollView>
                 {/* *************** end guest sections *************** */}
-            </View>
+            </ImageBackground>
         );
     }
 }

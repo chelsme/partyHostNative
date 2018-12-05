@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView, TextInput, AlertIOS, Picker } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView, TextInput, AlertIOS, Picker, ImageBackground } from 'react-native';
 import SearchBar from 'react-native-searchbar'
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import { Ionicons, FontAwesome, Octicons, MaterialIcons } from '@expo/vector-icons';
@@ -230,7 +230,7 @@ export default class ListsScreen extends React.Component {
     render() {
         console.log(this.props.screenProps.color)
         return (
-            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
+            <ImageBackground source={require('../../assets/images/background.jpg')} style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline', color: 'white', fontWeight: "bold", fontFamily: "Verdana" }}>TASKS</Text>
 
                 {this.props.screenProps.userID === this.props.screenProps.hostID ?
@@ -374,7 +374,7 @@ export default class ListsScreen extends React.Component {
                         }) : null
                     }
                 </ScrollView>
-            </View>
+            </ImageBackground>
         );
     }
 }

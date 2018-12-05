@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, Image, ScrollView, ImageBackground } from 'react-native';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import { Ionicons, FontAwesome, Octicons, MaterialIcons } from '@expo/vector-icons';
 
@@ -305,10 +305,10 @@ export default class PartyListScreen extends React.Component {
     }
 
     render() {
-        let hostColorWheel = ['#FF7400', '#FFAA00', '#009999', '#1240AB']
-        let guestColorWheel = ['#092871', '#A84C00', '#EBAC00', '#006565']
+        let hostColorWheel = ['#FF7400', '#fcd303', '#009999', '#6E8EF5']
+        let guestColorWheel = ['#14398F', '#cf6523', '#EBAC00', '#006565']
         return (
-            <View style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
+            <ImageBackground source={require('../assets/images/background.jpg')} style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
                 <View style={{ alignItems: 'flex-end' }}>
                     <TouchableOpacity style={{ display: 'flex', width: 70, marginBottom: 5, fontSize: 14, marginRight: 20, marginTop: 5, borderRadius: 5, backgroundColor: 'grey', right: 0 }}>
                         <Text style={{ textAlign: "center", fontSize: 14, textAlignVertical: "center", padding: 5 }}
@@ -466,7 +466,7 @@ export default class PartyListScreen extends React.Component {
                         }
                     </ScrollView>
                 </View>
-            </View >
+            </ImageBackground >
         );
     }
 }

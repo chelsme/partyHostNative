@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput, AlertIOS, ScrollView, ImageBackground } from 'react-native';
 import { Ionicons, FontAwesome, Octicons, MaterialIcons } from '@expo/vector-icons';
 
 export default class PlaylistScreen extends React.Component {
@@ -109,7 +109,7 @@ export default class PlaylistScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
+            <ImageBackground source={require('../../assets/images/background.jpg')} style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63' }} >
                 <Text style={{ textAlign: "center", margin: 20, fontSize: 30, textDecorationLine: 'underline', color: 'white', fontWeight: "bold", fontFamily: "Verdana" }}>PLAYLIST</Text>
 
                 {/* add song to playlist */}
@@ -171,7 +171,7 @@ export default class PlaylistScreen extends React.Component {
                         }) : null
                     }
                 </ScrollView>
-            </View>
+            </ImageBackground>
         );
     }
 }
