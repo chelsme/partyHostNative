@@ -125,17 +125,14 @@ export default class GuestsScreen extends React.Component {
     }
 
     uninviteGuest = (guest) => {
-        let partyGuest = guest.party_guests.filter((x) => {
-            return x.party_id === this.props.screenProps.selectedParty
-        })
         this.props.screenProps.hostID === this.props.screenProps.userID ?
             AlertIOS.alert(
                 'Uninvite',
-                `Would you like to remove ${guest.name} from your party guest list?`,
+                `Would you like to remove ${guest.guest.name} from your party guest list?`,
                 [
                     { text: 'NO', style: 'cancel' },
                     {
-                        text: 'YES', onPress: () => { this.uninviteFetch(partyGuest[0].id) }
+                        text: 'YES', onPress: () => { this.uninviteFetch(guest.id) }
                     },
                 ]
             )
@@ -203,7 +200,7 @@ export default class GuestsScreen extends React.Component {
                         <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
                             <Text style={styles.boldText}>Accepted</Text>
                         </View>
-                        <TouchableOpacity style={styles.guestButton} onPress={() => { this.uninviteGuest(guest) }}>
+                        <TouchableOpacity style={styles.guestButton}>
                             <Text style={styles.guestText}>{this.state.hostName}</Text>
                         </TouchableOpacity>
                         {this.state.party ? this.state.yes.map((guest, index) => {
