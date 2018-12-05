@@ -34,7 +34,7 @@ export default class ListsScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch(`http://localhost:3000/parties/${this.props.screenProps.selectedParty}`)
+        fetch(`http://10.185.4.126:3000/parties/${this.props.screenProps.selectedParty}`)
             .then(resp => resp.json())
             .then(data => {
                 let partyTasks = data.tasks.filter((task) => {
@@ -80,7 +80,7 @@ export default class ListsScreen extends React.Component {
     handleSubmitTask = () => {
         {
             this.state.task !== '' && (this.props.screenProps.guests.find((guest) => { return guest.name === this.state.taskGuest })) ?
-                fetch('http://localhost:3000/tasks', {
+                fetch('http://10.185.4.126:3000/tasks', {
                     method: 'POST', // or 'PUT'
                     body: JSON.stringify({
                         action: this.state.task,
@@ -107,7 +107,7 @@ export default class ListsScreen extends React.Component {
     }
 
     guestSubmitTask = () => {
-        fetch('http://localhost:3000/tasks', {
+        fetch('http://10.185.4.126:3000/tasks', {
             method: 'POST', // or 'PUT'
             body: JSON.stringify({
                 action: this.state.task,
@@ -166,7 +166,7 @@ export default class ListsScreen extends React.Component {
                 },
                 {
                     text: 'Remove', onPress: () => {
-                        fetch(`http://localhost:3000/tasks/${task.id}`, {
+                        fetch(`http://10.185.4.126:3000/tasks/${task.id}`, {
                             method: 'DELETE', // or 'PUT'
                         })
                             .then(setTimeout(() => this.makeRemoteRequest(), 200))
@@ -194,7 +194,7 @@ export default class ListsScreen extends React.Component {
     }
 
     editTask = (newAction, task) => {
-        fetch(`http://localhost:3000/tasks/${task.id}`, {
+        fetch(`http://10.185.4.126:3000/tasks/${task.id}`, {
             method: 'PATCH', // or 'PUT'
             body: JSON.stringify({
                 action: newAction,
@@ -211,7 +211,7 @@ export default class ListsScreen extends React.Component {
         let newTaskGuest = this.props.screenProps.guests.find((guest) => {
             return guest.name === taskGuest
         })
-        newTaskGuest ? fetch(`http://localhost:3000/tasks/${task.id}`, {
+        newTaskGuest ? fetch(`http://10.185.4.126:3000/tasks/${task.id}`, {
             method: 'PATCH', // or 'PUT'
             body: JSON.stringify({
                 guest_id: newTaskGuest.id,

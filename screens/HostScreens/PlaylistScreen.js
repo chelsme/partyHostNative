@@ -25,7 +25,7 @@ export default class PlaylistScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch('http://localhost:3000/songs')
+        fetch('http://10.185.4.126:3000/songs')
             .then(resp => resp.json())
             .then(data => {
                 let partyPlaylist = data.filter((song) => {
@@ -62,7 +62,7 @@ export default class PlaylistScreen extends React.Component {
     handleSubmitSong = () => {
         {
             this.state.song !== '' && this.state.artist !== '' ?
-                fetch('http://localhost:3000/songs', {
+                fetch('http://10.185.4.126:3000/songs', {
                     method: 'POST', // or 'PUT'
                     body: JSON.stringify({
                         name: this.state.song,
@@ -94,7 +94,7 @@ export default class PlaylistScreen extends React.Component {
                 [
                     {
                         text: 'Remove', onPress: () => {
-                            fetch(`http://localhost:3000/songs/${song.id}`, {
+                            fetch(`http://10.185.4.126:3000/songs/${song.id}`, {
                                 method: 'DELETE', // or 'PUT'
                             })
                                 .then(setTimeout(() => this.makeRemoteRequest(), 200))

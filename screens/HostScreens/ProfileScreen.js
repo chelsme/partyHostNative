@@ -24,14 +24,14 @@ export default class ProfileScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch(`http://localhost:3000/parties/${this.props.screenProps.selectedParty}`)
+        fetch(`http://10.185.4.126:3000/parties/${this.props.screenProps.selectedParty}`)
             .then(resp => resp.json())
             .then(data => {
                 this.setState({
                     party: data
                 })
             })
-            .then(fetch('http://localhost:3000/party_guests')
+            .then(fetch('http://10.185.4.126:3000/party_guests')
                 .then(resp => resp.json())
                 .then(data => {
                     let rsvps = data.filter((guest) => {
