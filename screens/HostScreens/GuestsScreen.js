@@ -33,7 +33,7 @@ export default class GuestsScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch(`http://10.10.10.111:3000/parties/${this.props.screenProps.selectedParty}`)
+        fetch(`http://10.185.7.174:3000/parties/${this.props.screenProps.selectedParty}`)
             .then(resp => resp.json())
             .then(data => {
                 this.props.screenProps.getGuestList(data.guests)
@@ -48,7 +48,7 @@ export default class GuestsScreen extends React.Component {
                     hostName: host.name
                 })
             })
-            .then(fetch('http://10.10.10.111:3000/party_guests')
+            .then(fetch('http://10.185.7.174:3000/party_guests')
                 .then(resp => resp.json())
                 .then(data => {
                     let guests = data.filter((guest) => {
@@ -104,7 +104,7 @@ export default class GuestsScreen extends React.Component {
         }
         if (this.state.firstName.split(' ').join('') !== '' && this.state.lastName.split(' ').join('') !== '') {
             this.state.firstName.split(' ').join('') !== '' && this.state.lastName.split(' ').join('') !== '' ?
-                fetch('http://10.10.10.111:3000/guests', {
+                fetch('http://10.185.7.174:3000/guests', {
                     method: 'POST', // or 'PUT'
                     body: JSON.stringify({
                         name: `${this.state.firstName} ${this.state.lastName}`,
@@ -150,7 +150,7 @@ export default class GuestsScreen extends React.Component {
     }
 
     uninviteFetch = (id) => {
-        fetch(`http://10.10.10.111:3000/party_guests/${id}`, {
+        fetch(`http://10.185.7.174:3000/party_guests/${id}`, {
             method: 'DELETE', // or 'PUT'
         })
             .then(setTimeout(() => this.makeRemoteRequest(), 200))
