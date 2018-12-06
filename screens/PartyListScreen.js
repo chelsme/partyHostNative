@@ -40,7 +40,7 @@ export default class PartyListScreen extends React.Component {
     }
 
     makeRemoteRequest() {
-        fetch(`http://10.185.4.126:3000/guests/${this.props.screenProps.userID}`)
+        fetch(`http://10.10.10.111:3000/guests/${this.props.screenProps.userID}`)
             .then(resp => resp.json())
             .then(data => {
                 let hostingParties = data.parties.filter((party) => {
@@ -99,7 +99,7 @@ export default class PartyListScreen extends React.Component {
     handleSubmitParty = () => {
         {
             this.state.newPartyName !== '' && this.state.newPartyDate !== '' && this.state.newPartyTime !== '' && this.state.newPartyLocation !== '' ?
-                fetch('http://10.185.4.126:3000/parties', {
+                fetch('http://10.10.10.111:3000/parties', {
                     method: 'POST', // or 'PUT'
                     body: JSON.stringify({
                         name: this.state.newPartyName,
@@ -175,7 +175,7 @@ export default class PartyListScreen extends React.Component {
 
     handleEditParty = () => {
         {
-            fetch(`http://10.185.4.126:3000/parties/${this.state.editParty}`, {
+            fetch(`http://10.10.10.111:3000/parties/${this.state.editParty}`, {
                 method: 'PATCH', // or 'PUT'
                 body: JSON.stringify({
                     name: this.state.editPartyName,
@@ -202,7 +202,7 @@ export default class PartyListScreen extends React.Component {
     // end edit party
 
     getGuestList = (id) => {
-        fetch(`http://10.185.4.126:3000/parties/${id}`)
+        fetch(`http://10.10.10.111:3000/parties/${id}`)
             .then(resp => resp.json())
             .then(data => {
                 let partyGuests = data.guests.map((guest) => {
@@ -235,7 +235,7 @@ export default class PartyListScreen extends React.Component {
                 { text: 'NO', style: 'cancel' },
                 {
                     text: 'YES', onPress: () => {
-                        fetch(`http://10.185.4.126:3000/parties/${party.id}`, {
+                        fetch(`http://10.10.10.111:3000/parties/${party.id}`, {
                             method: 'DELETE', // or 'PUT'
                         })
                             .then(setTimeout(() => this.makeRemoteRequest(), 200))
@@ -253,7 +253,7 @@ export default class PartyListScreen extends React.Component {
             [
                 {
                     text: 'Yes', onPress: () => {
-                        fetch(`http://10.185.4.126:3000/party_guests/${rsvp.id}`, {
+                        fetch(`http://10.10.10.111:3000/party_guests/${rsvp.id}`, {
                             method: 'PATCH', // or 'PUT'
                             body: JSON.stringify({
                                 RSVP: 'yes',
@@ -269,7 +269,7 @@ export default class PartyListScreen extends React.Component {
                 },
                 {
                     text: 'No', onPress: () => {
-                        fetch(`http://10.185.4.126:3000/party_guests/${rsvp.id}`, {
+                        fetch(`http://10.10.10.111:3000/party_guests/${rsvp.id}`, {
                             method: 'PATCH', // or 'PUT'
                             body: JSON.stringify({
                                 RSVP: 'no',
@@ -285,7 +285,7 @@ export default class PartyListScreen extends React.Component {
                 },
                 {
                     text: 'Maybe', onPress: () => {
-                        fetch(`http://10.185.4.126:3000/party_guests/${rsvp.id}`, {
+                        fetch(`http://10.10.10.111:3000/party_guests/${rsvp.id}`, {
                             method: 'PATCH', // or 'PUT'
                             body: JSON.stringify({
                                 RSVP: 'maybe',

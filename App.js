@@ -26,7 +26,7 @@ export default class App extends React.Component {
 	}
 
 	componentDidMount() {
-		fetch('http://10.185.4.126:3000/guests')
+		fetch('http://10.10.10.111:3000/guests')
 			.then(resp => resp.json())
 			.then(data => {
 				this.setState({
@@ -50,7 +50,7 @@ export default class App extends React.Component {
 				// Get the user's name using Facebook's Graph API
 				const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
 				let userName = (await response.json()).name
-				fetch('http://10.185.4.126:3000/guests', {
+				fetch('http://10.10.10.111:3000/guests', {
 					method: 'POST', // or 'PUT'
 					body: JSON.stringify({ name: userName }), // data can be `string` or {object}!
 					headers: {
@@ -122,7 +122,7 @@ export default class App extends React.Component {
 				} else if (this.state.password !== this.state.passwordVerify) {
 					AlertIOS.alert('Passwords do not match.')
 				} else if (newSessionUser) {
-					fetch(`http://10.185.4.126:3000/guests/${newSessionUser.id}`, {
+					fetch(`http://10.10.10.111:3000/guests/${newSessionUser.id}`, {
 						method: 'PATCH', // or 'PUT'
 						body: JSON.stringify({
 							username: this.state.userName,
@@ -140,7 +140,7 @@ export default class App extends React.Component {
 							})
 						})
 				} else if (this.state.name !== "" && this.state.userName !== "" && this.state.password !== "") {
-					fetch('http://10.185.4.126:3000/guests', {
+					fetch('http://10.10.10.111:3000/guests', {
 						method: 'POST', // or 'PUT'
 						body: JSON.stringify({
 							name: `${this.state.name}`,
