@@ -212,7 +212,7 @@ export default class GuestsScreen extends React.Component {
                         </View>
                         <TouchableOpacity style={styles.guestButton}>
                             <Text style={styles.guestText}>{this.state.hostName}</Text>
-                            <MaterialCommunityIcons name="crown" color={'gold'} style={{ marginTop: -22, marginLeft: 30, width: 22 }} size={22} />
+                            <MaterialCommunityIcons name="crown" color={'gold'} style={{ marginTop: -22, marginLeft: 30, width: 24, marginBottom: -4 }} size={24} />
                         </TouchableOpacity>
                         {this.state.party ? this.state.yes.map((guest, index) => {
                             return <TouchableOpacity key={index} style={styles.guestButton} onPress={() => { this.uninviteGuest(guest) }}>

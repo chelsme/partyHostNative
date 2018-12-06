@@ -321,7 +321,7 @@ export default class PartyListScreen extends React.Component {
                     {/* create new party */}
                     < TouchableOpacity onPress={this.addParty}>
                         <Image
-                            style={{ width: 60, height: 60, marginBottom: 5, marginTop: -20 }}
+                            style={{ width: 60, height: 60, marginBottom: 5, marginTop: -25 }}
                             source={require('../assets/images/cupcakeadd.png')}
                             onPress={this.addParty}
                         />
@@ -399,7 +399,7 @@ export default class PartyListScreen extends React.Component {
                     </TouchableOpacity>
 
                     {/* view parties */}
-                    <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold", color: 'white', marginBottom: 3 }}>Parties I'm Hosting</Text>
+                    <Text style={styles.partyListHeader}>Parties I'm Hosting</Text>
                     <ScrollView style={{ height: 205 }}>
                         {
                             this.state.hostingParties ? this.state.hostingParties.map((party, index) => {
@@ -413,20 +413,20 @@ export default class PartyListScreen extends React.Component {
                                     >{party.name}
                                         </Text>
                                         <TouchableOpacity style={{ marginLeft: 10 }}>
-                                            <MaterialIcons name="edit" color='white' size={18} style={{ marginTop: -20, marginBottom: 4, width: 18 }} onPress={() => this.editParty(party)} />
+                                            <MaterialIcons name="edit" color='white' size={24} style={{ marginTop: -26, marginBottom: 2, width: 24 }} onPress={() => this.editParty(party)} />
                                         </TouchableOpacity>
                                         <TouchableOpacity style={{ marginLeft: 270 }}>
-                                            <MaterialIcons name="delete-forever" color='white' size={18} style={{ marginTop: -22, marginBottom: 4, width: 18 }} onPress={() => this.cancelParty(party)} />
+                                            <MaterialIcons name="delete-forever" color='white' size={24} style={{ marginTop: -26, marginBottom: 2, width: 24 }} onPress={() => this.cancelParty(party)} />
                                         </TouchableOpacity>
                                     </View>
-                                    <Text style={{ textAlign: "center", fontSize: 14, marginTop: 2 }}>{party.date}</Text>
+                                    <Text style={{ textAlign: "center", fontSize: 16 }}>{party.date}</Text>
                                     <Text style={{ textAlign: "center", fontSize: 10 }}>Click for more details...</Text>
                                 </TouchableOpacity>
                             }) : null
 
                         }
                     </ScrollView>
-                    <Text style={{ textDecorationLine: 'underline', fontSize: 16, fontWeight: "bold", marginTop: 3, color: 'white', marginBottom: 3 }}>Parties I'm Invited To</Text>
+                    <Text style={styles.partyListHeader}>Parties I'm Invited To</Text>
                     <ScrollView style={{ height: 205, marginBottom: 10 }}>
                         {
                             this.state.attendingParties ? this.state.attendingParties.map((party, index) => {
@@ -444,22 +444,22 @@ export default class PartyListScreen extends React.Component {
                                         >{party.name}
                                         </Text>
                                         <TouchableOpacity style={{ marginLeft: 10 }}>
-                                            <Octicons name="mail-read" color='white' size={18} style={{ marginTop: -20, marginBottom: 2, width: 18 }} onPress={() => this.rsvp(party, partyRsvp)} />
+                                            <Octicons name="mail-read" color='white' size={20} style={{ marginTop: -24, marginBottom: 2, width: 20 }} onPress={() => this.rsvp(party, partyRsvp)} />
                                         </TouchableOpacity>
 
                                         {(() => {
                                             if (partyRsvp.RSVP === 'yes') {
-                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 230, color: 'white' }}>RSVP: &#10003;</Text>
+                                                return <Text style={{ textAlign: "center", fontSize: 14, fontWeight: 'bold', marginTop: -22, marginBottom: 4, marginLeft: 228, color: 'white' }}>RSVP: &#10003;</Text>
                                             } else if (partyRsvp.RSVP === 'no') {
-                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 230, color: 'white' }}>RSVP: X</Text>
+                                                return <Text style={{ textAlign: "center", fontSize: 14, fontWeight: 'bold', marginTop: -22, marginBottom: 4, marginLeft: 228, color: 'white' }}>RSVP: X</Text>
                                             } else if (partyRsvp.RSVP === 'maybe') {
-                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 230, color: 'white' }}>RSVP: &#63;</Text>
+                                                return <Text style={{ textAlign: "center", fontSize: 14, fontWeight: 'bold', marginTop: -22, marginBottom: 4, marginLeft: 228, color: 'white' }}>RSVP: &#63;</Text>
                                             } else if (partyRsvp.RSVP === 'tbd') {
-                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 230, color: 'white' }}>RSVP: &#9675;</Text>
+                                                return <Text style={{ textAlign: "center", fontSize: 14, fontWeight: 'bold', marginTop: -22, marginBottom: 4, marginLeft: 228, color: 'white' }}>RSVP: &#9675;</Text>
                                             }
                                         })()}
                                     </View>
-                                    <Text style={{ textAlign: "center", fontSize: 14, marginTop: 2 }}>{party.date}</Text>
+                                    <Text style={{ textAlign: "center", fontSize: 16 }}>{party.date}</Text>
                                     <Text style={{ textAlign: "center", fontSize: 10 }}>Click for more details...</Text>
                                 </TouchableOpacity>
                             }) : null
@@ -494,7 +494,15 @@ const styles = StyleSheet.create({
         color: 'white',
         textAlign: 'center',
         padding: 3,
-        fontSize: 14,
+        fontSize: 18,
         textDecorationLine: 'underline',
+        fontWeight: 'bold'
+    },
+    partyListHeader: {
+        textDecorationLine: 'underline',
+        fontSize: 20,
+        fontWeight: "bold",
+        color: 'white',
+        marginBottom: 3,
     }
 })

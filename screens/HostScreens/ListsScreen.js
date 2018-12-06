@@ -209,7 +209,7 @@ export default class ListsScreen extends React.Component {
 
     reassignTask = (taskGuest, task) => {
         let newTaskGuest = this.props.screenProps.guests.find((guest) => {
-            return guest.name === taskGuest
+            return guest.name.toLowerCase().includes(taskGuest.toLowerCase())
         })
         newTaskGuest ? fetch(`http://10.185.7.174:3000/tasks/${task.id}`, {
             method: 'PATCH', // or 'PUT'
@@ -369,7 +369,7 @@ export default class ListsScreen extends React.Component {
                                     : <Text style={styles.subtext}>          unassigned</Text>
                                 }
 
-                                <MaterialIcons name="edit" color='white' size={18} style={{ marginTop: -28, marginLeft: 240, marginBottom: 8, width: 18 }} onPress={() => this.pressTask(task)} />
+                                <MaterialIcons name="edit" color='white' size={24} style={{ marginTop: -28, marginLeft: 235, marginBottom: 4, width: 24 }} onPress={() => this.pressTask(task)} />
                             </View>
                         }) : null
                     }

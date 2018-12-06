@@ -58,7 +58,7 @@ export default class ProfileScreen extends React.Component {
                         </View>
                         <View style={styles.section} >
                             <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
-                                <Text style={styles.boldText}>Details</Text>
+                                <Text style={styles.boldTextHeader}>Details</Text>
                             </View>
                             <Text style={{ margin: 4 }}>
                                 <Text style={styles.boldText}>Date:&nbsp;</Text>
@@ -75,7 +75,7 @@ export default class ProfileScreen extends React.Component {
                         </View>
                         <View style={styles.section} >
                             <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
-                                <Text style={styles.boldText}>Guests</Text>
+                                <Text style={styles.boldTextHeader}>Guests</Text>
                             </View>
                             <Text style={{ margin: 4 }}>
                                 <Text style={styles.boldText}>Accepted:&nbsp;</Text>
@@ -98,7 +98,7 @@ export default class ProfileScreen extends React.Component {
                         </View>
                         <View style={styles.section} >
                             <View style={[styles.header, { backgroundColor: this.props.screenProps.color }]}>
-                                <Text style={styles.boldText}>Lists</Text>
+                                <Text style={styles.boldTextHeader}>Lists</Text>
                             </View><Text style={{ margin: 4 }}>
                                 <Text style={styles.boldText}>Songs on Playlist:&nbsp;</Text>
                                 <Text style={{ fontSize: 16 }}>{this.props.screenProps.songCount ? this.props.screenProps.songCount : this.state.party.songs.length}</Text>
@@ -144,13 +144,18 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         borderWidth: 1,
         borderColor: 'white',
-        marginTop: 10
+        marginTop: 8
     },
     text: {
         color: 'white',
         textAlign: 'center',
         padding: 5,
         fontSize: 16
+    },
+    boldTextHeader: {
+        textAlign: "center",
+        fontSize: 22,
+        fontWeight: 'bold'
     },
     boldText: {
         textAlign: "center",
@@ -169,6 +174,6 @@ const styles = StyleSheet.create({
     section: {
         borderRadius: 5,
         backgroundColor: 'white',
-        marginTop: 10
+        marginTop: 8
     }
 })

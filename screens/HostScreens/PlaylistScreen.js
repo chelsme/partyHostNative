@@ -166,7 +166,7 @@ export default class PlaylistScreen extends React.Component {
                                 accessibilityLabel={`${song.name} by ${song.artist}`}
                             >
                                 <Text>&#127925;    {song.name} - {song.artist}</Text>
-                                {this.props.screenProps.userID === this.props.screenProps.hostID ? <MaterialIcons name="delete-forever" color='black' size={18} style={{ marginTop: -18, marginLeft: 240, width: 18 }} onPress={() => this.pressSong(song)} /> : null}
+                                {this.props.screenProps.userID === this.props.screenProps.hostID ? <MaterialIcons name="delete-forever" color='black' size={24} style={{ marginTop: -21, marginLeft: 235, marginBottom: -3, width: 24 }} onPress={() => this.pressSong(song)} /> : null}
                             </View>
                         }) : null
                     }
