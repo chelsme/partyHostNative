@@ -305,8 +305,8 @@ export default class PartyListScreen extends React.Component {
     }
 
     render() {
-        let hostColorWheel = ['#FF7400', '#fcd303', '#009999', '#6E8EF5']
-        let guestColorWheel = ['#14398F', '#cf6523', '#EBAC00', '#006565']
+        let hostColorWheel = ['#FF7400', '#fcd303', '#009999', '#0f87ff']
+        let guestColorWheel = ['#3e67c7', '#cf6523', '#EBAC00', '#017a7a']
         return (
             <ImageBackground source={require('../assets/images/background.jpg')} style={{ display: "flex", paddingTop: 20, backgroundColor: '#4d5a63' }} >
                 <View style={{ alignItems: 'flex-end' }}>
