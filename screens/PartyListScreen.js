@@ -415,7 +415,7 @@ export default class PartyListScreen extends React.Component {
                                         <TouchableOpacity style={{ marginLeft: 10 }}>
                                             <MaterialIcons name="edit" color='white' size={18} style={{ marginTop: -20, marginBottom: 4, width: 18 }} onPress={() => this.editParty(party)} />
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={{ marginLeft: 220 }}>
+                                        <TouchableOpacity style={{ marginLeft: 270 }}>
                                             <MaterialIcons name="delete-forever" color='white' size={18} style={{ marginTop: -22, marginBottom: 4, width: 18 }} onPress={() => this.cancelParty(party)} />
                                         </TouchableOpacity>
                                     </View>
@@ -449,13 +449,13 @@ export default class PartyListScreen extends React.Component {
 
                                         {(() => {
                                             if (partyRsvp.RSVP === 'yes') {
-                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: &#10003;</Text>
+                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 230, color: 'white' }}>RSVP: &#10003;</Text>
                                             } else if (partyRsvp.RSVP === 'no') {
-                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: X</Text>
+                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 230, color: 'white' }}>RSVP: X</Text>
                                             } else if (partyRsvp.RSVP === 'maybe') {
-                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: &#63;</Text>
+                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 230, color: 'white' }}>RSVP: &#63;</Text>
                                             } else if (partyRsvp.RSVP === 'tbd') {
-                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 180, color: 'white' }}>RSVP: &#9675;</Text>
+                                                return <Text style={{ textAlign: "center", fontSize: 12, marginTop: -20, marginBottom: 4, marginLeft: 230, color: 'white' }}>RSVP: &#9675;</Text>
                                             }
                                         })()}
                                     </View>
@@ -475,7 +475,7 @@ const styles = StyleSheet.create({
     partyButton: {
         backgroundColor: 'white',
         opacity: 200,
-        width: 250,
+        width: 300,
         height: 65,
         borderWidth: 1,
         textAlignVertical: "center",

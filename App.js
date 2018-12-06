@@ -74,7 +74,18 @@ export default class App extends React.Component {
 
 	logOut = () => {
 		this.setState({
-			loggedIn: false
+			loggedIn: false,
+			name: null,
+			userID: null,
+			loginShow: false,
+			signUpShow: false,
+			name: "",
+			userName: "",
+			password: "",
+			passwordVerify: "",
+			loginUserName: "",
+			loginPassword: "",
+			allUsers: null,
 		})
 	}
 
