@@ -228,7 +228,7 @@ export default class App extends React.Component {
 					:
 					<ImageBackground source={require('./assets/images/bckgd.jpg')} style={{ width: '100%', height: '120%' }}>
 						<KeyboardAwareScrollView style={{ display: "flex" }}>
-							<Image source={require('./assets/images/dancehostwhite.png')} style={styles.image} />
+							<Image source={require('./assets/images/dancehost.png')} style={styles.image} />
 
 							{/* login with facebook */}
 							<TouchableOpacity style={styles.textButton}>
