@@ -11,8 +11,8 @@ export default class App extends React.Component {
 
 		this.state = {
 			loggedIn: false,
-			name: null,
-			userID: null,
+			name: '',
+			userID: '',
 			loginShow: false,
 			signUpShow: false,
 			name: "",
@@ -26,7 +26,11 @@ export default class App extends React.Component {
 	}
 
 	componentDidMount() {
-		fetch('http://10.185.7.174:3000/guests')
+		this.makeRemoteRequest()
+	}
+
+	makeRemoteRequest = () => {
+		fetch('http://10.10.10.111:3000/guests')
 			.then(resp => resp.json())
 			.then(data => {
 				this.setState({
@@ -50,7 +54,7 @@ export default class App extends React.Component {
 				// Get the user's name using Facebook's Graph API
 				const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
 				let userName = (await response.json()).name
-				fetch('http://10.185.7.174:3000/guests', {
+				fetch('http://10.10.10.111:3000/guests', {
 					method: 'POST', // or 'PUT'
 					body: JSON.stringify({ name: userName }), // data can be `string` or {object}!
 					headers: {
@@ -75,17 +79,15 @@ export default class App extends React.Component {
 	logOut = () => {
 		this.setState({
 			loggedIn: false,
-			name: null,
-			userID: null,
-			loginShow: false,
-			signUpShow: false,
+			userID: '',
 			name: "",
 			userName: "",
 			password: "",
 			passwordVerify: "",
 			loginUserName: "",
 			loginPassword: "",
-			allUsers: null,
+			loginShow: false,
+			signUpShow: false,
 		})
 	}
 
@@ -96,6 +98,7 @@ export default class App extends React.Component {
 					loginShow: !this.state.loginShow,
 					signUpShow: false
 				})
+				this.makeRemoteRequest()
 				break;
 			case 'signup':
 				this.setState({
@@ -133,7 +136,7 @@ export default class App extends React.Component {
 				} else if (this.state.password !== this.state.passwordVerify) {
 					AlertIOS.alert('Passwords do not match.')
 				} else if (newSessionUser) {
-					fetch(`http://10.185.7.174:3000/guests/${newSessionUser.id}`, {
+					fetch(`http://10.10.10.111:3000/guests/${newSessionUser.id}`, {
 						method: 'PATCH', // or 'PUT'
 						body: JSON.stringify({
 							username: this.state.userName,
@@ -150,8 +153,8 @@ export default class App extends React.Component {
 								loggedIn: true
 							})
 						})
-				} else if (this.state.name !== "" && this.state.userName !== "" && this.state.password !== "") {
-					fetch('http://10.185.7.174:3000/guests', {
+				} else if (this.state.name !== "" && this.state.userName !== "" && this.state.password !== "" && this.state.name.includes(' ')) {
+					fetch('http://10.10.10.111:3000/guests', {
 						method: 'POST', // or 'PUT'
 						body: JSON.stringify({
 							name: `${this.state.name}`,
@@ -169,6 +172,10 @@ export default class App extends React.Component {
 								loggedIn: true
 							})
 						})
+				} else if (this.state.name === "" && this.state.userName === "" && this.state.password === "" && this.state.passwordVerify === "") {
+					AlertIOS.alert('Must fill out all fields.')
+				} else if (this.state.name !== "" && this.state.userName !== "" && this.state.password !== "" && !this.state.name.includes(' ')) {
+					AlertIOS.alert('Must fill out full name.')
 				}
 				break;
 			default:
@@ -332,10 +339,10 @@ export default class App extends React.Component {
 							<TouchableOpacity style={styles.textButton}>
 								<Text
 									onPress={this.logInAmanda}
-									title="Log In Test"
+									title="Test"
 									style={styles.text}
-									accessibilityLabel="Log In Test"
-								>Log In Test
+									accessibilityLabel="Test"
+								>Test
                     			</Text>
 							</TouchableOpacity>
 						</KeyboardAwareScrollView >

@@ -25,7 +25,7 @@ export default class PlaylistScreen extends React.Component {
     }
 
     makeRemoteRequest = () => {
-        fetch('http://10.185.7.174:3000/songs')
+        fetch('http://10.10.10.111:3000/songs')
             .then(resp => resp.json())
             .then(data => {
                 let partyPlaylist = data.filter((song) => {
@@ -62,7 +62,7 @@ export default class PlaylistScreen extends React.Component {
     handleSubmitSong = () => {
         {
             this.state.song.split(' ').join('') !== '' && this.state.artist.split(' ').join('') !== '' ?
-                fetch('http://10.185.7.174:3000/songs', {
+                fetch('http://10.10.10.111:3000/songs', {
                     method: 'POST', // or 'PUT'
                     body: JSON.stringify({
                         name: this.state.song,
@@ -94,7 +94,7 @@ export default class PlaylistScreen extends React.Component {
                 [
                     {
                         text: 'Remove', onPress: () => {
-                            fetch(`http://10.185.7.174:3000/songs/${song.id}`, {
+                            fetch(`http://10.10.10.111:3000/songs/${song.id}`, {
                                 method: 'DELETE', // or 'PUT'
                             })
                                 .then(setTimeout(() => this.makeRemoteRequest(), 200))
@@ -125,7 +125,7 @@ export default class PlaylistScreen extends React.Component {
 
                 {/* hidden input fields */}
                 <TextInput
-                    style={{ display: this.state.addSongShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                    style={{ display: this.state.addSongShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1, marginTop: 4 }}
                     placeholder='Song Title'
                     onChangeText={this.handleChangeTextSong}
                     value={this.state.song}

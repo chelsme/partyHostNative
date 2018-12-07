@@ -40,7 +40,7 @@ export default class PartyListScreen extends React.Component {
     }
 
     makeRemoteRequest() {
-        fetch(`http://10.185.7.174:3000/guests/${this.props.screenProps.userID}`)
+        fetch(`http://10.10.10.111:3000/guests/${this.props.screenProps.userID}`)
             .then(resp => resp.json())
             .then(data => {
                 let hostingParties = data.parties.filter((party) => {
@@ -99,7 +99,7 @@ export default class PartyListScreen extends React.Component {
     handleSubmitParty = () => {
         {
             this.state.newPartyName !== '' && this.state.newPartyDate !== '' && this.state.newPartyTime !== '' && this.state.newPartyLocation !== '' ?
-                fetch('http://10.185.7.174:3000/parties', {
+                fetch('http://10.10.10.111:3000/parties', {
                     method: 'POST', // or 'PUT'
                     body: JSON.stringify({
                         name: this.state.newPartyName,
@@ -175,7 +175,7 @@ export default class PartyListScreen extends React.Component {
 
     handleEditParty = () => {
         {
-            fetch(`http://10.185.7.174:3000/parties/${this.state.editParty}`, {
+            fetch(`http://10.10.10.111:3000/parties/${this.state.editParty}`, {
                 method: 'PATCH', // or 'PUT'
                 body: JSON.stringify({
                     name: this.state.editPartyName,
@@ -202,7 +202,7 @@ export default class PartyListScreen extends React.Component {
     // end edit party
 
     getGuestList = (id) => {
-        fetch(`http://10.185.7.174:3000/parties/${id}`)
+        fetch(`http://10.10.10.111:3000/parties/${id}`)
             .then(resp => resp.json())
             .then(data => {
                 let partyGuests = data.guests.map((guest) => {
@@ -235,7 +235,7 @@ export default class PartyListScreen extends React.Component {
                 { text: 'NO', style: 'cancel' },
                 {
                     text: 'YES', onPress: () => {
-                        fetch(`http://10.185.7.174:3000/parties/${party.id}`, {
+                        fetch(`http://10.10.10.111:3000/parties/${party.id}`, {
                             method: 'DELETE', // or 'PUT'
                         })
                             .then(setTimeout(() => this.makeRemoteRequest(), 200))
@@ -253,7 +253,7 @@ export default class PartyListScreen extends React.Component {
             [
                 {
                     text: 'Yes', onPress: () => {
-                        fetch(`http://10.185.7.174:3000/party_guests/${rsvp.id}`, {
+                        fetch(`http://10.10.10.111:3000/party_guests/${rsvp.id}`, {
                             method: 'PATCH', // or 'PUT'
                             body: JSON.stringify({
                                 RSVP: 'yes',
@@ -269,7 +269,7 @@ export default class PartyListScreen extends React.Component {
                 },
                 {
                     text: 'No', onPress: () => {
-                        fetch(`http://10.185.7.174:3000/party_guests/${rsvp.id}`, {
+                        fetch(`http://10.10.10.111:3000/party_guests/${rsvp.id}`, {
                             method: 'PATCH', // or 'PUT'
                             body: JSON.stringify({
                                 RSVP: 'no',
@@ -285,7 +285,7 @@ export default class PartyListScreen extends React.Component {
                 },
                 {
                     text: 'Maybe', onPress: () => {
-                        fetch(`http://10.185.7.174:3000/party_guests/${rsvp.id}`, {
+                        fetch(`http://10.10.10.111:3000/party_guests/${rsvp.id}`, {
                             method: 'PATCH', // or 'PUT'
                             body: JSON.stringify({
                                 RSVP: 'maybe',
@@ -329,25 +329,25 @@ export default class PartyListScreen extends React.Component {
 
                     {/* hidden input fields CREATE PARTY */}
                     < TextInput
-                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        style={[styles.textInput, { display: this.state.addPartyShow ? 'flex' : 'none' }]}
                         placeholder={'Party Name'}
                         onChangeText={this.handleNewName}
                         value={this.state.newPartyName}
                     />
                     < TextInput
-                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        style={[styles.textInput, { display: this.state.addPartyShow ? 'flex' : 'none' }]}
                         placeholder={'Party Date'}
                         onChangeText={this.handleNewDate}
                         value={this.state.newPartyDate}
                     />
                     < TextInput
-                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        style={[styles.textInput, { display: this.state.addPartyShow ? 'flex' : 'none' }]}
                         placeholder={'Party Time'}
                         onChangeText={this.handleNewTime}
                         value={this.state.newPartyTime}
                     />
                     < TextInput
-                        style={{ display: this.state.addPartyShow ? 'flex' : 'none', backgroundColor: 'white', padding: 5, paddingLeft: 10, borderRadius: 50, width: 190, margin: 2, borderWidth: 1 }}
+                        style={[styles.textInput, { display: this.state.addPartyShow ? 'flex' : 'none' }]}
                         placeholder={'Party Location'}
                         onChangeText={this.handleNewLocation}
                         value={this.state.newPartyLocation}
@@ -504,5 +504,14 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: 'white',
         marginBottom: 3,
+    },
+    textInput: {
+        backgroundColor: 'white',
+        padding: 5,
+        paddingLeft: 10,
+        borderRadius: 50,
+        width: 190,
+        margin: 2,
+        borderWidth: 1
     }
 })
