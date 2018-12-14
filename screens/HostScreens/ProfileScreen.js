@@ -21,6 +21,9 @@ export default class ProfileScreen extends React.Component {
         if (prevProps.screenProps.selectedParty !== this.props.screenProps.selectedParty) {
             this.makeRemoteRequest()
         }
+        if (prevProps.screenProps.guests.length !== this.props.screenProps.guests.length) {
+            this.makeRemoteRequest()
+        }
     }
 
     makeRemoteRequest = () => {
@@ -49,6 +52,7 @@ export default class ProfileScreen extends React.Component {
     }
 
     render() {
+        console.log(this.props.screenProps.guests.length)
         return (
             <ImageBackground source={require('../../assets/images/background.jpg')} style={{ display: "flex", alignItems: "center", padding: 10, backgroundColor: '#4d5a63', height: 800 }} >
                 {this.state.party ?
